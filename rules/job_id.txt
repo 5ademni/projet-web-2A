@@ -3,18 +3,32 @@ LEVEL IDs:
 2- junior
 3- senior
 
+EMPLYMENT TYPE IDs:
+1- full time
+2- part time
+3- contract
+4- freelance
+
 FIELD IDs:
 100-comp sci:
-101- web dev
-102- mobile dev
-103- data science
-104- machine learning
-105- AI
-106- cyber security
-107- software engineering
-108- game dev
-109- IT
-110- network engineering
-111- database management
-112- cloud computing
-113- system administration
+-101- web dev
+-102- mobile dev
+-103- data science
+-104- machine learning
+-105- AI
+-106- cyber security
+-107- software engineering
+-108- game dev
+-109- IT
+-110- network engineering
+-111- database management
+-112- cloud computing
+-113- system administration
+
+200- business:
+-201- marketing
+-202- sales
+-203- finance
+-204- accounting
+-205- management
+-206- human resources
