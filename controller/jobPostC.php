@@ -1,12 +1,12 @@
 <?php
-include "../auth/config.php";
-include "../model/jobPost.php";
+include '../../auth/config.php';
+include '../../model/jobPost.php';
 
 class jobPostC
 {
   public function listJobPosts()
   {
-    $sql = "SELECT * FROM job_post";
+    $sql = "SELECT * FROM jobpostings";
     $db = config::getConnexion();
     try {
       $list = $db->query($sql);
