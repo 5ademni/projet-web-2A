@@ -1,0 +1,20 @@
+LEVEL IDs:
+1- intership
+2- junior
+3- senior
+
+FIELD IDs:
+100-comp sci:
+101- web dev
+102- mobile dev
+103- data science
+104- machine learning
+105- AI
+106- cyber security
+107- software engineering
+108- game dev
+109- IT
+110- network engineering
+111- database management
+112- cloud computing
+113- system administration
