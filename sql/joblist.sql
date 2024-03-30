@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Mar 30, 2024 at 12:31 PM
+-- Generation Time: Mar 30, 2024 at 01:03 PM
 -- Server version: 8.2.0
 -- PHP Version: 8.2.13
 
@@ -20,6 +20,19 @@ SET time_zone = "+00:00";
 --
 -- Database: `5ademni`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `employmenttypes`
+--
+
+DROP TABLE IF EXISTS `employmenttypes`;
+CREATE TABLE IF NOT EXISTS `employmenttypes` (
+  `EmploymentTypeID` int NOT NULL,
+  `EmploymentTypeName` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`EmploymentTypeID`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -59,13 +72,31 @@ DROP TABLE IF EXISTS `jobpostings`;
 CREATE TABLE IF NOT EXISTS `jobpostings` (
   `JobID` int NOT NULL,
   `Title` varchar(100) DEFAULT NULL,
+  `Company` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `Location` varchar(100) DEFAULT NULL,
   `PostingDate` datetime DEFAULT CURRENT_TIMESTAMP,
   `SalaryRange` varchar(50) DEFAULT NULL,
   `EmploymentType` varchar(50) DEFAULT NULL,
   `FieldID` int DEFAULT NULL,
+  `LevelID` int DEFAULT NULL,
+  `EmploymentTypeID` int DEFAULT NULL,
   PRIMARY KEY (`JobID`),
-  KEY `FieldID` (`FieldID`)
+  KEY `FieldID` (`FieldID`),
+  KEY `LevelID` (`LevelID`),
+  KEY `EmploymentTypeID` (`EmploymentTypeID`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `levels`
+--
+
+DROP TABLE IF EXISTS `levels`;
+CREATE TABLE IF NOT EXISTS `levels` (
+  `LevelID` int NOT NULL,
+  `LevelName` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`LevelID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 COMMIT;
 
