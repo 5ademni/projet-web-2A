@@ -42,7 +42,7 @@ Bootstrap 5 HTML CSS Template
 
     <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="index.html">
+            <a class="navbar-brand d-flex align-items-center" href="index.php">
                 <img src="images/logo.png" class="img-fluid logo-image">
 
                 <div class="d-flex flex-column">
@@ -57,7 +57,7 @@ Bootstrap 5 HTML CSS Template
             <div class="collapse navbar-collapse" id="navbarNav" style="margin-top: 5px;">
                 <ul class="navbar-nav align-items-center ms-lg-5">
                     <li class="nav-item">
-                        <a class="nav-link active" href="index.html">Page d'accueil</a>
+                        <a class="nav-link active" href="index.php">Page d'accueil</a>
                     </li>
 
                     <li class="nav-item">
