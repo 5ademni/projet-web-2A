@@ -278,6 +278,33 @@
       </li>
       <!-- End Dashboard Nav -->
 
+      <!-- Start Users Nav -->
+      <li class="nav-item">
+        <a class="nav-link" href="users.html">
+          <i class="bi bi-people"></i>
+          <span>Users</span>
+        </a>
+      </li>
+      <!-- End Users Nav -->
+
+      <!-- Start Job Posts Nav -->
+      <li class="nav-item">
+        <a class="nav-link" href="job-posts.html">
+          <i class="bi bi-briefcase"></i>
+          <span>Job Posts</span>
+        </a>
+      </li>
+      <!-- End Job Posts Nav -->
+
+      <!-- Start Blog Nav -->
+      <li class="nav-item">
+        <a class="nav-link" href="blog.html">
+          <i class="bi bi-pencil-square"></i>
+          <span>Blog</span>
+        </a>
+      </li>
+      <!-- End Blog Nav -->
+
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-menu-button-wide"></i><span>Components</span><i class="bi bi-chevron-down ms-auto"></i>
