@@ -1,8 +1,8 @@
 <?php
-include '../../auth/config.php';
-include '../../model/jobPost.php';
+include_once '../../auth/config.php';
+include_once '../../model/jobPost.php';
 
-class jobPostC
+class JobPostC
 {
   public function listJobPosts()
   {

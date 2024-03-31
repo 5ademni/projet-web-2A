@@ -1,6 +1,6 @@
 <?php
-include '../../controller/jobPostC.php';
-$jobPostC = new jobPostC();
+include_once '../../controller/jobPostC.php';
+$jobPostC = new JobPostC();
 $totalJobs = $jobPostC->countJobPosts();
 ?>
 <!doctype html>
