@@ -1,6 +1,7 @@
 <?php
 include '../../controller/jobPostC.php';
 $jobPostC = new jobPostC();
+$totalJobs = $jobPostC->countJobPosts();
 ?>
 <!doctype html>
 <html lang="en">
@@ -51,8 +52,7 @@ Bootstrap 5 HTML CSS Template
                 <img src="images/logo.png" class="img-fluid logo-image">
 
                 <div class="d-flex flex-column">
-                    <strong class="logo-text">Gotto</strong>
-                    <small class="logo-slogan">Online Job Portal</small>
+                    <a class="logo-text">5ademni</a>
                 </div>
             </a>
 
@@ -221,7 +221,7 @@ Bootstrap 5 HTML CSS Template
                 <div class="row align-items-center">
 
                     <div class="col-lg-6 col-12 mb-lg-4">
-                        <h3>Results of 30-65 of 1500 jobs</h3>
+                        <h3>Results of <?php echo $totalJobs; ?> jobs</h3>
                     </div>
 
                     <div class="col-lg-4 col-12 d-flex align-items-center ms-auto mb-5 mb-lg-4">
@@ -251,6 +251,12 @@ Bootstrap 5 HTML CSS Template
                     <?php
                     $list = $jobPostC->listJobPosts();
                     foreach ($list as $jobPost) {
+                        $companyName = strtolower(str_replace(' ', '_', $jobPost['Company'])); // Replace spaces with underscores and convert to lowercase
+                        $imagePath = 'images/logos/'; // Replace this with the actual path to your images
+                        $imageSrc = $imagePath . $companyName . '.png';
+                        if (!file_exists($imageSrc)) {
+                            $imageSrc = $imagePath . 'generic.png';
+                        }
                     ?>
                         <div class="col-lg-4 col-md-6 col-12">
                             <div class="job-thumb job-thumb-box">
@@ -261,11 +267,14 @@ Bootstrap 5 HTML CSS Template
 
                                     <div class="job-image-box-wrap-info d-flex align-items-center">
                                         <p class="mb-0">
-                                            <a href="job-listings.html" class="badge badge-level"><?php echo $jobPost['LevelID']; ?></a>
+                                            <a href="job-listings.html" class="badge badge-level"><?php echo $jobPost['FieldName']; ?></a>
+                                        </p>
+                                        <p class="mb-0">
+                                            <a href="job-listings.html" class="badge badge-level"><?php echo $jobPost['LevelName']; ?></a>
                                         </p>
 
                                         <p class="mb-0">
-                                            <a href="job-listings.html" class="badge"><?php echo $jobPost['EmploymentTypeID']; ?></a>
+                                            <a href="job-listings.html" class="badge"><?php echo $jobPost['EmploymentTypeName']; ?></a>
                                         </p>
                                     </div>
                                 </div>
@@ -277,7 +286,7 @@ Bootstrap 5 HTML CSS Template
 
                                     <div class="d-flex align-items-center">
                                         <div class="job-image-wrap d-flex align-items-center bg-white shadow-lg mt-2 mb-4">
-                                            <img src="images/logos/salesforce.png" class="job-image me-3 img-fluid" alt="">
+                                            <img src="<?php echo $imageSrc; ?>" class="job-image me-3 img-fluid" alt="">
 
                                             <p class="mb-0"><?php echo $jobPost['Company']; ?></p>
                                         </div>
@@ -355,7 +364,7 @@ Bootstrap 5 HTML CSS Template
                         <img src="images/logo.png" class="img-fluid logo-image">
 
                         <div class="d-flex flex-column">
-                            <strong class="logo-text">Gotto</strong>
+                            <a class="logo-text">5ademni</a>
                             <small class="logo-slogan">Online Job Portal</small>
                         </div>
                     </div>
@@ -438,7 +447,7 @@ Bootstrap 5 HTML CSS Template
                 <div class="row">
 
                     <div class="col-lg-4 col-12 d-flex align-items-center">
-                        <p class="copyright-text">Copyright © Gotto Job 2048</p>
+                        <p class="copyright-text">Copyright © 5ademni 2048</p>
 
                         <ul class="footer-menu d-flex">
                             <li class="footer-menu-item"><a href="#" class="footer-menu-link">Privacy Policy</a></li>
@@ -470,11 +479,11 @@ Bootstrap 5 HTML CSS Template
                             </li>
                         </ul>
                     </div>
-
+                    <!--
                     <div class="col-lg-3 col-12 mt-2 d-flex align-items-center mt-lg-0">
                         <p>Design: <a class="sponsored-link" rel="sponsored" href="https://www.tooplate.com" target="_blank">Tooplate</a></p>
                     </div>
-
+                    -->
                     <a class="back-top-icon bi-arrow-up smoothscroll d-flex justify-content-center align-items-center" href="#top"></a>
 
                 </div>
