@@ -72,7 +72,7 @@ Bootstrap 5 HTML CSS Template
                         <a class="nav-link dropdown-toggle" href="#" id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
 
                         <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">
-                            <li><a class="dropdown-item" href="job-listings.html">Listes d'emplois</a></li>
+                            <li><a class="dropdown-item" href="job-listings.php">Listes d'emplois</a></li>
 
                             <li><a class="dropdown-item" href="job-details.html">Détails du poste</a></li>
                         </ul>
@@ -145,11 +145,11 @@ Bootstrap 5 HTML CSS Template
                                         <span class="text-white mb-lg-0 mb-md-0 me-2">Mots-clés populaires:</span>
 
                                         <div>
-                                            <a href="job-listings.html" class="badge">Web design</a>
+                                            <a href="job-listings.php" class="badge">Web design</a>
 
-                                            <a href="job-listings.html" class="badge">Marketing</a>
+                                            <a href="job-listings.php" class="badge">Marketing</a>
 
-                                            <a href="job-listings.html" class="badge">Service client</a>
+                                            <a href="job-listings.php" class="badge">Service client</a>
                                         </div>
                                     </div>
                                 </div>
@@ -333,11 +333,11 @@ Bootstrap 5 HTML CSS Template
 
                                         <div class="d-flex">
                                             <p class="mb-0">
-                                                <a href="job-listings.html" class="badge badge-level">Internship</a>
+                                                <a href="job-listings.php" class="badge badge-level">Internship</a>
                                             </p>
 
                                             <p class="mb-0">
-                                                <a href="job-listings.html" class="badge">Freelance</a>
+                                                <a href="job-listings.php" class="badge">Freelance</a>
                                             </p>
                                         </div>
                                     </div>
@@ -378,11 +378,11 @@ Bootstrap 5 HTML CSS Template
 
                                         <div class="d-flex">
                                             <p class="mb-0">
-                                                <a href="job-listings.html" class="badge badge-level">Senior</a href="job-listings.html">
+                                                <a href="job-listings.php" class="badge badge-level">Senior</a href="job-listings.php">
                                             </p>
 
                                             <p class="mb-0">
-                                                <a href="job-listings.html" class="badge">Full Time</a>
+                                                <a href="job-listings.php" class="badge">Full Time</a>
                                             </p>
                                         </div>
                                     </div>
@@ -423,11 +423,11 @@ Bootstrap 5 HTML CSS Template
 
                                         <div class="d-flex">
                                             <p class="mb-0">
-                                                <a href="job-listings.html" class="badge badge-level">Junior</a>
+                                                <a href="job-listings.php" class="badge badge-level">Junior</a>
                                             </p>
 
                                             <p class="mb-0">
-                                                <a href="job-listings.html" class="badge">Contract</a>
+                                                <a href="job-listings.php" class="badge">Contract</a>
                                             </p>
                                         </div>
                                     </div>
@@ -468,11 +468,11 @@ Bootstrap 5 HTML CSS Template
 
                                         <div class="d-flex">
                                             <p class="mb-0">
-                                                <a href="job-listings.html" class="badge badge-level">Senior</a>
+                                                <a href="job-listings.php" class="badge badge-level">Senior</a>
                                             </p>
 
                                             <p class="mb-0">
-                                                <a href="job-listings.html" class="badge">Part Time</a>
+                                                <a href="job-listings.php" class="badge">Part Time</a>
                                             </p>
                                         </div>
                                     </div>
@@ -513,11 +513,11 @@ Bootstrap 5 HTML CSS Template
 
                                         <div class="d-flex">
                                             <p class="mb-0">
-                                                <a href="job-listings.html" class="badge badge-level">Entry</a>
+                                                <a href="job-listings.php" class="badge badge-level">Entry</a>
                                             </p>
 
                                             <p class="mb-0">
-                                                <a href="job-listings.html" class="badge">Remote</a>
+                                                <a href="job-listings.php" class="badge">Remote</a>
                                             </p>
                                         </div>
                                     </div>
@@ -639,11 +639,11 @@ Bootstrap 5 HTML CSS Template
 
                                 <div class="job-image-box-wrap-info d-flex align-items-center">
                                     <p class="mb-0">
-                                        <a href="job-listings.html" class="badge badge-level">Internship</a>
+                                        <a href="job-listings.php" class="badge badge-level">Internship</a>
                                     </p>
 
                                     <p class="mb-0">
-                                        <a href="job-listings.html" class="badge">Freelance</a>
+                                        <a href="job-listings.php" class="badge">Freelance</a>
                                     </p>
                                 </div>
                             </div>
@@ -700,11 +700,11 @@ Bootstrap 5 HTML CSS Template
 
                                 <div class="job-image-box-wrap-info d-flex align-items-center">
                                     <p class="mb-0">
-                                        <a href="job-listings.html" class="badge badge-level">Senior</a>
+                                        <a href="job-listings.php" class="badge badge-level">Senior</a>
                                     </p>
 
                                     <p class="mb-0">
-                                        <a href="job-listings.html" class="badge">Part Time</a>
+                                        <a href="job-listings.php" class="badge">Part Time</a>
                                     </p>
                                 </div>
                             </div>
@@ -761,11 +761,11 @@ Bootstrap 5 HTML CSS Template
 
                                 <div class="job-image-box-wrap-info d-flex align-items-center">
                                     <p class="mb-0">
-                                        <a href="job-listings.html" class="badge badge-level">Junior</a>
+                                        <a href="job-listings.php" class="badge badge-level">Junior</a>
                                     </p>
 
                                     <p class="mb-0">
-                                        <a href="job-listings.html" class="badge">Contract</a>
+                                        <a href="job-listings.php" class="badge">Contract</a>
                                     </p>
                                 </div>
                             </div>
@@ -822,11 +822,11 @@ Bootstrap 5 HTML CSS Template
 
                                 <div class="job-image-box-wrap-info d-flex align-items-center">
                                     <p class="mb-0">
-                                        <a href="job-listings.html" class="badge badge-level">Junior</a>
+                                        <a href="job-listings.php" class="badge badge-level">Junior</a>
                                     </p>
 
                                     <p class="mb-0">
-                                        <a href="job-listings.html" class="badge">Contract</a>
+                                        <a href="job-listings.php" class="badge">Contract</a>
                                     </p>
                                 </div>
                             </div>
@@ -883,11 +883,11 @@ Bootstrap 5 HTML CSS Template
 
                                 <div class="job-image-box-wrap-info d-flex align-items-center">
                                     <p class="mb-0">
-                                        <a href="job-listings.html" class="badge badge-level">Junior</a>
+                                        <a href="job-listings.php" class="badge badge-level">Junior</a>
                                     </p>
 
                                     <p class="mb-0">
-                                        <a href="job-listings.html" class="badge">Contract</a>
+                                        <a href="job-listings.php" class="badge">Contract</a>
                                     </p>
                                 </div>
                             </div>
@@ -944,11 +944,11 @@ Bootstrap 5 HTML CSS Template
 
                                 <div class="job-image-box-wrap-info d-flex align-items-center">
                                     <p class="mb-0">
-                                        <a href="job-listings.html" class="badge badge-level">Mid Level</a>
+                                        <a href="job-listings.php" class="badge badge-level">Mid Level</a>
                                     </p>
 
                                     <p class="mb-0">
-                                        <a href="job-listings.html" class="badge">Full Time</a>
+                                        <a href="job-listings.php" class="badge">Full Time</a>
                                     </p>
                                 </div>
                             </div>
@@ -997,7 +997,7 @@ Bootstrap 5 HTML CSS Template
                     </div>
 
                     <div class="col-lg-4 col-12 recent-jobs-bottom d-flex ms-auto my-4">
-                        <a href="job-listings.html" class="custom-btn btn ms-lg-auto">Browse Job Listings</a>
+                        <a href="job-listings.php" class="custom-btn btn ms-lg-auto">Browse Job Listings</a>
                     </div>
 
                 </div>
