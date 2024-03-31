@@ -562,56 +562,39 @@ $totalJobs = $jobPostC->countJobPosts();
     <div class="card-body">
       <h5 class="card-title">Liste des postes d'emploi</h5>
 
-      <!-- Table with stripped rows -->
       <table class="table table-striped">
         <thead>
           <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
+            <th scope="col">ID</th>
             <th scope="col">Position</th>
-            <th scope="col">Age</th>
-            <th scope="col">Start Date</th>
+            <th scope="col">Type</th>
+            <th scope="col">Field</th>
+            <th scope="col">Status</th>
+            <th scope="col">Actions</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Brandon Jacob</td>
-            <td>Designer</td>
-            <td>28</td>
-            <td>2016-05-25</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Bridie Kessler</td>
-            <td>Developer</td>
-            <td>35</td>
-            <td>2014-12-05</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Ashleigh Langosh</td>
-            <td>Finance</td>
-            <td>45</td>
-            <td>2011-08-12</td>
-          </tr>
-          <tr>
-            <th scope="row">4</th>
-            <td>Angus Grady</td>
-            <td>HR</td>
-            <td>34</td>
-            <td>2012-06-11</td>
-          </tr>
-          <tr>
-            <th scope="row">5</th>
-            <td>Raheem Lehner</td>
-            <td>Dynamic Division Officer</td>
-            <td>47</td>
-            <td>2011-04-19</td>
-          </tr>
+          <?php
+          $list = $jobPostC->listJobPosts();
+          foreach ($list as $jobPost) {
+          ?>
+            <tr>
+              <th scope="row"><?php echo $jobPost['JobID']; ?></th>
+              <td><?php echo $jobPost['Title']; ?></td>
+              <td><?php echo $jobPost['EmploymentTypeName']; ?></td>
+              <td><?php echo $jobPost['FieldName']; ?></td>
+              <td></td>
+              <td>
+                <a href="job-details.html" class="btn btn-primary"><i class="bi bi-eye"></i></a>
+                <a href="edit-job.php?id=<?php echo $jobPost['JobID']; ?>" class="btn btn-success"><i class="bi bi-pencil"></i></a>
+                <a href="delete-job.php?id=<?php echo $jobPost['JobID']; ?>" class="btn btn-danger"><i class="bi bi-trash"></i></a>
+              </td>
+            </tr>
+          <?php
+          }
+          ?>
         </tbody>
       </table>
-      <!-- End Table with stripped rows -->
 
     </div>
 
