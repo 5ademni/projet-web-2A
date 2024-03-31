@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Mar 30, 2024 at 02:10 PM
+-- Generation Time: Mar 31, 2024 at 03:18 PM
 -- Server version: 8.2.0
 -- PHP Version: 8.2.13
 
@@ -30,9 +30,9 @@ SET time_zone = "+00:00";
 DROP TABLE IF EXISTS `employmenttypes`;
 CREATE TABLE IF NOT EXISTS `employmenttypes` (
   `EmploymentTypeID` int NOT NULL,
-  `EmploymentTypeName` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `EmploymentTypeName` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`EmploymentTypeID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `employmenttypes`
@@ -53,9 +53,9 @@ INSERT INTO `employmenttypes` (`EmploymentTypeID`, `EmploymentTypeName`) VALUES
 DROP TABLE IF EXISTS `fields`;
 CREATE TABLE IF NOT EXISTS `fields` (
   `FieldID` int NOT NULL,
-  `FieldName` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `FieldName` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`FieldID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `fields`
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `jobdescriptions` (
   `Role` text,
   `Requirements` text,
   KEY `JobID` (`JobID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -91,12 +91,11 @@ CREATE TABLE IF NOT EXISTS `jobdescriptions` (
 DROP TABLE IF EXISTS `jobpostings`;
 CREATE TABLE IF NOT EXISTS `jobpostings` (
   `JobID` int NOT NULL AUTO_INCREMENT,
-  `Title` varchar(100) DEFAULT NULL,
-  `Company` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `Location` varchar(100) DEFAULT NULL,
+  `Title` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `Company` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Location` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `PostingDate` datetime DEFAULT CURRENT_TIMESTAMP,
-  `Salary` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `EmploymentType` varchar(50) DEFAULT NULL,
+  `Salary` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `FieldID` int DEFAULT NULL,
   `LevelID` int DEFAULT NULL,
   `EmploymentTypeID` int DEFAULT NULL,
@@ -104,7 +103,17 @@ CREATE TABLE IF NOT EXISTS `jobpostings` (
   KEY `FieldID` (`FieldID`),
   KEY `EmploymentTypeID` (`EmploymentTypeID`),
   KEY `LevelID` (`LevelID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `jobpostings`
+--
+
+INSERT INTO `jobpostings` (`JobID`, `Title`, `Company`, `Location`, `PostingDate`, `Salary`, `FieldID`, `LevelID`, `EmploymentTypeID`) VALUES
+(1, 'Game Dev Lead', 'esprit', 'soussa', '2024-03-22 23:07:24', '1500DT', 108, 3, 1),
+(2, 'Test engineer', 'apple', 'mars', '2024-03-30 23:11:19', '20k', 101, 2, 3),
+(3, 'test', 'spotify', 'test', '2024-03-30 23:11:19', 'test', 105, 1, 3),
+(4, '3ses', 'google', '444', '2024-03-31 14:33:23', '4444', 101, 2, 4);
 
 -- --------------------------------------------------------
 
@@ -115,9 +124,9 @@ CREATE TABLE IF NOT EXISTS `jobpostings` (
 DROP TABLE IF EXISTS `levels`;
 CREATE TABLE IF NOT EXISTS `levels` (
   `LevelID` int NOT NULL,
-  `LevelName` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `LevelName` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`LevelID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `levels`
