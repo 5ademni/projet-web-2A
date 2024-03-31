@@ -289,9 +289,9 @@
 
       <!-- Start Job Posts Nav -->
       <li class="nav-item">
-        <a class="nav-link" href="job-posts.html">
+        <a class="nav-link" href="job-posts.php">
           <i class="bi bi-briefcase"></i>
-          <span>Job Posts</span>
+          <span>Postes d'emploi</span>
         </a>
       </li>
       <!-- End Job Posts Nav -->
