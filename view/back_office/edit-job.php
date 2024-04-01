@@ -587,13 +587,7 @@ $totalJobs = $jobPostC->countJobPosts();
               <td><?php echo $jobPost['FieldName']; ?></td>
               <td><?php echo $jobPost['Company']; ?></td>
               <td><?php echo $jobPost['Location']; ?></td>
-              <td>
-                <?php if ($jobPost['Status'] == 1) { ?>
-                  <span class="badge bg-success">Active</span>
-                <?php } else { ?>
-                  <span class="badge bg-danger">Inactive</span>
-                <?php } ?>
-              </td>
+              <td></td>
               <td>
                 <a href="job-details.html" class="btn btn-primary"><i class="bi bi-eye"></i></a>
                 <a href="edit-job.php?id=<?php echo $jobPost['JobID']; ?>" class="btn btn-success"><i class="bi bi-pencil"></i></a>
