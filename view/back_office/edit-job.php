@@ -549,11 +549,12 @@ $totalJobs = $jobPostC->countJobPosts();
 
   <main id="main" class="main">
     <div class="pagetitle">
-      <h1>Dashboard</h1>
+      <h1>Users</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-          <li class="breadcrumb-item active">posts d'emploi</li>
+          <li class="breadcrumb-item"><a href="job-posts.php">posts d'emploi</a></li>
+          <li class="breadcrumb-item active">modification post demploi {number here}</li>
         </ol>
       </nav>
     </div>
@@ -561,65 +562,32 @@ $totalJobs = $jobPostC->countJobPosts();
 
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title">General Form Elements</h5>
+        <h5 class="card-title">Edit job {number}</h5>
 
         <!-- General Form Elements -->
         <form>
           <div class="row mb-3">
-            <label for="inputText" class="col-sm-2 col-form-label">Text</label>
+            <label for="inputText" class="col-sm-2 col-form-label">Job Title</label>
             <div class="col-sm-10">
               <input type="text" class="form-control">
             </div>
           </div>
           <div class="row mb-3">
-            <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+            <label for="inputText" class="col-sm-2 col-form-label">Company Name</label>
             <div class="col-sm-10">
-              <input type="email" class="form-control">
-              <div data-lastpass-icon-root="" style="position: relative !important; height: 0px !important; width: 0px !important; float: left !important;"></div>
+              <input type="text" class="form-control">
             </div>
           </div>
           <div class="row mb-3">
-            <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+            <label for="inputText" class="col-sm-2 col-form-label">Location</label>
             <div class="col-sm-10">
-              <input type="password" class="form-control">
-              <div data-lastpass-icon-root="" style="position: relative !important; height: 0px !important; width: 0px !important; float: left !important;"></div>
+              <input type="text" class="form-control">
             </div>
           </div>
           <div class="row mb-3">
-            <label for="inputNumber" class="col-sm-2 col-form-label">Number</label>
+            <label for="inputText" class="col-sm-2 col-form-label">Salary</label>
             <div class="col-sm-10">
-              <input type="number" class="form-control">
-            </div>
-          </div>
-          <div class="row mb-3">
-            <label for="inputNumber" class="col-sm-2 col-form-label">File Upload</label>
-            <div class="col-sm-10">
-              <input class="form-control" type="file" id="formFile">
-            </div>
-          </div>
-          <div class="row mb-3">
-            <label for="inputDate" class="col-sm-2 col-form-label">Date</label>
-            <div class="col-sm-10">
-              <input type="date" class="form-control">
-            </div>
-          </div>
-          <div class="row mb-3">
-            <label for="inputTime" class="col-sm-2 col-form-label">Time</label>
-            <div class="col-sm-10">
-              <input type="time" class="form-control">
-            </div>
-          </div>
-
-          <div class="row mb-3">
-            <label for="inputColor" class="col-sm-2 col-form-label">Color Picker</label>
-            <div class="col-sm-10">
-              <input type="color" class="form-control form-control-color" id="exampleColorInput" value="#4154f1" title="Choose your color">
-            </div>
-          </div>
-          <div class="row mb-3">
-            <label for="inputPassword" class="col-sm-2 col-form-label">Textarea</label>
-            <div class="col-sm-10">
-              <textarea class="form-control" style="height: 100px" data-gramm="false" wt-ignore-input="true"></textarea>
+              <input type="text" class="form-control">
             </div>
           </div>
           <fieldset class="row mb-3">
@@ -628,53 +596,20 @@ $totalJobs = $jobPostC->countJobPosts();
               <div class="form-check">
                 <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked="">
                 <label class="form-check-label" for="gridRadios1">
-                  First radio
+                  Active
                 </label>
               </div>
               <div class="form-check">
                 <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
                 <label class="form-check-label" for="gridRadios2">
-                  Second radio
-                </label>
-              </div>
-              <div class="form-check disabled">
-                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios" value="option" disabled="">
-                <label class="form-check-label" for="gridRadios3">
-                  Third disabled radio
+                  Inactive
                 </label>
               </div>
             </div>
           </fieldset>
-          <div class="row mb-3">
-            <legend class="col-form-label col-sm-2 pt-0">Checkboxes</legend>
-            <div class="col-sm-10">
-
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="gridCheck1">
-                <label class="form-check-label" for="gridCheck1">
-                  Example checkbox
-                </label>
-              </div>
-
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="gridCheck2" checked="">
-                <label class="form-check-label" for="gridCheck2">
-                  Example checkbox 2
-                </label>
-              </div>
-
-            </div>
-          </div>
 
           <div class="row mb-3">
-            <label class="col-sm-2 col-form-label">Disabled</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" value="Read only / Disabled" disabled="">
-            </div>
-          </div>
-
-          <div class="row mb-3">
-            <label class="col-sm-2 col-form-label">Select</label>
+            <label class="col-sm-2 col-form-label">Field</label>
             <div class="col-sm-10">
               <select class="form-select" aria-label="Default select example">
                 <option selected="">Open this select menu</option>
@@ -686,13 +621,26 @@ $totalJobs = $jobPostC->countJobPosts();
           </div>
 
           <div class="row mb-3">
-            <label class="col-sm-2 col-form-label">Multi Select</label>
+            <label class="col-sm-2 col-form-label">Level</label>
             <div class="col-sm-10">
-              <select class="form-select" multiple="" aria-label="multiple select example">
+              <select class="form-select" aria-label="Default select example">
                 <option selected="">Open this select menu</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+                <option value="1">intership</option>
+                <option value="2">junior</option>
+                <option value="3">senior</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Type</label>
+            <div class="col-sm-10">
+              <select class="form-select" aria-label="Default select example">
+                <option selected="">Open this select menu</option>
+                <option value="1">full time</option>
+                <option value="2">part time</option>
+                <option value="3">part time</option>
+                <option value="4">Freelance</option>
               </select>
             </div>
           </div>
