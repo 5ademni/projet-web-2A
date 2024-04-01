@@ -569,6 +569,8 @@ $totalJobs = $jobPostC->countJobPosts();
             <th scope="col">Position</th>
             <th scope="col">Type</th>
             <th scope="col">Field</th>
+            <th scope="col">Company</th>
+            <th scope="col">Location</th>
             <th scope="col">Status</th>
             <th scope="col">Actions</th>
           </tr>
@@ -583,6 +585,8 @@ $totalJobs = $jobPostC->countJobPosts();
               <td><?php echo $jobPost['Title']; ?></td>
               <td><?php echo $jobPost['EmploymentTypeName']; ?></td>
               <td><?php echo $jobPost['FieldName']; ?></td>
+              <td><?php echo $jobPost['Company']; ?></td>
+              <td><?php echo $jobPost['Location']; ?></td>
               <td></td>
               <td>
                 <a href="job-details.html" class="btn btn-primary"><i class="bi bi-eye"></i></a>
