@@ -1,3 +1,28 @@
+<?php
+include_once '../../controller/event2.php';
+$evenementC = new EvenementC();
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $evenement = new Evenement($_POST['id_evenement'], $_POST['id_auteur'], $_POST['titre'], $_POST['contenu'], $_POST['datePublication'], $_POST['dateEvenement'], $_POST['lieu'], $_POST['prix'], $_POST['nbPlaces'], $_POST['nbPlacesRestantes'], $_FILES['image']['name']);
+  $evenementC->addEvenement($evenement);
+
+  if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+    $uploadDir = 'projet/';
+    if (!file_exists($uploadDir)) {
+        mkdir($uploadDir, 0777, true);
+    }
+    $uploadFile = $uploadDir . basename($_FILES['image']['name']);
+
+    if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadFile)) {
+      echo "Le fichier est valide et a été téléchargé avec succès.\n";
+    } else {
+      echo "Erreur lors de l'upload du fichier.\n";
+    }
+  }
+
+  header('Location: liste.php');
+  exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -80,24 +105,46 @@
                 <div class="row">
                     <div class="col-lg-12 col-12">
                         <!-- Formulaire pour ajouter un événement -->
-                        <form>
+                        <form method="post" enctype="multipart/form-data">
                             <div class="form-group">
-                                <label for="eventName">Nom de l'événement</label>
-                                <input type="text" class="form-control" id="eventName" placeholder="Entrez le nom de l'événement">
+                              <label for="titre">Titre de l'événement</label>
+                              <input type="text" class="form-control" id="titre" name="titre" placeholder="Entrez le titre de l'événement">
                             </div>
                             <div class="form-group">
-                                <label for="eventDate">Date de l'événement</label>
-                                <input type="date" class="form-control" id="eventDate">
+                              <label for="contenu">Contenu de l'événement</label>
+                              <input type="text" class="form-control" id="contenu" name="contenu" placeholder="Entrez le contenu de l'événement">
                             </div>
                             <div class="form-group">
-                                <label for="eventLocation">Lieu de l'événement</label>
-                                <input type="text" class="form-control" id="eventLocation" placeholder="Entrez le lieu de l'événement">
+                              <label for="datePublication">Date de Publication</label>
+                              <input type="date" class="form-control" id="datePublication" name="datePublication">
                             </div>
-                            <button type="submit" class="btn btn-primary">Ajouter l'événement</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
+                            <div class="form-group">
+                              <label for="dateEvenement">Date de l'Evenement</label>
+                              <input type="date" class="form-control" id="dateEvenement" name="dateEvenement">
+                            </div>
+                            <div class="form-group">
+                              <label for="lieu">Lieu de l'événement</label>
+                              <input type="text" class="form-control" id="lieu" name="lieu" placeholder="Entrez le lieu de l'événement">
+                            </div>
+                            <div class="form-group">
+                              <label for="prix">Prix</label>
+                              <input type="text" class="form-control" id="prix" name="prix" placeholder="Entrez le prix de l'événement">
+                            </div>
+                            <div class="form-group">
+                              <label for="nbPlaces">Nombre de Places</label>
+                              <input type="text" class="form-control" id="nbPlaces" name="nbPlaces" placeholder="Entrez le nombre de places disponibles">
+                            </div>
+                            <div class="form-group">
+                              <label for="nbPlacesRestantes">Nombre de Places Restantes</label>
+                              <input type="text" class="form-control" id="nbPlacesRestantes" name="nbPlacesRestantes" placeholder="Entrez le nombre de places restantes">
+                            </div>
+                            <div class="form-group">
+                              <label for="image">Image</label>
+                              <input type="file" class="form-control" id="image" name="image">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Ajouter un evenement</button>
+                          </form>
+                          
         </section>
     </main>
     <footer class="site-footer">

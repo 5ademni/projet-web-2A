@@ -1,3 +1,8 @@
+<?php
+include_once '../../controller/event2.php';
+$Eventc = new Eventc();
+$totalevents = $Eventc->countEvents();
+?>
 <!DOCTYPE html>
 <html lang="fr">
   <head>
@@ -64,7 +69,15 @@
             <li class="nav-item">
               <a class="nav-link" href="about.html">About 5ademni</a>
             </li>
-
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="eventButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">Événements</a>
+          
+              <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="eventButton">
+                  <li><a class="dropdown-item" href="ajouter-evenement.html">Ajouter un événement</a></li>
+                  <li><a class="dropdown-item" href="trouver-evenement.html">Trouver un événement</a></li>
+              </ul>
+          </li>
+          
             <li class="nav-item">
               <a class="nav-link" href="blog.html">Blogs</a>
             </li>
