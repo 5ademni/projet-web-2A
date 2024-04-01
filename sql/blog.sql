@@ -26,7 +26,7 @@ SET time_zone = "+00:00";
 --
 -- Structure de la table `articlesblog`
 --
-
+DROP TABLE IF EXISTS `articlesblog`;
 CREATE TABLE `articlesblog` (
   `id_article` int(11) NOT NULL,
   `id_auteur` int(11) DEFAULT NULL,
@@ -49,7 +49,7 @@ INSERT INTO `articlesblog` (`id_article`, `id_auteur`, `titre`, `contenu`, `date
 --
 -- Structure de la table `auteurs`
 --
-
+DROP TABLE IF EXISTS `auteurs`;
 CREATE TABLE `auteurs` (
   `id_auteur` int(11) NOT NULL,
   `nom` varchar(255) NOT NULL,
@@ -70,7 +70,7 @@ INSERT INTO `auteurs` (`id_auteur`, `nom`, `email`) VALUES
 --
 -- Structure de la table `commentaires`
 --
-
+DROP TABLE IF EXISTS `commentaires`;
 CREATE TABLE `commentaires` (
   `id_commentaire` int(11) NOT NULL,
   `id_article` int(11) DEFAULT NULL,
