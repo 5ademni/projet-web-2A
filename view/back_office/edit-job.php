@@ -1,7 +1,15 @@
 <?php
-include_once '../../controller/jobPostC.php';
-$jobPostC = new JobPostC();
-$totalJobs = $jobPostC->countJobPosts();
+include '../../Controller/jobPostC.php';
+$jobPostC = new jobPostC();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $job_post = new JobPost($_POST['title'], $_POST['description'], $_POST['salary'], $_POST['status'], $_POST['company_name'], $_POST['location'], $_POST['field_id'], $_POST['level_id'], $_POST['employment_type_id']);
+  $jobPostC->addJobPost($job_post);
+  header('Location: liste_job.php');
+  exit;
+} elseif (isset($_GET['id'])) {
+  $job_post = $jobPostC->getJobPostById($_GET['id']);
+}
 ?>
 
 <!DOCTYPE html>
@@ -554,7 +562,7 @@ $totalJobs = $jobPostC->countJobPosts();
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
           <li class="breadcrumb-item"><a href="job-posts.php">posts d'emploi</a></li>
-          <li class="breadcrumb-item active">modification post demploi {number here}</li>
+          <li class="breadcrumb-item active">modification post demploi <?php echo $job_post['JobID']; ?></li>
         </ol>
       </nav>
     </div>
@@ -562,32 +570,32 @@ $totalJobs = $jobPostC->countJobPosts();
 
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title">Edit job {number}</h5>
+        <h5 class="card-title">Edit job <?php echo $job_post['JobID']; ?></h5>
 
         <!-- General Form Elements -->
         <form>
           <div class="row mb-3">
             <label for="inputText" class="col-sm-2 col-form-label">Job Title</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control">
+              <input type="text" class="form-control" value="<?php $job_post['title']; ?>">
             </div>
           </div>
           <div class="row mb-3">
             <label for="inputText" class="col-sm-2 col-form-label">Company Name</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control">
+              <input type="text" class="form-control" value="<?php $job_post['company']; ?>">
             </div>
           </div>
-          <div class="row mb-3">
+          <div class=" row mb-3">
             <label for="inputText" class="col-sm-2 col-form-label">Location</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control">
+              <input type="text" class="form-control" value="<?php $job_post['location']; ?>">
             </div>
           </div>
           <div class="row mb-3">
             <label for="inputText" class="col-sm-2 col-form-label">Salary</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control">
+              <input type="text" class="form-control" value="YOOOO">
             </div>
           </div>
           <fieldset class="row mb-3">
