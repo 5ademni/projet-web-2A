@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : sam. 30 mars 2024 à 14:20
+-- Généré le : lun. 01 avr. 2024 à 18:19
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -28,12 +28,21 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `articlesblog` (
-  `ID_Article` int(11) NOT NULL,
-  `ID_Auteur` int(11) DEFAULT NULL,
-  `Titre` varchar(255) NOT NULL,
-  `Contenu` text NOT NULL,
-  `DatePublication` datetime DEFAULT current_timestamp()
+  `id_article` int(11) NOT NULL,
+  `id_auteur` int(11) DEFAULT NULL,
+  `titre` varchar(255) NOT NULL,
+  `contenu` text NOT NULL,
+  `datePublication` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `articlesblog`
+--
+
+INSERT INTO `articlesblog` (`id_article`, `id_auteur`, `titre`, `contenu`, `datePublication`) VALUES
+(3, 3, 'moncof blog', 'bnj bnj', '2024-03-31 16:18:54'),
+(14, 1, 'escalope', 'health style', '2024-03-29 01:35:44'),
+(15, 1, 'escalope', 'health style', '2024-03-29 01:35:44');
 
 -- --------------------------------------------------------
 
@@ -42,10 +51,19 @@ CREATE TABLE `articlesblog` (
 --
 
 CREATE TABLE `auteurs` (
-  `ID_Auteur` int(11) NOT NULL,
-  `Nom` varchar(255) NOT NULL,
-  `Email` varchar(255) DEFAULT NULL
+  `id_auteur` int(11) NOT NULL,
+  `nom` varchar(255) NOT NULL,
+  `email` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `auteurs`
+--
+
+INSERT INTO `auteurs` (`id_auteur`, `nom`, `email`) VALUES
+(1, 'helo', 'eaea@esprit.tn'),
+(2, 'moncof', 'moncof@esprit.tn'),
+(3, 'moncof', 'moncof@esprit.tn');
 
 -- --------------------------------------------------------
 
@@ -54,11 +72,11 @@ CREATE TABLE `auteurs` (
 --
 
 CREATE TABLE `commentaires` (
-  `ID_Commentaire` int(11) NOT NULL,
-  `ID_Article` int(11) DEFAULT NULL,
-  `Nom` varchar(255) DEFAULT NULL,
-  `Commentaire` text NOT NULL,
-  `DateCommentaire` datetime DEFAULT current_timestamp()
+  `id_commentaire` int(11) NOT NULL,
+  `id_article` int(11) DEFAULT NULL,
+  `nom` varchar(255) DEFAULT NULL,
+  `commentaire` text NOT NULL,
+  `dateCommentaire` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -69,21 +87,21 @@ CREATE TABLE `commentaires` (
 -- Index pour la table `articlesblog`
 --
 ALTER TABLE `articlesblog`
-  ADD PRIMARY KEY (`ID_Article`),
-  ADD KEY `ID_Auteur` (`ID_Auteur`);
+  ADD PRIMARY KEY (`id_article`),
+  ADD KEY `ID_Auteur` (`id_auteur`);
 
 --
 -- Index pour la table `auteurs`
 --
 ALTER TABLE `auteurs`
-  ADD PRIMARY KEY (`ID_Auteur`);
+  ADD PRIMARY KEY (`id_auteur`);
 
 --
 -- Index pour la table `commentaires`
 --
 ALTER TABLE `commentaires`
-  ADD PRIMARY KEY (`ID_Commentaire`),
-  ADD KEY `ID_Article` (`ID_Article`);
+  ADD PRIMARY KEY (`id_commentaire`),
+  ADD KEY `ID_Article` (`id_article`);
 
 --
 -- AUTO_INCREMENT pour les tables déchargées
@@ -93,19 +111,19 @@ ALTER TABLE `commentaires`
 -- AUTO_INCREMENT pour la table `articlesblog`
 --
 ALTER TABLE `articlesblog`
-  MODIFY `ID_Article` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_article` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT pour la table `auteurs`
 --
 ALTER TABLE `auteurs`
-  MODIFY `ID_Auteur` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_auteur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `commentaires`
 --
 ALTER TABLE `commentaires`
-  MODIFY `ID_Commentaire` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_commentaire` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- Contraintes pour les tables déchargées
