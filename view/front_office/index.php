@@ -64,7 +64,7 @@ Bootstrap 5 HTML CSS Template
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="blog.html">Blogs</a>
+                            <a class="nav-link" href="blog.php">Blogs</a>
                         </li>
 
                         <li class="nav-item dropdown">

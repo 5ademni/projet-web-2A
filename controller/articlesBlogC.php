@@ -1,6 +1,6 @@
 <?php
-include "../auth/config.php";
-include "../model/articlesBlog.php";
+include "../../auth/config.php";
+include "../../model/articlesBlog.php";
 
 class ArticlesBlogC
 {
