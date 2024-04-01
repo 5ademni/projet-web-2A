@@ -558,54 +558,55 @@ $totalJobs = $jobPostC->countJobPosts();
       </nav>
     </div>
     <!-- End Page Title -->
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Liste des postes d'emploi</h5>
 
-    <div class="card-body">
-      <h5 class="card-title">Liste des postes d'emploi</h5>
-
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Position</th>
-            <th scope="col">Type</th>
-            <th scope="col">Field</th>
-            <th scope="col">Company</th>
-            <th scope="col">Location</th>
-            <th scope="col">Status</th>
-            <th scope="col">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php
-          $list = $jobPostC->listJobPosts();
-          foreach ($list as $jobPost) {
-          ?>
+        <table class="table table-striped">
+          <thead>
             <tr>
-              <th scope="row"><?php echo $jobPost['JobID']; ?></th>
-              <td><?php echo $jobPost['Title']; ?></td>
-              <td><?php echo $jobPost['EmploymentTypeName']; ?></td>
-              <td><?php echo $jobPost['FieldName']; ?></td>
-              <td><?php echo $jobPost['Company']; ?></td>
-              <td><?php echo $jobPost['Location']; ?></td>
-              <td>
-                <?php if ($jobPost['Status'] == 1) { ?>
-                  <span class="badge bg-success">Active</span>
-                <?php } else { ?>
-                  <span class="badge bg-danger">Inactive</span>
-                <?php } ?>
-              </td>
-              <td>
-                <a href="job-details.html" class="btn btn-primary"><i class="bi bi-eye"></i></a>
-                <a href="edit-job.php?id=<?php echo $jobPost['JobID']; ?>" class="btn btn-success"><i class="bi bi-pencil"></i></a>
-                <a href="delete-job.php?id=<?php echo $jobPost['JobID']; ?>" class="btn btn-danger"><i class="bi bi-trash"></i></a>
-              </td>
+              <th scope="col">ID</th>
+              <th scope="col">Position</th>
+              <th scope="col">Type</th>
+              <th scope="col">Field</th>
+              <th scope="col">Company</th>
+              <th scope="col">Location</th>
+              <th scope="col">Status</th>
+              <th scope="col">Actions</th>
             </tr>
-          <?php
-          }
-          ?>
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            <?php
+            $list = $jobPostC->listJobPosts();
+            foreach ($list as $jobPost) {
+            ?>
+              <tr>
+                <th scope="row"><?php echo $jobPost['JobID']; ?></th>
+                <td><?php echo $jobPost['Title']; ?></td>
+                <td><?php echo $jobPost['EmploymentTypeName']; ?></td>
+                <td><?php echo $jobPost['FieldName']; ?></td>
+                <td><?php echo $jobPost['Company']; ?></td>
+                <td><?php echo $jobPost['Location']; ?></td>
+                <td>
+                  <?php if ($jobPost['Status'] == 1) { ?>
+                    <span class="badge bg-success">Active</span>
+                  <?php } else { ?>
+                    <span class="badge bg-danger">Inactive</span>
+                  <?php } ?>
+                </td>
+                <td>
+                  <a href="job-details.html" class="btn btn-primary"><i class="bi bi-eye"></i></a>
+                  <a href="edit-job.php?id=<?php echo $jobPost['JobID']; ?>" class="btn btn-success"><i class="bi bi-pencil"></i></a>
+                  <a href="delete-job.php?id=<?php echo $jobPost['JobID']; ?>" class="btn btn-danger"><i class="bi bi-trash"></i></a>
+                </td>
+              </tr>
+            <?php
+            }
+            ?>
+          </tbody>
+        </table>
 
+      </div>
     </div>
 
   </main>

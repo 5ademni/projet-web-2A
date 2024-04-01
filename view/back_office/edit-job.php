@@ -559,47 +559,154 @@ $totalJobs = $jobPostC->countJobPosts();
     </div>
     <!-- End Page Title -->
 
-    <div class="card-body">
-      <h5 class="card-title">Liste des postes d'emploi</h5>
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">General Form Elements</h5>
 
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Position</th>
-            <th scope="col">Type</th>
-            <th scope="col">Field</th>
-            <th scope="col">Company</th>
-            <th scope="col">Location</th>
-            <th scope="col">Status</th>
-            <th scope="col">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <?php
-          $list = $jobPostC->listJobPosts();
-          foreach ($list as $jobPost) {
-          ?>
-            <tr>
-              <th scope="row"><?php echo $jobPost['JobID']; ?></th>
-              <td><?php echo $jobPost['Title']; ?></td>
-              <td><?php echo $jobPost['EmploymentTypeName']; ?></td>
-              <td><?php echo $jobPost['FieldName']; ?></td>
-              <td><?php echo $jobPost['Company']; ?></td>
-              <td><?php echo $jobPost['Location']; ?></td>
-              <td></td>
-              <td>
-                <a href="job-details.html" class="btn btn-primary"><i class="bi bi-eye"></i></a>
-                <a href="edit-job.php?id=<?php echo $jobPost['JobID']; ?>" class="btn btn-success"><i class="bi bi-pencil"></i></a>
-                <a href="delete-job.php?id=<?php echo $jobPost['JobID']; ?>" class="btn btn-danger"><i class="bi bi-trash"></i></a>
-              </td>
-            </tr>
-          <?php
-          }
-          ?>
-        </tbody>
-      </table>
+        <!-- General Form Elements -->
+        <form>
+          <div class="row mb-3">
+            <label for="inputText" class="col-sm-2 col-form-label">Text</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-10">
+              <input type="email" class="form-control">
+              <div data-lastpass-icon-root="" style="position: relative !important; height: 0px !important; width: 0px !important; float: left !important;"></div>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+            <div class="col-sm-10">
+              <input type="password" class="form-control">
+              <div data-lastpass-icon-root="" style="position: relative !important; height: 0px !important; width: 0px !important; float: left !important;"></div>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="inputNumber" class="col-sm-2 col-form-label">Number</label>
+            <div class="col-sm-10">
+              <input type="number" class="form-control">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="inputNumber" class="col-sm-2 col-form-label">File Upload</label>
+            <div class="col-sm-10">
+              <input class="form-control" type="file" id="formFile">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="inputDate" class="col-sm-2 col-form-label">Date</label>
+            <div class="col-sm-10">
+              <input type="date" class="form-control">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="inputTime" class="col-sm-2 col-form-label">Time</label>
+            <div class="col-sm-10">
+              <input type="time" class="form-control">
+            </div>
+          </div>
 
+          <div class="row mb-3">
+            <label for="inputColor" class="col-sm-2 col-form-label">Color Picker</label>
+            <div class="col-sm-10">
+              <input type="color" class="form-control form-control-color" id="exampleColorInput" value="#4154f1" title="Choose your color">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Textarea</label>
+            <div class="col-sm-10">
+              <textarea class="form-control" style="height: 100px" data-gramm="false" wt-ignore-input="true"></textarea>
+            </div>
+          </div>
+          <fieldset class="row mb-3">
+            <legend class="col-form-label col-sm-2 pt-0">Radios</legend>
+            <div class="col-sm-10">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked="">
+                <label class="form-check-label" for="gridRadios1">
+                  First radio
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
+                <label class="form-check-label" for="gridRadios2">
+                  Second radio
+                </label>
+              </div>
+              <div class="form-check disabled">
+                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios" value="option" disabled="">
+                <label class="form-check-label" for="gridRadios3">
+                  Third disabled radio
+                </label>
+              </div>
+            </div>
+          </fieldset>
+          <div class="row mb-3">
+            <legend class="col-form-label col-sm-2 pt-0">Checkboxes</legend>
+            <div class="col-sm-10">
+
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="gridCheck1">
+                <label class="form-check-label" for="gridCheck1">
+                  Example checkbox
+                </label>
+              </div>
+
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="gridCheck2" checked="">
+                <label class="form-check-label" for="gridCheck2">
+                  Example checkbox 2
+                </label>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Disabled</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" value="Read only / Disabled" disabled="">
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Select</label>
+            <div class="col-sm-10">
+              <select class="form-select" aria-label="Default select example">
+                <option selected="">Open this select menu</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Multi Select</label>
+            <div class="col-sm-10">
+              <select class="form-select" multiple="" aria-label="multiple select example">
+                <option selected="">Open this select menu</option>
+                <option value="1">One</option>
+                <option value="2">Two</option>
+                <option value="3">Three</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Submit Button</label>
+            <div class="col-sm-10">
+              <button type="submit" class="btn btn-primary">Submit Form</button>
+            </div>
+          </div>
+
+        </form><!-- End General Form Elements -->
+
+      </div>
     </div>
 
   </main>
