@@ -1,5 +1,5 @@
 <?php
-include '../../Controller/jobPostC.php';
+include_once '../../Controller/jobPostC.php';
 $jobPostC = new jobPostC();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -554,7 +554,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </ul>
   </aside>
   <!-- End Sidebar-->
-
+  <?php
+  //MARK: Main form
+  ?>
   <main id="main" class="main">
     <div class="pagetitle">
       <h1>Users</h1>
@@ -577,19 +579,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <div class="row mb-3">
             <label for="inputText" class="col-sm-2 col-form-label">Job Title</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" value="<?php $job_post['title']; ?>">
+              <input type="text" class="form-control" value="<?php echo $job_post['Title']; ?>">
             </div>
           </div>
           <div class="row mb-3">
             <label for="inputText" class="col-sm-2 col-form-label">Company Name</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" value="<?php $job_post['company']; ?>">
+              <input type="text" class="form-control" value="<?php echo $job_post['Company']; ?>">
             </div>
           </div>
           <div class=" row mb-3">
             <label for="inputText" class="col-sm-2 col-form-label">Location</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" value="<?php $job_post['location']; ?>">
+              <input type="text" class="form-control" value="<?php echo $job_post['Location']; ?>">
             </div>
           </div>
           <div class="row mb-3">
@@ -654,6 +656,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           </div>
 
           <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Description</label>
+            <div class="col-sm-10">
+              <div class="quill-editor-full">
+                <p>Hello World!</p>
+              </div>
+            </div>
+          </div>
+          <input type="hidden" id="description" name="description">
+          <br>
+          <br>
+          <br>
+
+          <div class="row mb-3">
             <label class="col-sm-2 col-form-label">Submit Button</label>
             <div class="col-sm-10">
               <button type="submit" class="btn btn-primary">Submit Form</button>
@@ -674,11 +689,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       &copy; Copyright <strong><span>5ademni</span></strong>. All Rights Reserved
     </div>
     <div class="credits">
-      <!-- All the links in the footer should remain intact. -->
-      <!-- You can delete the links only if you purchased the pro version. -->
-      <!-- Licensing information: https://bootstrapmade.com/license/ -->
-      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      Designed by DevForce</a>
+      Designed by DevForce
     </div>
   </footer>
   <!-- End Footer -->
@@ -697,6 +708,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+
+  <!-- custom js -->
+  <script src="assets/js/WYSIWYG.js"></script>
 </body>
 
 </html>

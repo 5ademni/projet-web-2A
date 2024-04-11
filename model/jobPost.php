@@ -27,18 +27,6 @@ class JobPost
     $this->employmentTypeID = $employmentTypeID;
     $this->jobDescription = $jobDescription;
   }
-  {
-    $this->jobId = $jobId;
-    $this->jobTitle = $jobTitle;
-    $this->companyName = $companyName;
-    $this->location = $location;
-    $this->postingDate = $postingDate;
-    $this->salary = $salary;
-    $this->status = $status;
-    $this->fieldID = $fieldID;
-    $this->levelID = $levelID;
-    $this->employmentTypeID = $employmentTypeID;
-  }
 
   public function getJobId()
   {
