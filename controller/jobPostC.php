@@ -64,9 +64,9 @@ class JobPostC
     }
   }
 
-  public function updateJobPost($id, $title, $type, $field, $company, $location, $status)
+  public function updateJobPost($id, $title, $type, $field, $company, $location, $status, $description)
   {
-    $sql = "UPDATE jobpostings SET Title = :title, EmploymentTypeName = :type, FieldName = :field, Company = :company, Location = :location, Status = :status WHERE JobID = :id";
+    $sql = "UPDATE jobpostings SET Title = :title, EmploymentTypeName = :type, FieldName = :field, Company = :company, Location = :location, Status = :status, JobDescription = :description WHERE JobID = :id";
     $db = config::getConnexion();
     $req = $db->prepare($sql);
     $req->bindValue(':id', $id);
@@ -76,6 +76,7 @@ class JobPostC
     $req->bindValue(':company', $company);
     $req->bindValue(':location', $location);
     $req->bindValue(':status', $status);
+    $req->bindValue(':description', $description);
     try {
       $req->execute();
     } catch (Exception $e) {
@@ -85,7 +86,7 @@ class JobPostC
 
   public function addJobPost($job_post)
   {
-    $sql = "INSERT INTO jobpostings (Title, Company, Location, PostingDate, Salary, Status, FieldID, LevelID, EmploymentTypeID) VALUES (:title, :company, :location, :postingDate, :salary, :status, :fieldID, :levelID, :employmentTypeID)";
+    $sql = "INSERT INTO jobpostings (Title, Company, Location, PostingDate, Salary, Status, FieldID, LevelID, EmploymentTypeID, JobDescription) VALUES (:title, :company, :location, :postingDate, :salary, :status, :fieldID, :levelID, :employmentTypeID, :description)";
     $db = config::getConnexion();
     $req = $db->prepare($sql);
     $req->bindValue(':title', $job_post->Title);
@@ -97,6 +98,7 @@ class JobPostC
     $req->bindValue(':fieldID', $job_post->FieldID);
     $req->bindValue(':levelID', $job_post->LevelID);
     $req->bindValue(':employmentTypeID', $job_post->EmploymentTypeID);
+    $req->bindValue(':description', $job_post->JobDescription);
     try {
       $req->execute();
     } catch (Exception $e) {
