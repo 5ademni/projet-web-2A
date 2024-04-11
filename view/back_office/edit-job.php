@@ -597,20 +597,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <div class="row mb-3">
             <label for="inputText" class="col-sm-2 col-form-label">Salary</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" value="YOOOO">
+              <input type="text" class="form-control" value="<?php echo $job_post['Salary']; ?>">
             </div>
           </div>
           <fieldset class="row mb-3">
             <legend class="col-form-label col-sm-2 pt-0">Radios</legend>
             <div class="col-sm-10">
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="option1" checked="">
+                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="1" <?php echo $job_post['Status'] == 1 ? 'checked' : ''; ?>>
                 <label class="form-check-label" for="gridRadios1">
                   Active
                 </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="option2">
+                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="0" <?php echo $job_post['Status'] == 0 ? 'checked' : ''; ?>>
                 <label class="form-check-label" for="gridRadios2">
                   Inactive
                 </label>
@@ -622,10 +622,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <label class="col-sm-2 col-form-label">Field</label>
             <div class="col-sm-10">
               <select class="form-select" aria-label="Default select example">
-                <option selected="">Open this select menu</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+                <option selected value="<?php echo $job_post['FieldID']; ?>"><?php echo $job_post['FieldName']; ?></option>
+                <option value="1"><!-- TODO: fetch all fields--> </option>
               </select>
             </div>
           </div>
@@ -634,7 +632,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <label class="col-sm-2 col-form-label">Level</label>
             <div class="col-sm-10">
               <select class="form-select" aria-label="Default select example">
-                <option selected="">Open this select menu</option>
+                <option selected value="<?php echo $job_post['LevelID']; ?>"><?php echo $job_post['LevelName']; ?></option>
                 <option value="1">intership</option>
                 <option value="2">junior</option>
                 <option value="3">senior</option>
@@ -646,10 +644,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <label class="col-sm-2 col-form-label">Type</label>
             <div class="col-sm-10">
               <select class="form-select" aria-label="Default select example">
-                <option selected="">Open this select menu</option>
+                <option selected value="<?php echo $job_post['EmploymentTypeID']; ?>"><?php echo $job_post['EmploymentTypeName']; ?></option>
                 <option value="1">full time</option>
                 <option value="2">part time</option>
-                <option value="3">part time</option>
+                <option value="3">contract</option>
                 <option value="4">Freelance</option>
               </select>
             </div>
@@ -659,7 +657,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <label class="col-sm-2 col-form-label">Description</label>
             <div class="col-sm-10">
               <div class="quill-editor-full">
-                <p>Hello World!</p>
+                <?php echo $job_post['JobDescription']; ?>
               </div>
             </div>
           </div>
