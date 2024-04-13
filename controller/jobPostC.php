@@ -64,25 +64,31 @@ class JobPostC
     }
   }
 
-  public function updateJobPost($id, $title, $type, $field, $company, $location, $status, $description)
+
+
+  public function updateJobPost($id, JobPost $jobPost)
   {
-    $sql = "UPDATE jobpostings SET Title = :title, EmploymentTypeName = :type, FieldName = :field, Company = :company, Location = :location, Status = :status, JobDescription = :description WHERE JobID = :id";
+    $sql = "UPDATE jobpostings SET Title = :title, JobDescription = :description, Salary = :salary, Status = :status, Company = :company, Location = :location, FieldID = :field_id, LevelID = :level_id, EmploymentTypeID = :employment_type_id WHERE JobID = :id";
     $db = config::getConnexion();
-    $req = $db->prepare($sql);
-    $req->bindValue(':id', $id);
-    $req->bindValue(':title', $title);
-    $req->bindValue(':type', $type);
-    $req->bindValue(':field', $field);
-    $req->bindValue(':company', $company);
-    $req->bindValue(':location', $location);
-    $req->bindValue(':status', $status);
-    $req->bindValue(':description', $description);
     try {
+      $req = $db->prepare($sql);
+      $req->bindValue(':id', $id);
+      $req->bindValue(':title', $jobPost->getJobTitle());
+      $req->bindValue(':description', $jobPost->getJobDescription());
+      $req->bindValue(':salary', $jobPost->getSalary());
+      $req->bindValue(':status', $jobPost->getStatus());
+      $req->bindValue(':company', $jobPost->getCompanyName());
+      $req->bindValue(':location', $jobPost->getLocation());
+      $req->bindValue(':field_id', $jobPost->getFieldId());
+      $req->bindValue(':level_id', $jobPost->getLevelId());
+      $req->bindValue(':employment_type_id', $jobPost->getEmploymentTypeId());
+
       $req->execute();
     } catch (Exception $e) {
       die('Erreur: ' . $e->getMessage());
     }
   }
+
 
   public function addJobPost($job_post)
   {

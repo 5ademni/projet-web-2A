@@ -3,9 +3,23 @@ include_once '../../Controller/jobPostC.php';
 $jobPostC = new jobPostC();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $job_post = new JobPost($_POST['title'], $_POST['description'], $_POST['salary'], $_POST['status'], $_POST['company_name'], $_POST['location'], $_POST['field_id'], $_POST['level_id'], $_POST['employment_type_id']);
-  $jobPostC->addJobPost($job_post);
-  header('Location: liste_job.php');
+  $id = $_POST['id']; // Get the id from the POST data
+
+  $jobPost = new JobPost(
+    $id,
+    $_POST['title'],
+    $_POST['company_name'],
+    $_POST['location'],
+    null, // Pass null for the date
+    $_POST['salary'],
+    $_POST['status'],
+    $_POST['field_id'],
+    $_POST['level_id'],
+    $_POST['employment_type_id'],
+    $_POST['description']
+  );
+  $jobPostC->updateJobPost($id, $jobPost);
+  header('Location: job-posts.php');
   exit;
 } elseif (isset($_GET['id'])) {
   $job_post = $jobPostC->getJobPostById($_GET['id']);
@@ -575,42 +589,42 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h5 class="card-title">Edit job <?php echo $job_post['JobID']; ?></h5>
 
         <!-- General Form Elements -->
-        <form>
+        <form method="POST">
           <div class="row mb-3">
             <label for="inputText" class="col-sm-2 col-form-label">Job Title</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" value="<?php echo $job_post['Title']; ?>">
+              <input type="text" class="form-control" name="title" value="<?php echo $job_post['Title']; ?>">
             </div>
           </div>
           <div class="row mb-3">
             <label for="inputText" class="col-sm-2 col-form-label">Company Name</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" value="<?php echo $job_post['Company']; ?>">
+              <input type="text" class="form-control" name="company" value="<?php echo $job_post['Company']; ?>">
             </div>
           </div>
           <div class=" row mb-3">
             <label for="inputText" class="col-sm-2 col-form-label">Location</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" value="<?php echo $job_post['Location']; ?>">
+              <input type="text" class="form-control" name="location" value="<?php echo $job_post['Location']; ?>">
             </div>
           </div>
           <div class="row mb-3">
             <label for="inputText" class="col-sm-2 col-form-label">Salary</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" value="<?php echo $job_post['Salary']; ?>">
+              <input type="text" class="form-control" name="salary" value="<?php echo $job_post['Salary']; ?>">
             </div>
           </div>
           <fieldset class="row mb-3">
             <legend class="col-form-label col-sm-2 pt-0">Radios</legend>
             <div class="col-sm-10">
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios1" value="1" <?php echo $job_post['Status'] == 1 ? 'checked' : ''; ?>>
+                <input class="form-check-input" type="radio" name="status" id="gridRadios1" value="1" <?php echo $job_post['Status'] == 1 ? 'checked' : ''; ?>>
                 <label class="form-check-label" for="gridRadios1">
                   Active
                 </label>
               </div>
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="gridRadios" id="gridRadios2" value="0" <?php echo $job_post['Status'] == 0 ? 'checked' : ''; ?>>
+                <input class="form-check-input" type="radio" name="status" id="gridRadios2" value="0" <?php echo $job_post['Status'] == 0 ? 'checked' : ''; ?>>
                 <label class="form-check-label" for="gridRadios2">
                   Inactive
                 </label>
@@ -621,7 +635,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <div class="row mb-3">
             <label class="col-sm-2 col-form-label">Field</label>
             <div class="col-sm-10">
-              <select class="form-select" aria-label="Default select example">
+              <select class="form-select" name="field_id" aria-label="Default select example">
                 <option selected value="<?php echo $job_post['FieldID']; ?>"><?php echo $job_post['FieldName']; ?></option>
                 <option value="1"><!-- TODO: fetch all fields--> </option>
               </select>
@@ -631,7 +645,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <div class="row mb-3">
             <label class="col-sm-2 col-form-label">Level</label>
             <div class="col-sm-10">
-              <select class="form-select" aria-label="Default select example">
+              <select class="form-select" name="level_id" aria-label="Default select example">
                 <option selected value="<?php echo $job_post['LevelID']; ?>"><?php echo $job_post['LevelName']; ?></option>
                 <option value="1">intership</option>
                 <option value="2">junior</option>
@@ -643,7 +657,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <div class="row mb-3">
             <label class="col-sm-2 col-form-label">Type</label>
             <div class="col-sm-10">
-              <select class="form-select" aria-label="Default select example">
+              <select class="form-select" name="employment_type_id" aria-label="Default select example">
                 <option selected value="<?php echo $job_post['EmploymentTypeID']; ?>"><?php echo $job_post['EmploymentTypeName']; ?></option>
                 <option value="1">full time</option>
                 <option value="2">part time</option>
