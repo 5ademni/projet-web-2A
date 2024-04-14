@@ -90,23 +90,27 @@ class JobPostC
   }
 
 
-  public function addJobPost($job_post)
+  public function addJobPost(JobPost $job_post)
   {
     $sql = "INSERT INTO jobpostings (Title, Company, Location, PostingDate, Salary, Status, FieldID, LevelID, EmploymentTypeID, JobDescription) VALUES (:title, :company, :location, :postingDate, :salary, :status, :fieldID, :levelID, :employmentTypeID, :description)";
     $db = config::getConnexion();
-    $req = $db->prepare($sql);
-    $req->bindValue(':title', $job_post->Title);
-    $req->bindValue(':company', $job_post->Company);
-    $req->bindValue(':location', $job_post->Location);
-    $req->bindValue(':postingDate', $job_post->PostingDate);
-    $req->bindValue(':salary', $job_post->Salary);
-    $req->bindValue(':status', $job_post->Status);
-    $req->bindValue(':fieldID', $job_post->FieldID);
-    $req->bindValue(':levelID', $job_post->LevelID);
-    $req->bindValue(':employmentTypeID', $job_post->EmploymentTypeID);
-    $req->bindValue(':description', $job_post->JobDescription);
     try {
-      $req->execute();
+      $stmt = $db->prepare($sql);
+
+      $data = [
+        'title' => $job_post->getJobTitle(),
+        'company' => $job_post->getCompanyName(),
+        'location' => $job_post->getLocation(),
+        'postingDate' => $job_post->getPostingDate(),
+        'salary' => $job_post->getSalary(),
+        'status' => $job_post->getStatus(),
+        'fieldID' => $job_post->getFieldID(),
+        'levelID' => $job_post->getLevelID(),
+        'employmentTypeID' => $job_post->getEmploymentTypeID(),
+        'description' => $job_post->getJobDescription()
+      ];
+
+      $stmt->execute($data);
     } catch (Exception $e) {
       die('Erreur: ' . $e->getMessage());
     }
