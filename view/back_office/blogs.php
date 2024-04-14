@@ -525,7 +525,7 @@
     <div class="card">
       <div class="card-body">
         <h5 class="card-title">Liste des postes d'emploi</h5>
-
+  
         <table class="table table-striped">
           <thead>
             <tr>
