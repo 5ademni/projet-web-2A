@@ -1,3 +1,22 @@
+<?php
+include "../../controller/articlesBlogC.php";
+$articlesBlogC = new ArticlesBlogC();
+
+if (isset($_GET['addDummy'])) {
+  $articlesBlogC->addDummyArticle();
+  header('Location: blogs.php');
+  exit;
+}
+
+if (isset($_GET['delete'])) {
+  $articlesBlogC->deleteArticle($_GET['delete']);
+}
+
+$articlesBlogC = $articlesBlogC->listArticles();
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -527,47 +546,35 @@
         <h5 class="card-title">Liste des postes d'emploi</h5>
   
         <table class="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col">ID</th>
-              <th scope="col">Position</th>
-              <th scope="col">Type</th>
-              <th scope="col">Field</th>
-              <th scope="col">Company</th>
-              <th scope="col">Location</th>
-              <th scope="col">Status</th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php
-            $list = $jobPostC->listJobPosts();
-            foreach ($list as $jobPost) {
-            ?>
-              <tr>
-                <th scope="row"><?php echo $jobPost['JobID']; ?></th>
-                <td><?php echo $jobPost['Title']; ?></td>
-                <td><?php echo $jobPost['EmploymentTypeName']; ?></td>
-                <td><?php echo $jobPost['FieldName']; ?></td>
-                <td><?php echo $jobPost['Company']; ?></td>
-                <td><?php echo $jobPost['Location']; ?></td>
-                <td>
-                  <?php if ($jobPost['Status'] == 1) { ?>
-                    <span class="badge bg-success">Active</span>
-                  <?php } else { ?>
-                    <span class="badge bg-danger">Inactive</span>
-                  <?php } ?>
-                </td>
-                <td>
-                  <a href="job-details.html" class="btn btn-primary"><i class="bi bi-eye"></i></a>
-                  <a href="edit-job.php?id=<?php echo $jobPost['JobID']; ?>" class="btn btn-success"><i class="bi bi-pencil"></i></a>
-                  <a href="delete-job.php?id=<?php echo $jobPost['JobID']; ?>" class="btn btn-danger"><i class="bi bi-trash"></i></a>
-                </td>
-              </tr>
-            <?php
-            }
-            ?>
-          </tbody>
+        <thead>
+  <tr>
+    <th scope="col">Author ID</th>
+    <th scope="col">Publication Date</th>
+    <th scope="col">Title</th>
+    <th scope="col">Content</th>
+    <th scope="col">Actions</th>
+  </tr>
+</thead>
+<tbody>
+  <?php
+  $list = $articlesBlogC;
+  foreach ($list as $article) {
+  ?>
+    <tr>
+      <th scope="row"><?php echo $article['id_auteur']; ?></th>
+      <td><?php echo $article['datePublication']; ?></td>
+      <td><?php echo $article['titre']; ?></td>
+      <td><?php echo $article['contenu']; ?></td>
+      <td>
+        <a href="update_employe.php?id=<?php echo $article['id_article']; ?>" class="btn btn-primary">Update</a>
+        <a href="?delete=<?php echo $article['id_article']; ?>" class="btn btn-primary">supprimer</a>
+        <a href="?create=<?php echo $article['id_article']; ?>" class="btn btn-primary">Ajouter un article</a>
+      </td>
+    </tr>
+  <?php
+  }
+  ?>
+</tbody>
         </table>
 
       </div>
