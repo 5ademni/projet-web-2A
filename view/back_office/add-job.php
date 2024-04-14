@@ -1,6 +1,11 @@
 <?php
-include_once '../../Controller/jobPostC.php';
+include_once '../../controller/jobPostC.php';
+include_once '../../controller/jobFieldC.php';
+
 $jobPostC = new jobPostC();
+$jobFieldC = new jobFieldC();
+
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $current_date = date('Y-m-d H:i:s');
@@ -632,11 +637,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           </fieldset>
 
           <div class="row mb-3">
+
             <label class="col-sm-2 col-form-label">Field</label>
             <div class="col-sm-10">
               <select class="form-select" name="field_id" aria-label="Default select example">
-                <option selected value="101">web dev</option>
-                <option value="1"><!-- TODO: fetch all fields--> </option>
+                <?php
+                $fieldlist = $jobFieldC->listJobFields();
+
+                foreach ($fieldlist as $field) {
+                  echo '<option value="' . $field['FieldID'] . '">' . $field['FieldName'] . '</option>';
+                }
+                ?>
               </select>
             </div>
           </div>
@@ -645,8 +656,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <label class="col-sm-2 col-form-label">Level</label>
             <div class="col-sm-10">
               <select class="form-select" name="level_id" aria-label="Default select example">
-                <option selected></option>
-                <option value="1">intership</option>
+                <option selected value="1">intership</option>
                 <option value="2">junior</option>
                 <option value="3">senior</option>
               </select>
@@ -657,8 +667,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <label class="col-sm-2 col-form-label">Type</label>
             <div class="col-sm-10">
               <select class="form-select" name="employment_type_id" aria-label="Default select example">
-                <option selected></option>
-                <option value="1">full time</option>
+                <option selected value="1">full time</option>
                 <option value="2">part time</option>
                 <option value="3">contract</option>
                 <option value="4">Freelance</option>

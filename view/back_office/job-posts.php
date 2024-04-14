@@ -2,6 +2,13 @@
 include_once '../../controller/jobPostC.php';
 $jobPostC = new JobPostC();
 $totalJobs = $jobPostC->countJobPosts();
+
+if (isset($_GET['delete-job'])) {
+  $jobPostC->deleteJobPost($_GET['delete-job']);
+  header('Location: job-posts.php');
+  exit();
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -605,7 +612,7 @@ $totalJobs = $jobPostC->countJobPosts();
                 <td>
                   <a href="job-details.html" class="btn btn-primary"><i class="bi bi-eye"></i></a>
                   <a href="edit-job.php?id=<?php echo $jobPost['JobID']; ?>" class="btn btn-success"><i class="bi bi-pencil"></i></a>
-                  <a href="delete-job.php?id=<?php echo $jobPost['JobID']; ?>" class="btn btn-danger"><i class="bi bi-trash"></i></a>
+                  <a href="?delete-job=<?php echo $jobPost['JobID']; ?>" class="btn btn-danger"><i class="bi bi-trash"></i></a>
                 </td>
               </tr>
             <?php
