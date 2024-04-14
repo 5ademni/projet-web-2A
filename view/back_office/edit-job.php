@@ -1,7 +1,29 @@
 <?php
-include_once '../../controller/jobPostC.php';
-$jobPostC = new JobPostC();
-$totalJobs = $jobPostC->countJobPosts();
+include_once '../../Controller/jobPostC.php';
+$jobPostC = new jobPostC();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $id = $_GET['id']; // Get the id from the POST data
+
+  $jobPost = new JobPost(
+    $id,
+    $_POST['title'],
+    $_POST['company_name'],
+    $_POST['location'],
+    null, // Pass null for the date
+    $_POST['salary'],
+    $_POST['status'],
+    $_POST['field_id'],
+    $_POST['level_id'],
+    $_POST['employment_type_id'],
+    $_POST['description']
+  );
+  $jobPostC->updateJobPost($id, $jobPost);
+  header('Location: job-posts.php');
+  exit;
+} elseif (isset($_GET['id'])) {
+  $job_post = $jobPostC->getJobPostById($_GET['id']);
+}
 ?>
 
 <!DOCTYPE html>
@@ -40,7 +62,7 @@ $totalJobs = $jobPostC->countJobPosts();
   <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top d-flex align-items-center">
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index.php" class="logo d-flex align-items-center">
+      <a href="index.html" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="" />
         <span class="d-none d-lg-block">5ademni-Admin</span>
       </a>
@@ -277,7 +299,7 @@ $totalJobs = $jobPostC->countJobPosts();
   <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="index.php">
+        <a class="nav-link" href="index.html">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
@@ -546,73 +568,126 @@ $totalJobs = $jobPostC->countJobPosts();
     </ul>
   </aside>
   <!-- End Sidebar-->
-
+  <?php
+  //MARK: Main form
+  ?>
   <main id="main" class="main">
     <div class="pagetitle">
       <h1>Users</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-          <li class="breadcrumb-item active">posts d'emploi</li>
+          <li class="breadcrumb-item"><a href="job-posts.php">posts d'emploi</a></li>
+          <li class="breadcrumb-item active">modification post demploi <?php echo $job_post['JobID']; ?></li>
         </ol>
       </nav>
     </div>
     <!-- End Page Title -->
-    <?php
-    //MARK: main form
-    ?>
+
     <div class="card">
       <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center">
-          <h5 class="card-title">Liste des postes d'emploi</h5>
-          <a href="add-job.php" class="btn btn-primary">
-            <i class="bi bi-plus-lg"></i>
-          </a>
-        </div>
+        <h5 class="card-title">Edit job <?php echo $job_post['JobID']; ?></h5>
 
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th scope="col">ID</th>
-              <th scope="col">Position</th>
-              <th scope="col">Type</th>
-              <th scope="col">Field</th>
-              <th scope="col">Company</th>
-              <th scope="col">Location</th>
-              <th scope="col">Status</th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php
-            $list = $jobPostC->listJobPosts();
-            foreach ($list as $jobPost) {
-            ?>
-              <tr>
-                <th scope="row"><?php echo $jobPost['JobID']; ?></th>
-                <td><?php echo $jobPost['Title']; ?></td>
-                <td><?php echo $jobPost['EmploymentTypeName']; ?></td>
-                <td><?php echo $jobPost['FieldName']; ?></td>
-                <td><?php echo $jobPost['Company']; ?></td>
-                <td><?php echo $jobPost['Location']; ?></td>
-                <td>
-                  <?php if ($jobPost['Status'] == 1) { ?>
-                    <span class="badge bg-success">Active</span>
-                  <?php } else { ?>
-                    <span class="badge bg-danger">Inactive</span>
-                  <?php } ?>
-                </td>
-                <td>
-                  <a href="job-details.html" class="btn btn-primary"><i class="bi bi-eye"></i></a>
-                  <a href="edit-job.php?id=<?php echo $jobPost['JobID']; ?>" class="btn btn-success"><i class="bi bi-pencil"></i></a>
-                  <a href="delete-job.php?id=<?php echo $jobPost['JobID']; ?>" class="btn btn-danger"><i class="bi bi-trash"></i></a>
-                </td>
-              </tr>
-            <?php
-            }
-            ?>
-          </tbody>
-        </table>
+        <!-- General Form Elements -->
+        <form method="POST">
+          <div class="row mb-3">
+            <label for="inputText" class="col-sm-2 col-form-label">Job Title</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="title" value="<?php echo $job_post['Title']; ?>">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="inputText" class="col-sm-2 col-form-label">Company Name</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="company_name" value="<?php echo $job_post['Company']; ?>">
+            </div>
+          </div>
+          <div class=" row mb-3">
+            <label for="inputText" class="col-sm-2 col-form-label">Location</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="location" value="<?php echo $job_post['Location']; ?>">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="inputText" class="col-sm-2 col-form-label">Salary</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="salary" value="<?php echo $job_post['Salary']; ?>">
+            </div>
+          </div>
+          <fieldset class="row mb-3">
+            <legend class="col-form-label col-sm-2 pt-0">Radios</legend>
+            <div class="col-sm-10">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="status" id="gridRadios1" value="1" <?php echo $job_post['Status'] == 1 ? 'checked' : ''; ?>>
+                <label class="form-check-label" for="gridRadios1">
+                  Active
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="status" id="gridRadios2" value="0" <?php echo $job_post['Status'] == 0 ? 'checked' : ''; ?>>
+                <label class="form-check-label" for="gridRadios2">
+                  Inactive
+                </label>
+              </div>
+            </div>
+          </fieldset>
+
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Field</label>
+            <div class="col-sm-10">
+              <select class="form-select" name="field_id" aria-label="Default select example">
+                <option selected value="<?php echo $job_post['FieldID']; ?>"><?php echo $job_post['FieldName']; ?></option>
+                <option value="1"><!-- TODO: fetch all fields--> </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Level</label>
+            <div class="col-sm-10">
+              <select class="form-select" name="level_id" aria-label="Default select example">
+                <option selected value="<?php echo $job_post['LevelID']; ?>"><?php echo $job_post['LevelName']; ?></option>
+                <option value="1">intership</option>
+                <option value="2">junior</option>
+                <option value="3">senior</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Type</label>
+            <div class="col-sm-10">
+              <select class="form-select" name="employment_type_id" aria-label="Default select example">
+                <option selected value="<?php echo $job_post['EmploymentTypeID']; ?>"><?php echo $job_post['EmploymentTypeName']; ?></option>
+                <option value="1">full time</option>
+                <option value="2">part time</option>
+                <option value="3">contract</option>
+                <option value="4">Freelance</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Description</label>
+            <div class="col-sm-10">
+              <div class="quill-editor-full">
+                <?php echo $job_post['JobDescription']; ?>
+              </div>
+            </div>
+          </div>
+          <input type="hidden" id="description" name="description">
+          <br>
+          <br>
+          <br>
+
+          <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Submit Button</label>
+            <div class="col-sm-10">
+              <button type="submit" class="btn btn-primary" value="Submit">Submit Form</button>
+            </div>
+          </div>
+
+        </form><!-- End General Form Elements -->
 
       </div>
     </div>
@@ -626,11 +701,7 @@ $totalJobs = $jobPostC->countJobPosts();
       &copy; Copyright <strong><span>5ademni</span></strong>. All Rights Reserved
     </div>
     <div class="credits">
-      <!-- All the links in the footer should remain intact. -->
-      <!-- You can delete the links only if you purchased the pro version. -->
-      <!-- Licensing information: https://bootstrapmade.com/license/ -->
-      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      Designed by DevForce</a>
+      Designed by DevForce
     </div>
   </footer>
   <!-- End Footer -->
@@ -649,6 +720,9 @@ $totalJobs = $jobPostC->countJobPosts();
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+
+  <!-- custom js -->
+  <script src="assets/js/WYSIWYG.js"></script>
 </body>
 
 </html>

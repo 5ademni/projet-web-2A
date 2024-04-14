@@ -7,11 +7,13 @@ class JobPost
   private $location;
   private $postingDate;
   private $salary;
+  private $status;
   private $fieldID;
   private $levelID;
   private $employmentTypeID;
+  private $jobDescription;
 
-  public function __construct($jobId, $jobTitle, $companyName, $location, $postingDate, $salary, $fieldID, $levelID, $employmentTypeID)
+  public function __construct($jobId, $jobTitle, $companyName, $location, $postingDate, $salary, $status, $fieldID, $levelID, $employmentTypeID, $jobDescription)
   {
     $this->jobId = $jobId;
     $this->jobTitle = $jobTitle;
@@ -19,9 +21,11 @@ class JobPost
     $this->location = $location;
     $this->postingDate = $postingDate;
     $this->salary = $salary;
+    $this->status = $status;
     $this->fieldID = $fieldID;
     $this->levelID = $levelID;
     $this->employmentTypeID = $employmentTypeID;
+    $this->jobDescription = $jobDescription;
   }
 
   public function getJobId()
@@ -54,6 +58,11 @@ class JobPost
     return $this->salary;
   }
 
+  public function getStatus()
+  {
+    return $this->status;
+  }
+
   public function getFieldID()
   {
     return $this->fieldID;
@@ -67,6 +76,11 @@ class JobPost
   public function getEmploymentTypeID()
   {
     return $this->employmentTypeID;
+  }
+
+  public function getJobDescription()
+  {
+    return $this->jobDescription;
   }
 
   public function setJobId($jobId)
@@ -99,6 +113,10 @@ class JobPost
     $this->salary = $salary;
   }
 
+  public function setStatus($status)
+  {
+    $this->status = $status;
+  }
   public function setFieldID($fieldID)
   {
     $this->fieldID = $fieldID;
@@ -112,5 +130,10 @@ class JobPost
   public function setEmploymentTypeID($employmentTypeID)
   {
     $this->employmentTypeID = $employmentTypeID;
+  }
+
+  public function setJobDescription($jobDescription)
+  {
+    $this->jobDescription = $jobDescription;
   }
 }
