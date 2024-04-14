@@ -1,6 +1,9 @@
 <?php
 include_once '../../Controller/jobPostC.php';
+include_once '../../controller/jobFieldC.php';
+
 $jobPostC = new jobPostC();
+$jobFieldC = new jobFieldC();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $id = $_GET['id']; // Get the id from the POST data
@@ -637,7 +640,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="col-sm-10">
               <select class="form-select" name="field_id" aria-label="Default select example">
                 <option selected value="<?php echo $job_post['FieldID']; ?>"><?php echo $job_post['FieldName']; ?></option>
-                <option value="1"><!-- TODO: fetch all fields--> </option>
+                <?php
+                $fieldlist = $jobFieldC->listJobFields();
+
+                foreach ($fieldlist as $field) {
+                  echo '<option value="' . $field['FieldID'] . '">' . $field['FieldName'] . '</option>';
+                }
+                ?>
               </select>
             </div>
           </div>
