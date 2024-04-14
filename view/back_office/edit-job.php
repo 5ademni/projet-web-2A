@@ -3,7 +3,7 @@ include_once '../../Controller/jobPostC.php';
 $jobPostC = new jobPostC();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $id = $_POST['id']; // Get the id from the POST data
+  $id = $_GET['id']; // Get the id from the POST data
 
   $jobPost = new JobPost(
     $id,
@@ -599,7 +599,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <div class="row mb-3">
             <label for="inputText" class="col-sm-2 col-form-label">Company Name</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" name="company" value="<?php echo $job_post['Company']; ?>">
+              <input type="text" class="form-control" name="company_name" value="<?php echo $job_post['Company']; ?>">
             </div>
           </div>
           <div class=" row mb-3">
@@ -683,7 +683,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <div class="row mb-3">
             <label class="col-sm-2 col-form-label">Submit Button</label>
             <div class="col-sm-10">
-              <button type="submit" class="btn btn-primary">Submit Form</button>
+              <button type="submit" class="btn btn-primary" value="Submit">Submit Form</button>
             </div>
           </div>
 

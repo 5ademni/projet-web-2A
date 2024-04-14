@@ -558,6 +558,9 @@ $totalJobs = $jobPostC->countJobPosts();
       </nav>
     </div>
     <!-- End Page Title -->
+    <?php
+    //MARK: main form
+    ?>
     <div class="card">
       <div class="card-body">
         <h5 class="card-title">Liste des postes d'emploi</h5>
