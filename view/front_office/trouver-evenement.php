@@ -74,8 +74,8 @@ $events = $Eventc->getEvents();
               <a class="nav-link dropdown-toggle" href="#" id="eventButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">Événements</a>
           
               <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="eventButton">
-                  <li><a class="dropdown-item" href="ajouter-evenement.html">Ajouter un événement</a></li>
-                  <li><a class="dropdown-item" href="trouver-evenement.html">Trouver un événement</a></li>
+                  <li><a class="dropdown-item" href="ajouter-evenement.php">Ajouter un événement</a></li>
+                  <li><a class="dropdown-item" href="trouver-evenement.php">Trouver un événement</a></li>
               </ul>
           </li>
           
@@ -168,6 +168,7 @@ $events = $Eventc->getEvents();
         </div>
         <div class="fix"></div>
         <a href="Modifier_evenement.php?id=<?php echo $event['id_evenement'] ?>"class="modify" style="background-color: blue; color: white;">Modifier</button></a>
+        <a href="supprimer_evenement.php?id=<?php echo $event['id_evenement'] ?>" class="delete" style="background-color: red; color: white; margin-left: 10px;">Supprimer</a>
         <button class="tickets"><?= $event['prix'] ?> TND </button>
       </div> <!-- end item-right -->
     </div> <!-- end item -->
