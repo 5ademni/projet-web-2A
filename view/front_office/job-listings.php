@@ -70,14 +70,8 @@ Bootstrap 5 HTML CSS Template
                         <a class="nav-link" href="about.html">About Gotto</a>
                     </li>
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
-
-                        <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">
-                            <li><a class="dropdown-item active" href="job-listings.html">Job Listings</a></li>
-
-                            <li><a class="dropdown-item" href="job-details.html">Job Details</a></li>
-                        </ul>
+                    <li class="nav-item">
+                        <a class="nav-link" href="job-listings.php">Jobs</a>
                     </li>
 
                     <li class="nav-item">
@@ -213,6 +207,8 @@ Bootstrap 5 HTML CSS Template
                 </div>
             </div>
         </section>
+
+
 
 
 
