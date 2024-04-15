@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     );
     $jobPostC->updateJobPost($id, $jobPost);
     $location = 'Location: job-details.php?id=' . $id;
-    header('Location: ' . $location);
+    header($location);
     exit;
 }
 
@@ -233,6 +233,8 @@ Bootstrap 5 HTML CSS Template
 
                                 <textarea name="description"><?php echo $jobPost['JobDescription']; ?></textarea>
 
+                                <input type="hidden" name="status" value="<?php echo $jobPost['Status']; ?>">
+
         </form>
 
         <div class="d-flex justify-content-center flex-wrap mt-5 border-top pt-4">
@@ -258,43 +260,9 @@ Bootstrap 5 HTML CSS Template
                     <div class="job-image-wrap d-flex align-items-center bg-white shadow-lg mb-3">
                         <img src="<?php echo $imageSrc; ?>" class="job-image me-3 img-fluid" alt="">
 
-                        <p class="mb-0"><?php echo $jobPost['Company']; ?></p>
+                        <input class="mb-0" type="text" name="company_name" value="<?php echo $jobPost['Company']; ?>">
                     </div>
-
-                    <a href="#" class="bi-bookmark ms-auto me-2"></a>
-
-                    <a href="#" class="bi-heart"></a>
                 </div>
-
-                <h6 class="mt-3 mb-2">About the Company</h6>
-
-                <p>Lorem ipsum dolor sit amet, consectetur elit sed do eiusmod tempor incididunt labore.</p>
-
-                <h6 class="mt-4 mb-3">Contact Information</h6>
-
-                <p class="mb-2">
-                    <i class="custom-icon bi-globe me-1"></i>
-
-                    <a href="#" class="site-footer-link">
-                        www.jobbportal.com
-                    </a>
-                </p>
-
-                <p class="mb-2">
-                    <i class="custom-icon bi-telephone me-1"></i>
-
-                    <a href="tel: 305-240-9671" class="site-footer-link">
-                        305-240-9671
-                    </a>
-                </p>
-
-                <p>
-                    <i class="custom-icon bi-envelope me-1"></i>
-
-                    <a href="mailto:info@yourgmail.com" class="site-footer-link">
-                        info@jobportal.co
-                    </a>
-                </p>
             </div>
         </div>
 
