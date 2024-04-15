@@ -22,7 +22,7 @@ $events = $Eventc->getEvents();
     <link href="css/owl.carousel.min.css" rel="stylesheet" />
     <link href="css/owl.theme.default.min.css" rel="stylesheet" />
     <link href="css/tooplate-gotto-job.css" rel="stylesheet" />
-    <link href="css/ticket.scss" rel="stylesheet" />
+    <link href="css/ticket.css" rel="stylesheet" />
     
   </head>
   <body id="top">
@@ -127,38 +127,57 @@ $events = $Eventc->getEvents();
         </div>
       </div>
     </nav>
+    <link href="https://fonts.googleapis.com/css?family=Cabin|Indie+Flower|Inknut+Antiqua|Lora|Ravi+Prakash" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"  />
         <main>
       <section class="about-section">
-        <div class="container">
-            <h1 class="upcomming">Evenement disponible</h1>
-            <?php foreach ($events as $event) : ?>
-              <widget type="ticket" class="--flex-column"> 
-   <div class="top --flex-column">
-      <div class="bandname -bold"><?= $event['titre'] ?></div>
-      <div class="tourname"><?= $event['contenu'] ?></div>
-      <img src="<?= $event['image'] ?>" alt="Image de l'événement" />
-      <div class="deetz --flex-row-j!sb">
-         <div class="event --flex-column">
-            <div class="date"><?= date('d M Y', strtotime($event['dateEvenement'])) ?></div>
-            <div class="location -bold"><?= $event['lieu'] ?></div>
-         </div>
-         <div class="price --flex-column">
-            <div class="label">Prix</div>
-            <div class="cost -bold"><?= $event['prix'] ?> Billets</div>
-         </div> 
-      </div> 
-   </div>
-   <div class="rip"></div>
-   <div class="bottom --flex-row-j!sb">
-      <div class="barcode"></div>
-      <a class="buy" href="#">ACHETER LE BILLET</a>
-   </div>
-</widget>
-
-
-            <?php endforeach; ?>
+      <div class="container">
+  <h1 class="upcomming">Événements à venir</h1>
+  <?php foreach ($events as $event) : ?>
+    <div class="item">
+      <div class="item-right">
+        <h2 class="num"><?= date('d', strtotime($event['dateEvenement'])) ?></h2>
+        <p class="day"><?= date('M', strtotime($event['dateEvenement'])) ?></p>
+        <span class="up-border"></span>
+        <span class="down-border"></span>
+      </div> <!-- end item-right -->
+      
+      <div class="item-left">
+        <p class="event"><?= $event['titre'] ?></p>
+        <h2 class="title"><?= $event['contenu'] ?></h2>
+        
+        <div class="sce">
+          <div class="icon">
+            <i class="fa fa-table"></i>
+          </div>
+          <p><?= date('l jS F Y', strtotime($event['dateEvenement'])) ?> <br/> <?= date('H:i', strtotime($event['heureEvenement'])) ?></p>
         </div>
-      </section>
+        <div class="fix"></div>
+        <div class="loc">
+          <div class="icon">
+            <i class="fa fa-map-marker"></i>
+          </div>
+          <p><?= $event['lieu'] ?></p>
+        </div>
+        <div class="fix"></div>
+        <div class="places">
+          <div class="icon">
+            <i class="fa fa-chair"></i>
+          </div>
+          <p><?= $event['nbPlaces'] ?> Places disponibles</p>
+        </div>
+        <div class="fix"></div>
+        <a href="Modifier_evenement.php?id=<?php echo $event['id_evenement'] ?>"class="modify" style="background-color: blue; color: white;">Modifier</button></a>
+        <button class="tickets"><?= $event['prix'] ?> TND </button>
+      </div> <!-- end item-right -->
+    </div> <!-- end item -->
+  <?php endforeach; ?>
+</div> 
+
+
+
+
+
     </main>
 
     <footer class="site-footer">
