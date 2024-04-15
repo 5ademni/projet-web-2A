@@ -1,29 +1,32 @@
 <?php
-include_once '../../controller/articlesBlogC.php';
+include_once '../../Controller/articlesBlogC.php';
 include_once '../../model/articlesBlog.php';
 
 $ArticlesBlogC = new ArticlesBlogC();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $current_date = date('Y-m-d H:i:s');
-    $id_article = null;
-  
-    if (isset($_POST['id_auteur']) && isset($_POST['titre']) && isset($_POST['contenu'])  && isset($_POST['datePublication'])) {
-      $ArticlesBlog = new ArticlesBlog(
+  $id_article = $_GET['id_article']; // Get the id from the POST data
 
-        $_POST['id_article'],
-        $_POST['id_auteur'], 
-        $_POST['titre'],
-        $_POST['contenu'],
-        //$_POST['datePublication'],
-        $current_date,
-      );
-      $ArticlesBlogC->addArticle($ArticlesBlog);
-      header('Location: blogs.php');
-      exit;
-    }
-  }
+  $ArticlesBlog = new ArticlesBlog(
+    $id_article,
+    $_POST['id_auteur'],
+    $_POST['titre'],
+    $_POST['contenu'],
+    //$_POST['datePublication']
+    $current_date,
+  );
+  $ArticlesBlogC->updateArticle($id_article, $ArticlesBlog);
+  header('Location: blogs.php');
+  exit;
+} elseif (isset($_GET['id_article'])) {
+  $ArticlesBlog = $ArticlesBlogC->getArticle($_GET['id_article']);
+} else {
+  // Initialize the ArticlesBlog object with default values
+  $ArticlesBlog = new ArticlesBlog(0, '', '', '', '');
+}
 ?>
+
+<!-- Your HTML code here -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -572,12 +575,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   ?>
   <main id="main" class="main">
     <div class="pagetitle">
-      <h1>Users</h1>
+      <h1>Utilisateurs</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-          <li class="breadcrumb-item"><a href="job-posts.php">posts d'emploi</a></li>
-          <li class="breadcrumb-item active">creation post demploi </li>
+          <li class="breadcrumb-item"><a href="job-posts.php">Blogs</a></li>
+          <li class="breadcrumb-item active">modification du blogs <?php echo $ArticlesBlog->getIdArticle();; ?></li>
         </ol>
       </nav>
     </div>
@@ -585,42 +588,47 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title">Ajouter un blog</h5>
+      <h5 class="card-title">modifier blog <?php echo $ArticlesBlog->getIdArticle(); ?></h5>
 
         <!-- General Form Elements -->
-        <form method="POST">
+<!-- General Form Elements -->
+<form method="POST">
   <div class="row mb-3">
     <label for="inputText" class="col-sm-2 col-form-label">Id d'article</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control" name="id_article">
+      <input type="text" class="form-control" name="titre" value="<?php echo $ArticlesBlog->getTitre(); ?>">
     </div>
   </div>
   <div class="row mb-3">
     <label for="inputText" class="col-sm-2 col-form-label">Id d'auteur</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control" name="id_auteur">
-    </div>
-  </div>
-  <div class=" row mb-3">
-    <label for="inputText" class="col-sm-2 col-form-label">Titre</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control" name="titre">
+      <input type="text" class="form-control" name="id_auteur" value="<?php echo $ArticlesBlog->getIdAuteur(); ?>">
     </div>
   </div>
   <div class="row mb-3">
+    <label for="inputText" class="col-sm-2 col-form-label">Titre</label>
+    <div class="col-sm-10">
+      <textarea class="form-control" name="contenu"><?php echo $ArticlesBlog->getContenu(); ?></textarea>
+    </div>
+    <div class="row mb-3">
     <label for="inputText" class="col-sm-2 col-form-label">Contenu</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control" name="contenu">
+      <textarea class="form-control" name="contenu"><?php echo $ArticlesBlog->getContenu(); ?></textarea>
     </div>
   </div>
-  <fieldset class="row mb-3">
-    <legend class="col-form-label col-sm-2 pt-0">Date de création</legend>
+  <div class="row mb-3">
+    <label for="inputText" class="col-sm-2 col-form-label">Date de publication </label>
     <div class="col-sm-10">
-      <input class="form-control" type="date" name="datePublication" id="datePublication">
+      <input type="date" class="form-control" name="datePublication" value="<?php echo $ArticlesBlog->getDatePublication(); ?>">
     </div>
-  </fieldset>
-  <button type="submit" class="btn btn-primary">Ajouter</button>
-</form><!-- End General Form Elements -->
+  </div>
+  <div class="row mb-3">
+    <div class="col-sm-10">
+      <button type="submit" class="btn btn-primary" value="Submit">Modifier blog</button>
+    </div>
+  </div>
+</form>
+<!-- End General Form Elements -->
 
       </div>
     </div>

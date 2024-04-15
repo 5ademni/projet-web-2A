@@ -532,7 +532,7 @@ $articlesBlogC = $articlesBlogC->listArticles();
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item">Pages</li>
+          <li class="breadcrumb-item">Blogs</li>
           <li class="breadcrumb-item active">Blank</li>
         </ol>
       </nav>
@@ -545,7 +545,7 @@ $articlesBlogC = $articlesBlogC->listArticles();
       <div class="card-body">
         
         <div class="d-flex justify-content-between align-items-center">
-          <h5 class="card-title">Liste des postes d'emploi</h5>
+          <h5 class="card-title">Liste des blogs</h5>
           <a href="add-blogs.php" class="btn btn-primary">
             <i class="bi bi-plus-lg"></i>
           </a>
@@ -554,11 +554,11 @@ $articlesBlogC = $articlesBlogC->listArticles();
         <table class="table table-striped">
         <thead>
   <tr>
-    <th scope="col">Author ID</th>
-    <th scope="col">Publication Date</th>
-    <th scope="col">Title</th>
-    <th scope="col">Content</th>
-    <th scope="col">Actions</th>
+    <th scope="col">Id d'article</th>
+    <th scope="col">Id d'auteur</th>
+    <th scope="col">Titre</th>
+    <th scope="col">Contenu</th>
+    <th scope="col">Date de publication</th>
   </tr>
 </thead>
 <tbody>
@@ -567,15 +567,15 @@ $articlesBlogC = $articlesBlogC->listArticles();
   foreach ($list as $article) {
   ?>
     <tr>
-      <th scope="row"><?php echo $article['id_auteur']; ?></th>
-      <td><?php echo $article['datePublication']; ?></td>
+      <th scope="row"><?php echo $article['id_article']; ?></th>
+      <td><?php echo $article['id_auteur']; ?></td>
       <td><?php echo $article['titre']; ?></td>
       <td><?php echo $article['contenu']; ?></td>
+      <td><?php echo $article['datePublication']; ?></td>
       <td>
-        <a href="update_employe.php?id=<?php echo $article['id_article']; ?>" class="btn btn-primary">Update</a>
-        <a href="?delete=<?php echo $article['id_article']; ?>" class="btn btn-primary">supprimer</a>
-        <a href="?create=<?php echo $article['id_article']; ?>" class="btn btn-primary">Ajouter un article</a>
-      </td>
+        <a href="edit-blogs.php?id=<?php echo $article['id_article']; ?>" class="btn btn-primary">Modifier</a>
+        <a href="?delete=<?php echo $article['id_article']; ?>" class="btn btn-primary">Supprimer</a>
+        
     </tr>
   <?php
   }

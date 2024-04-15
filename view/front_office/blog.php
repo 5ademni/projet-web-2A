@@ -286,7 +286,7 @@ Bootstrap 5 HTML CSS Template
       <div class="container">
         <div class="row">
           <div class="col-lg-4 col-12 d-flex align-items-center">
-            <p class="copyright-text">Copyright © Gotto Job 2048</p>
+            <p class="copyright-text">Copyright © 5ademni </p>
 
             <ul class="footer-menu d-flex">
               <li class="footer-menu-item">

@@ -57,7 +57,7 @@ class ArticlesBlogC
             $stmt = $db->prepare($sql);
 
             $stmt->bindvalue(':id_article', $ArticlesBlog->getIdArticle());
-            $stmt->binvalue(':id_auteur', $ArticlesBlog->getIdAuteur());
+            $stmt->bindvalue(':id_auteur', $ArticlesBlog->getIdAuteur());
             $stmt->bindvalue(':titre', $ArticlesBlog->getTitre());
             $stmt->bindvalue(':contenu', $ArticlesBlog->getContenu());
             $stmt->bindvalue(':datePublication', $ArticlesBlog->getDatePublication());
@@ -69,23 +69,23 @@ class ArticlesBlogC
         }
         }
 
-    public function updateArticle($id, ArticlesBlog $ArticlesBlog)
-    {
-        $sql = "UPDATE articlesblog SET id_article = :id_article, id_auteur = :id_auteur, titre = :titre, contenu = :contenu, datePublication = :datePublication WHERE id_article = :id";
-        $db = config::getConnexion();
-        try {
-            $stmt = $db->prepare($sql);
-            $stmt->bindvalue(':id_article', $ArticlesBlog->getIdArticle());
-            $stmt->binvalue(':id_auteur', $ArticlesBlog->getIdAuteur());
-            $stmt->bindvalue(':titre', $ArticlesBlog->getTitre());
-            $stmt->bindvalue(':contenu', $ArticlesBlog->getContenu());
-            $stmt->bindvalue(':datePublication', $ArticlesBlog->getDatePublication());
-            $stmt->bindValue(':id', $id);
-            $stmt->execute();
-        }catch (Exception $e){
-        die('Erreur: '.$e->getMessage());
-        } 
-    }
+        public function updateArticle($id, ArticlesBlog $ArticlesBlog)
+        {
+            $sql = "UPDATE articlesblog SET id_article = :id_article, id_auteur = :id_auteur, titre = :titre, contenu = :contenu, datePublication = :datePublication WHERE id_article = :id";
+            $db = config::getConnexion();
+            try {
+                $stmt = $db->prepare($sql);
+                $stmt->bindValue(':id_article', $ArticlesBlog->getIdArticle());
+                $stmt->bindValue(':id_auteur', $ArticlesBlog->getIdAuteur()); // corrected here
+                $stmt->bindValue(':titre', $ArticlesBlog->getTitre());
+                $stmt->bindValue(':contenu', $ArticlesBlog->getContenu());
+                $stmt->bindValue(':datePublication', $ArticlesBlog->getDatePublication());
+                $stmt->bindValue(':id', $id);
+                $stmt->execute();
+            }catch (Exception $e){
+            die('Erreur: '.$e->getMessage());
+            } 
+        }
 
     public function getArticle($id_article)
     {
