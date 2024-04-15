@@ -160,7 +160,7 @@ Bootstrap 5 HTML CSS Template
                                 <p class="job-date mb-0">
                                     <i class="custom-icon bi-clock me-1"></i>
                                     <?php echo $jobPost['PostingDate']; ?>
-                                    <!-- TODO: posting date - current date -->
+                                    <!-- TODO: posting date - current date = how many hours ago -->
                                 </p>
 
                                 <p class="job-price mb-0">
@@ -193,7 +193,7 @@ Bootstrap 5 HTML CSS Template
 
                                 <a href="#" class="custom-btn custom-border-btn btn mt-2 ms-lg-4 ms-3">Save this job</a>
 
-                                <a href="#" class="custom-btn custom-border-btn btn edit-btn mt-2 ms-lg-4 ms-3">Edit this job</a>
+                                <a href="job-edit.php?id=<?php echo $jobPost['JobID'];; ?>" class="custom-btn custom-border-btn btn edit-btn mt-2 ms-lg-4 ms-3">Edit this job</a>
 
                                 <div class="job-detail-share d-flex align-items-center">
                                     <p class="mb-0 me-lg-4 me-3">Share:</p>

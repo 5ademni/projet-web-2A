@@ -148,24 +148,24 @@ Bootstrap 5 HTML CSS Template
                 <div class="row">
 
                     <div class="col-lg-8 col-12">
-                        <h2 class="job-title mb-0"><?php echo $jobPost['Title']; ?></h2>
+                        <h2 class="job-title mb-0"><input type="text" value="<?php echo $jobPost['Title']; ?>"></h2>
 
                         <div class="job-thumb job-thumb-detail">
                             <div class="d-flex flex-wrap align-items-center border-bottom pt-lg-3 pt-2 pb-3 mb-4">
                                 <p class="job-location mb-0">
                                     <i class="custom-icon bi-geo-alt me-1"></i>
-                                    <?php echo $jobPost['Location']; ?>
+                                    <input type="text" value="<?php echo $jobPost['Location']; ?>">
                                 </p>
 
                                 <p class="job-date mb-0">
                                     <i class="custom-icon bi-clock me-1"></i>
-                                    <?php echo $jobPost['PostingDate']; ?>
-                                    <!-- TODO: posting date - current date -->
+                                    <input type="text" value="<?php echo $jobPost['PostingDate']; ?>">
+                                    <!-- TODO: posting date - current date = how many hours ago -->
                                 </p>
 
                                 <p class="job-price mb-0">
                                     <i class="custom-icon bi-cash me-1"></i>
-                                    <?php echo $jobPost['Salary']; ?>
+                                    <input type="text" value="<?php echo $jobPost['Salary']; ?>">
                                 </p>
 
                                 <div class="d-flex">
@@ -185,15 +185,12 @@ Bootstrap 5 HTML CSS Template
 
                             <h4 class="mt-4 mb-2">Job Description</h4>
 
-                            <p><?php echo $jobPost['JobDescription']; ?></p>
+                            <textarea><?php echo $jobPost['JobDescription']; ?></textarea>
 
 
                             <div class="d-flex justify-content-center flex-wrap mt-5 border-top pt-4">
-                                <a href="#" class="custom-btn btn mt-2">Apply now</a>
 
-                                <a href="#" class="custom-btn custom-border-btn btn mt-2 ms-lg-4 ms-3">Save this job</a>
-
-                                <a href="#" class="custom-btn custom-border-btn btn edit-btn mt-2 ms-lg-4 ms-3">Edit this job</a>
+                                <a href="#" class="custom-btn custom-border-btn btn edit-btn mt-2 ms-lg-4 ms-3">Update this job</a>
 
                                 <div class="job-detail-share d-flex align-items-center">
                                     <p class="mb-0 me-lg-4 me-3">Share:</p>
