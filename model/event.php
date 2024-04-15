@@ -5,34 +5,32 @@ class Evenement
     private $id_auteur;
     private $titre;
     private $contenu;
-    private $datePublication;
     private $dateEvenement;
+    private $heureEvenement;
     private $lieu;
     private $prix;
     private $nbPlaces;
-    private $nbPlacesRestantes;
     private $image;
     
-    public function __construct($id_evenement, $id_auteur, $titre, $contenu, $datePublication, $dateEvenement, $lieu, $prix, $nbPlaces, $nbPlacesRestantes, $image)
+    public function __construct($id_evenement, $id_auteur, $titre, $contenu, $dateEvenement, $lieu, $prix, $nbPlaces, $image, $heureEvenement)
     {
         $this->id_evenement = $id_evenement;
         $this->id_auteur = $id_auteur;
         $this->titre = $titre;
         $this->contenu = $contenu;
-        $this->datePublication = $datePublication;
         $this->dateEvenement = $dateEvenement;
+        $this->heureEvenement = $heureEvenement;
         $this->lieu = $lieu;
         $this->prix = $prix;
         $this->nbPlaces = $nbPlaces;
-        $this->nbPlacesRestantes = $nbPlacesRestantes;
         $this->image = $image;
     }
 
-    public function getIdEvenement()
+    public function getId_evenement()
     {
         return $this->id_evenement;
     }
-    public function getIdAuteur()
+    public function getId_auteur()
     {
         return $this->id_auteur;
     }
@@ -44,13 +42,13 @@ class Evenement
     {
         return $this->contenu;
     }
-    public function getDatePublication()
-    {
-        return $this->datePublication;
-    }
     public function getDateEvenement()
     {
         return $this->dateEvenement;
+    }
+    public function getHeureEvenement()
+    {
+        return $this->heureEvenement;
     }
     public function getLieu()
     {
@@ -64,10 +62,7 @@ class Evenement
     {
         return $this->nbPlaces;
     }
-    public function getNbPlacesRestantes()
-    {
-        return $this->nbPlacesRestantes;
-    }
+
     public function getImage()
     {
         return $this->image;
@@ -89,13 +84,14 @@ class Evenement
     {
         $this->contenu = $contenu;
     }
-    public function setDatePublication($datePublication)
-    {
-        $this->datePublication = $datePublication;
-    }
+   
     public function setDateEvenement($dateEvenement)
     {
         $this->dateEvenement = $dateEvenement;
+    }
+    public function setHeureEvenement($heureEvenement)
+    {
+        $this->heureEvenement = $heureEvenement;
     }
     public function setLieu($lieu)
     {
@@ -108,10 +104,6 @@ class Evenement
     public function setNbPlaces($nbPlaces)
     {
         $this->nbPlaces = $nbPlaces;
-    }
-    public function setNbPlacesRestantes($nbPlacesRestantes)
-    {
-        $this->nbPlacesRestantes = $nbPlacesRestantes;
     }
     public function setImage($image)
     {

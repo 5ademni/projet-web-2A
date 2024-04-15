@@ -1,26 +1,37 @@
 <?php
 include_once '../../controller/event2.php';
-$evenementC = new EvenementC();
+include_once '../../model/event.php';
+
+// Créer une instance du contrôleur
+$controller = new EvenementC();
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $evenement = new Evenement($_POST['id_evenement'], $_POST['id_auteur'], $_POST['titre'], $_POST['contenu'], $_POST['datePublication'], $_POST['dateEvenement'], $_POST['lieu'], $_POST['prix'], $_POST['nbPlaces'], $_POST['nbPlacesRestantes'], $_FILES['image']['name']);
-  $evenementC->addEvenement($evenement);
+    // Gérer l'upload de l'image
+    $target_dir = "../../sql/";
+    $target_file = $target_dir . basename($_FILES["image"]["name"]);
+    move_uploaded_file($_FILES["image"]["tmp_name"], $target_file);
 
-  if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-    $uploadDir = 'projet/';
-    if (!file_exists($uploadDir)) {
-        mkdir($uploadDir, 0777, true);
+    // Créer une instance de la classe Evenement
+    $evenement = new Evenement(
+        $_POST['id_evenement'],
+        $_POST['id_auteur'],
+        $_POST['titre'],
+        $_POST['contenu'],
+        $_POST['dateEvenement'],
+        $_POST['lieu'],
+        $_POST['prix'],
+        $_POST['nbPlaces'],
+        $_POST['heureEvenement'],
+        $target_file
+    );
+
+    // Appeler la méthode addEvenement
+    try {
+        $controller->addEvenement($evenement);
+        echo "L'événement a été ajouté avec succès.";
+    } catch (Exception $e) {
+        echo 'Erreur: ' . $e->getMessage();
     }
-    $uploadFile = $uploadDir . basename($_FILES['image']['name']);
-
-    if (move_uploaded_file($_FILES['image']['tmp_name'], $uploadFile)) {
-      echo "Le fichier est valide et a été téléchargé avec succès.\n";
-    } else {
-      echo "Erreur lors de l'upload du fichier.\n";
-    }
-  }
-
-  header('Location: liste.php');
-  exit;
 }
 ?>
 <!DOCTYPE html>
@@ -105,8 +116,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="row">
                     <div class="col-lg-12 col-12">
                         <!-- Formulaire pour ajouter un événement -->
-                        <form method="post" enctype="multipart/form-data">
+                        <form method="POST" enctype="multipart/form-data">
                             <div class="form-group">
+                            <label for="id_evenement">ID de l'événement</label>
+                           <input type="text" class="form-control" id="id_evenement" name="id_evenement" placeholder="Entrez l'ID de l'événement">
+                          </div>
+                         <div class="form-group">
+                          <label for="id_auteur">ID de l'auteur</label>
+                        <input type="text" class="form-control" id="id_auteur" name="id_auteur" placeholder="Entrez l'ID de l'auteur">
+                           </div>
                               <label for="titre">Titre de l'événement</label>
                               <input type="text" class="form-control" id="titre" name="titre" placeholder="Entrez le titre de l'événement">
                             </div>
@@ -115,13 +133,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                               <input type="text" class="form-control" id="contenu" name="contenu" placeholder="Entrez le contenu de l'événement">
                             </div>
                             <div class="form-group">
-                              <label for="datePublication">Date de Publication</label>
-                              <input type="date" class="form-control" id="datePublication" name="datePublication">
-                            </div>
-                            <div class="form-group">
                               <label for="dateEvenement">Date de l'Evenement</label>
                               <input type="date" class="form-control" id="dateEvenement" name="dateEvenement">
                             </div>
+                            <div class="form-group">
+                            <label for="heureEvenement">Heure de l'Evenement</label>
+                             <input type="time" class="form-control" id="heureEvenement" name="heureEvenement">
+                             </div>
                             <div class="form-group">
                               <label for="lieu">Lieu de l'événement</label>
                               <input type="text" class="form-control" id="lieu" name="lieu" placeholder="Entrez le lieu de l'événement">
@@ -134,10 +152,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                               <label for="nbPlaces">Nombre de Places</label>
                               <input type="text" class="form-control" id="nbPlaces" name="nbPlaces" placeholder="Entrez le nombre de places disponibles">
                             </div>
-                            <div class="form-group">
-                              <label for="nbPlacesRestantes">Nombre de Places Restantes</label>
-                              <input type="text" class="form-control" id="nbPlacesRestantes" name="nbPlacesRestantes" placeholder="Entrez le nombre de places restantes">
-                            </div>
+
                             <div class="form-group">
                               <label for="image">Image</label>
                               <input type="file" class="form-control" id="image" name="image">
@@ -285,13 +300,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </footer>
 
     <!-- JAVASCRIPT FILES -->
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/counter.js"></script>
-    <script src="js/custom.js"></script>
-    <!-- Fichiers JavaScript -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
 </body>
 </html>
