@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Mar 30, 2024 at 02:10 PM
--- Server version: 8.2.0
--- PHP Version: 8.2.13
+-- Generation Time: Apr 11, 2024 at 11:11 PM
+-- Server version: 8.0.31
+-- PHP Version: 8.0.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -30,9 +30,9 @@ SET time_zone = "+00:00";
 DROP TABLE IF EXISTS `employmenttypes`;
 CREATE TABLE IF NOT EXISTS `employmenttypes` (
   `EmploymentTypeID` int NOT NULL,
-  `EmploymentTypeName` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `EmploymentTypeName` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`EmploymentTypeID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `employmenttypes`
@@ -53,9 +53,9 @@ INSERT INTO `employmenttypes` (`EmploymentTypeID`, `EmploymentTypeName`) VALUES
 DROP TABLE IF EXISTS `fields`;
 CREATE TABLE IF NOT EXISTS `fields` (
   `FieldID` int NOT NULL,
-  `FieldName` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `FieldName` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`FieldID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `fields`
@@ -70,41 +70,36 @@ INSERT INTO `fields` (`FieldID`, `FieldName`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `jobdescriptions`
---
-
-DROP TABLE IF EXISTS `jobdescriptions`;
-CREATE TABLE IF NOT EXISTS `jobdescriptions` (
-  `JobID` int DEFAULT NULL,
-  `Description` text,
-  `Role` text,
-  `Requirements` text,
-  KEY `JobID` (`JobID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `jobpostings`
 --
 
 DROP TABLE IF EXISTS `jobpostings`;
 CREATE TABLE IF NOT EXISTS `jobpostings` (
   `JobID` int NOT NULL AUTO_INCREMENT,
-  `Title` varchar(100) DEFAULT NULL,
-  `Company` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `Location` varchar(100) DEFAULT NULL,
-  `PostingDate` datetime DEFAULT CURRENT_TIMESTAMP,
-  `Salary` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-  `EmploymentType` varchar(50) DEFAULT NULL,
+  `Title` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Company` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Location` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `PostingDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `Salary` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `Status` tinyint(1) NOT NULL DEFAULT '1',
   `FieldID` int DEFAULT NULL,
   `LevelID` int DEFAULT NULL,
   `EmploymentTypeID` int DEFAULT NULL,
+  `JobDescription` varchar(1000) COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`JobID`),
   KEY `FieldID` (`FieldID`),
   KEY `EmploymentTypeID` (`EmploymentTypeID`),
   KEY `LevelID` (`LevelID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `jobpostings`
+--
+
+INSERT INTO `jobpostings` (`JobID`, `Title`, `Company`, `Location`, `PostingDate`, `Salary`, `Status`, `FieldID`, `LevelID`, `EmploymentTypeID`, `JobDescription`) VALUES
+(2, 'Test engineer', 'apple', 'mars', '2024-03-30 23:11:19', '20k', 0, 101, 2, 3, 'tst dsc'),
+(3, 'test', 'spotify', 'test', '2024-03-30 23:11:19', 'test', 0, 105, 1, 3, NULL),
+(4, '3ses', 'google', '444', '2024-03-31 14:33:23', '4444', 0, 101, 2, 4, NULL);
 
 -- --------------------------------------------------------
 
@@ -115,9 +110,9 @@ CREATE TABLE IF NOT EXISTS `jobpostings` (
 DROP TABLE IF EXISTS `levels`;
 CREATE TABLE IF NOT EXISTS `levels` (
   `LevelID` int NOT NULL,
-  `LevelName` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `LevelName` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`LevelID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `levels`
@@ -131,12 +126,6 @@ INSERT INTO `levels` (`LevelID`, `LevelName`) VALUES
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `jobdescriptions`
---
-ALTER TABLE `jobdescriptions`
-  ADD CONSTRAINT `jobdescriptions_ibfk_1` FOREIGN KEY (`JobID`) REFERENCES `jobpostings` (`JobID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `jobpostings`

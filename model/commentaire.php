@@ -5,16 +5,16 @@ class Commentaire
     private $id_commentaire;
     private $id_article;
     private $nom;
-    private $commenataire;
-    private $dateCommantaire;
+    private $commentaire;
+    private $dateCommentaire;
 
-    public function __construct($id_commentaire, $id_article, $nom, $commenataire, $dateCommantaire)
+    public function __construct($id_commentaire, $id_article, $nom, $commentaire, $dateCommentaire)
     {
         $this->id_commentaire = $id_commentaire;
         $this->id_article = $id_article;
         $this->nom = $nom;
-        $this->commenataire = $commenataire;
-        $this->dateCommantaire = $dateCommantaire;
+        $this->commentaire = $commentaire;
+        $this->dateCommentaire = $dateCommentaire;
     }
 
     public function getIdCommentaire()
@@ -31,11 +31,11 @@ class Commentaire
     }
     public function getCommentaire()
     {
-        return $this->commenataire;
+        return $this->commentaire;
     }
     public function getDateCommentaire()
     {
-        return $this->dateCommantaire;
+        return $this->dateCommentaire;
     }
 
     public function setIdCommentaire($id_commentaire)
@@ -50,13 +50,13 @@ class Commentaire
     {
         $this->nom = $nom;
     }
-    public function setCommentaire($commenataire)
+    public function setCommentaire($commentaire)
     {
-        $this->commenataire = $commenataire;
+        $this->commentaire = $commentaire;
     }
-    public function setDateCommentaire($dateCommantaire)
+    public function setDateCommentaire($dateCommentaire)
     {
-        $this->dateCommantaire = $dateCommantaire;
+        $this->dateCommentaire = $dateCommentaire;
     }
     
 }
