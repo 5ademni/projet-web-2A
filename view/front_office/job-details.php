@@ -157,10 +157,44 @@ Bootstrap 5 HTML CSS Template
                                     <?php echo $jobPost['Location']; ?>
                                 </p>
 
+                                <?php
+                                $postingDate = new DateTime($jobPost['PostingDate']);
+                                $currentDate = new DateTime();
+
+                                $interval = $postingDate->diff($currentDate);
+
+                                $seconds = $interval->s + ($interval->i * 60) + ($interval->h * 3600) + ($interval->days * 24 * 3600);
+                                $minutes = $interval->i + ($interval->h * 60) + ($interval->days * 24 * 60);
+                                $hours = $interval->h + ($interval->days * 24);
+                                $days = $interval->days;
+                                $weeks = floor($days / 7);
+                                $months = floor($days / 30.44); // Approximation
+                                $years = $interval->y;
+
+                                $timeAgo = '';
+                                if ($seconds < 60) {
+                                    $timeAgo = $seconds . ' seconds ago';
+                                } elseif ($minutes < 60) {
+                                    $timeAgo = $minutes . ' minutes ago';
+                                } elseif ($hours <= 23) {
+                                    $timeAgo = $hours . ' hours ago';
+                                } elseif ($days <= 6) {
+                                    $timeAgo = $days . ' days ago';
+                                } elseif ($weeks <= 4) {
+                                    $timeAgo = $weeks . ' weeks ago';
+                                } elseif ($months <= 12) {
+                                    $timeAgo = $months . ' months ago';
+                                } else {
+                                    $timeAgo = $years . ' years ago';
+                                }
+                                ?>
                                 <p class="job-date mb-0">
                                     <i class="custom-icon bi-clock me-1"></i>
-                                    <?php echo $jobPost['PostingDate']; ?>
-                                    <!-- TODO: posting date - current date = how many hours ago -->
+                                    <?php echo $timeAgo; ?>
+                                </p>
+                                <p class="job-date mb-0">
+                                    <i class="custom-icon bi-clock me-1"></i>
+                                    <?php echo $timeAgo; ?>
                                 </p>
 
                                 <p class="job-price mb-0">

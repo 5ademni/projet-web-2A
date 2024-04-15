@@ -185,8 +185,7 @@ Bootstrap 5 HTML CSS Template
 
                                     <p class="job-date mb-0">
                                         <i class="custom-icon bi-clock me-1"></i>
-                                        <input type="text" name="date" value="<?php echo $jobPost['PostingDate']; ?>">
-                                        <!-- TODO: posting date - current date = how many hours ago -->
+                                        <input type="text" name="date" value="<?php echo $jobPost['PostingDate']; ?>" readonly>
                                     </p>
 
                                     <p class="job-price mb-0">
