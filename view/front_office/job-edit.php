@@ -1,8 +1,33 @@
 <?php
 include_once '../../Controller/jobPostC.php';
+include_once '../../controller/jobFieldC.php';
 
 $jobPostC = new jobPostC();
+$jobFieldC = new jobFieldC();
 
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $id = $_GET['id']; // Get the id from the POST data
+    $current_date = date('Y-m-d H:i:s');
+
+    $jobPost = new JobPost(
+        $id,
+        $_POST['title'],
+        $_POST['company_name'],
+        $_POST['location'],
+        $_POST['date'] = $current_date,
+        $_POST['salary'],
+        $_POST['status'],
+        $_POST['field_id'],
+        $_POST['level_id'],
+        $_POST['employment_type_id'],
+        $_POST['description']
+    );
+    $jobPostC->updateJobPost($id, $jobPost);
+    $location = 'Location: job-details.php?id=' . $id;
+    header('Location: ' . $location);
+    exit;
+}
 
 if (isset($_GET['id'])) {
     $jobPost = $jobPostC->getJobPostById($_GET['id']);
@@ -143,116 +168,138 @@ Bootstrap 5 HTML CSS Template
         }
         ?>
 
-        <section class="job-section section-padding pb-0">
-            <div class="container">
-                <div class="row">
+        <form method="post">
+            <section class="job-section section-padding pb-0">
+                <div class="container">
+                    <div class="row">
 
-                    <div class="col-lg-8 col-12">
-                        <h2 class="job-title mb-0"><input type="text" value="<?php echo $jobPost['Title']; ?>"></h2>
+                        <div class="col-lg-8 col-12">
+                            <h2 class="job-title mb-0"><input type="text" name="title" value="<?php echo $jobPost['Title']; ?>"></h2>
 
-                        <div class="job-thumb job-thumb-detail">
-                            <div class="d-flex flex-wrap align-items-center border-bottom pt-lg-3 pt-2 pb-3 mb-4">
-                                <p class="job-location mb-0">
-                                    <i class="custom-icon bi-geo-alt me-1"></i>
-                                    <input type="text" value="<?php echo $jobPost['Location']; ?>">
-                                </p>
-
-                                <p class="job-date mb-0">
-                                    <i class="custom-icon bi-clock me-1"></i>
-                                    <input type="text" value="<?php echo $jobPost['PostingDate']; ?>">
-                                    <!-- TODO: posting date - current date = how many hours ago -->
-                                </p>
-
-                                <p class="job-price mb-0">
-                                    <i class="custom-icon bi-cash me-1"></i>
-                                    <input type="text" value="<?php echo $jobPost['Salary']; ?>">
-                                </p>
-
-                                <div class="d-flex">
-                                    <p class="mb-0">
-                                        <a href="job-listings.html" class="badge badge-level"><?php echo $jobPost['LevelName']; ?></a>
+                            <div class="job-thumb job-thumb-detail">
+                                <div class="d-flex flex-wrap align-items-center border-bottom pt-lg-3 pt-2 pb-3 mb-4">
+                                    <p class="job-location mb-0">
+                                        <i class="custom-icon bi-geo-alt me-1"></i>
+                                        <input type="text" name="location" value="<?php echo $jobPost['Location']; ?>">
                                     </p>
 
-                                    <p class="mb-0">
-                                        <a href="job-listings.html" class="badge"><?php echo $jobPost['EmploymentTypeName']; ?></a>
+                                    <p class="job-date mb-0">
+                                        <i class="custom-icon bi-clock me-1"></i>
+                                        <input type="text" name="date" value="<?php echo $jobPost['PostingDate']; ?>">
+                                        <!-- TODO: posting date - current date = how many hours ago -->
                                     </p>
 
-                                    <p class="mb-0">
-                                        <a href="job-listings.html" class="badge"><?php echo $jobPost['FieldName']; ?></a>
+                                    <p class="job-price mb-0">
+                                        <i class="custom-icon bi-cash me-1"></i>
+                                        <input type="text" name="salary" value="<?php echo $jobPost['Salary']; ?>">
                                     </p>
+
+                                    <div class="d-flex">
+                                        <p class="mb-0">
+                                            <select class="form-select" name="level_id" aria-label="Default select example">
+                                                <option selected value="<?php echo $jobPost['LevelID']; ?>"><?php echo $jobPost['LevelName']; ?></option>
+                                                <option value="1">intership</option>
+                                                <option value="2">junior</option>
+                                                <option value="3">senior</option>
+                                            </select>
+                                        </p>
+
+                                        <p class="mb-0">
+                                            <select class="form-select" name="employment_type_id" aria-label="Default select example">
+                                                <option selected value="<?php echo $jobPost['EmploymentTypeID']; ?>"><?php echo $jobPost['EmploymentTypeName']; ?></option>
+                                                <option value="1">full time</option>
+                                                <option value="2">part time</option>
+                                                <option value="3">contract</option>
+                                                <option value="4">Freelance</option>
+                                            </select>
+                                        </p>
+
+                                        <p class="mb-0">
+                                            <select class="form-select" name="field_id" aria-label="Default select example">
+                                                <option selected value="<?php echo $jobPost['FieldID']; ?>"><?php echo $jobPost['FieldName']; ?></option>
+                                                <?php
+                                                $fieldlist = $jobFieldC->listJobFields();
+
+                                                foreach ($fieldlist as $field) {
+                                                    echo '<option value="' . $field['FieldID'] . '">' . $field['FieldName'] . '</option>';
+                                                }
+                                                ?>
+                                            </select>
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <h4 class="mt-4 mb-2">Job Description</h4>
+                                <h4 class="mt-4 mb-2">Job Description</h4>
 
-                            <textarea><?php echo $jobPost['JobDescription']; ?></textarea>
+                                <textarea name="description"><?php echo $jobPost['JobDescription']; ?></textarea>
 
+        </form>
 
-                            <div class="d-flex justify-content-center flex-wrap mt-5 border-top pt-4">
+        <div class="d-flex justify-content-center flex-wrap mt-5 border-top pt-4">
 
-                                <a href="#" class="custom-btn custom-border-btn btn edit-btn mt-2 ms-lg-4 ms-3">Update this job</a>
+            <button type="submit" class="custom-btn custom-border-btn btn edit-btn mt-2 ms-lg-4 ms-3">Update this job</button>
 
-                                <div class="job-detail-share d-flex align-items-center">
-                                    <p class="mb-0 me-lg-4 me-3">Share:</p>
+            <div class="job-detail-share d-flex align-items-center">
+                <p class="mb-0 me-lg-4 me-3">Share:</p>
 
-                                    <a href="#" class="bi-facebook"></a>
+                <a href="#" class="bi-facebook"></a>
 
-                                    <a href="#" class="bi-twitter mx-3"></a>
+                <a href="#" class="bi-twitter mx-3"></a>
 
-                                    <a href="#" class="bi-share"></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-4 col-12 mt-5 mt-lg-0">
-                        <div class="job-thumb job-thumb-detail-box bg-white shadow-lg">
-                            <div class="d-flex align-items-center">
-                                <div class="job-image-wrap d-flex align-items-center bg-white shadow-lg mb-3">
-                                    <img src="<?php echo $imageSrc; ?>" class="job-image me-3 img-fluid" alt="">
-
-                                    <p class="mb-0"><?php echo $jobPost['Company']; ?></p>
-                                </div>
-
-                                <a href="#" class="bi-bookmark ms-auto me-2"></a>
-
-                                <a href="#" class="bi-heart"></a>
-                            </div>
-
-                            <h6 class="mt-3 mb-2">About the Company</h6>
-
-                            <p>Lorem ipsum dolor sit amet, consectetur elit sed do eiusmod tempor incididunt labore.</p>
-
-                            <h6 class="mt-4 mb-3">Contact Information</h6>
-
-                            <p class="mb-2">
-                                <i class="custom-icon bi-globe me-1"></i>
-
-                                <a href="#" class="site-footer-link">
-                                    www.jobbportal.com
-                                </a>
-                            </p>
-
-                            <p class="mb-2">
-                                <i class="custom-icon bi-telephone me-1"></i>
-
-                                <a href="tel: 305-240-9671" class="site-footer-link">
-                                    305-240-9671
-                                </a>
-                            </p>
-
-                            <p>
-                                <i class="custom-icon bi-envelope me-1"></i>
-
-                                <a href="mailto:info@yourgmail.com" class="site-footer-link">
-                                    info@jobportal.co
-                                </a>
-                            </p>
-                        </div>
-                    </div>
-
-                </div>
+                <a href="#" class="bi-share"></a>
             </div>
+        </div>
+        </div>
+        </div>
+
+        <div class="col-lg-4 col-12 mt-5 mt-lg-0">
+            <div class="job-thumb job-thumb-detail-box bg-white shadow-lg">
+                <div class="d-flex align-items-center">
+                    <div class="job-image-wrap d-flex align-items-center bg-white shadow-lg mb-3">
+                        <img src="<?php echo $imageSrc; ?>" class="job-image me-3 img-fluid" alt="">
+
+                        <p class="mb-0"><?php echo $jobPost['Company']; ?></p>
+                    </div>
+
+                    <a href="#" class="bi-bookmark ms-auto me-2"></a>
+
+                    <a href="#" class="bi-heart"></a>
+                </div>
+
+                <h6 class="mt-3 mb-2">About the Company</h6>
+
+                <p>Lorem ipsum dolor sit amet, consectetur elit sed do eiusmod tempor incididunt labore.</p>
+
+                <h6 class="mt-4 mb-3">Contact Information</h6>
+
+                <p class="mb-2">
+                    <i class="custom-icon bi-globe me-1"></i>
+
+                    <a href="#" class="site-footer-link">
+                        www.jobbportal.com
+                    </a>
+                </p>
+
+                <p class="mb-2">
+                    <i class="custom-icon bi-telephone me-1"></i>
+
+                    <a href="tel: 305-240-9671" class="site-footer-link">
+                        305-240-9671
+                    </a>
+                </p>
+
+                <p>
+                    <i class="custom-icon bi-envelope me-1"></i>
+
+                    <a href="mailto:info@yourgmail.com" class="site-footer-link">
+                        info@jobportal.co
+                    </a>
+                </p>
+            </div>
+        </div>
+
+        </div>
+        </div>
         </section>
 
 

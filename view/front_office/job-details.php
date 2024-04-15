@@ -193,7 +193,7 @@ Bootstrap 5 HTML CSS Template
 
                                 <a href="#" class="custom-btn custom-border-btn btn mt-2 ms-lg-4 ms-3">Save this job</a>
 
-                                <a href="job-edit.php?id=<?php echo $jobPost['JobID'];; ?>" class="custom-btn custom-border-btn btn edit-btn mt-2 ms-lg-4 ms-3">Edit this job</a>
+                                <a href="job-edit.php?id=<?php echo $jobPost['JobID']; ?>" class="custom-btn custom-border-btn btn edit-btn mt-2 ms-lg-4 ms-3">Edit this job</a>
 
                                 <div class="job-detail-share d-flex align-items-center">
                                     <p class="mb-0 me-lg-4 me-3">Share:</p>
