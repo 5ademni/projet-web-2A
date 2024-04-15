@@ -209,7 +209,92 @@ Bootstrap 5 HTML CSS Template
         </section>
 
 
+        <section class="pb-0 d-flex justify-content-center align-items-center">
+            <div class="container">
+                <div class="row">
 
+
+                    <div class="col-lg-12 col-12">
+                        <form class="custom-form hero-form create-form" action="#" method="post" role="form">
+                            <h3 class="text-white mb-3">Search for talent</h3>
+
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon1"><i class="bi-person custom-icon create-icon"></i></span>
+
+                                        <input type="text" name="job-titleT" id="job-titleT" class="form-control" placeholder="Job Title" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6 col-md-6 col-12">
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon1"><i class="bi-geo-alt custom-icon create-icon"></i></span>
+
+                                        <input type="text" name="job-locationT" id="job-locationT" class="form-control" placeholder="Location" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-12">
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon1"><i class="bi-cash custom-icon create-icon"></i></span>
+
+                                        <input type="text" class="form-control" name="job-salaryT" id="job-salaryT" placeholder="Enter Salary">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-12">
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon1"><i class="bi-laptop custom-icon create-icon"></i></span>
+
+                                        <select class="form-select form-control" name="job-levelT" id="job-levelT" aria-label="Default select example">
+                                            <option selected>Level</option>
+                                            <option value="1">Internship</option>
+                                            <option value="2">Junior</option>
+                                            <option value="3">Senior</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-12">
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon1"><i class="bi-laptop custom-icon create-icon"></i></span>
+
+                                        <select class="form-select form-control" name="job-typeT" id="job-typeT" aria-label="Default select example">
+                                            <option selected>Type</option>
+                                            <option value="1">Full Time</option>
+                                            <option value="2">Contract</option>
+                                            <option value="3">Part Time</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-12">
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon1"><i class="bi-file-richtext custom-icon create-icon"></i></span>
+
+                                        <input type="text" name="descriptionT" id="descriptionT" class="form-control" placeholder="Description">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-12">
+                                    <button type="submit" class="form-control create-button">
+                                        Post job
+                                    </button>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+
+
+                    <div class="col-lg-6 col-12">
+                        <img src="images/4557388.png" class="hero-image img-fluid" alt="">
+                    </div>
+
+                </div>
+            </div>
+        </section>
 
 
         <section class="job-section section-padding">
