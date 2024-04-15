@@ -24,3 +24,4 @@ class config
     return self::$pdo;
   }
 }
+?>
