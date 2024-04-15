@@ -35,7 +35,7 @@ try {
 } catch (Exception $e) {
     echo 'Erreur: ' . $e->getMessage();
 }
-header('Location: trouver-evenement.php');
+header('Location: trouver_evenement.php');
 exit;
 }
 ?>
@@ -87,8 +87,8 @@ exit;
                         <a class="nav-link dropdown-toggle" href="#" id="eventButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">Événements</a>
                     
                         <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="eventButton">
-                            <li><a class="dropdown-item" href="ajouter-evenement.php">Ajouter un événement</a></li>
-                            <li><a class="dropdown-item" href="trouver-evenement.php">Trouver un événement</a></li>
+                            <li><a class="dropdown-item" href="ajouter_evenement.php">Ajouter un événement</a></li>
+                            <li><a class="dropdown-item" href="trouver_evenement.php">Trouver un événement</a></li>
                         </ul>
                     </li>
                     
@@ -126,11 +126,11 @@ exit;
           <form method="POST" enctype="multipart/form-data">
             <div class="form-group">
               <label for="id_evenement">ID de l'événement</label>
-              <input type="text" class="form-control" id="id_evenement" name="id_evenement" value="<?php echo $evenement['id_evenement']; ?> readonly"> 
+              <input type="text" class="form-control" id="id_evenement" name="id_evenement" value="<?php echo $evenement['id_evenement']; ?> "readonly> 
             </div>
             <div class="form-group">
               <label for="id_auteur">ID de l'auteur</label>
-              <input type="text" class="form-control" id="id_auteur" name="id_auteur" value="<?php echo $evenement['id_auteur']; ?> readonly">
+              <input type="text" class="form-control" id="id_auteur" name="id_auteur" value="<?php echo $evenement['id_auteur']; ?> "readonly>
             <!-- ... -->
             <div class="form-group">
               <label for="titre">Titre de l'événement</label>

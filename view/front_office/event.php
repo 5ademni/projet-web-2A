@@ -43,8 +43,8 @@
                         <a class="nav-link dropdown-toggle" href="#" id="eventButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">Événements</a>
                     
                         <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="eventButton">
-                            <li><a class="dropdown-item" href="ajouter-evenement.php">Ajouter un événement</a></li>
-                            <li><a class="dropdown-item" href="trouver-evenement.php">Trouver un événement</a></li>
+                            <li><a class="dropdown-item" href="ajouter_evenement.php">Ajouter un événement</a></li>
+                            <li><a class="dropdown-item" href="trouver_evenement.php">Trouver un événement</a></li>
                         </ul>
                     </li>
                     

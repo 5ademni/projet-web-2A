@@ -23,110 +23,59 @@ $events = $Eventc->getEvents();
     <link href="css/owl.theme.default.min.css" rel="stylesheet" />
     <link href="css/tooplate-gotto-job.css" rel="stylesheet" />
     <link href="css/ticket.css" rel="stylesheet" />
+
     
-  </head>
-  <body id="top">
-    <link
-      href="https://fonts.googleapis.com/css?family=Cabin|Indie+Flower|Inknut+Antiqua|Lora|Ravi+Prakash"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
-
+    </head>
+<body class="about-page" id="top">
     <nav class="navbar navbar-expand-lg">
-      <div class="container">
-        <a class="navbar-brand d-flex align-items-center" href="index.php">
-          <img src="images/logo.png" class="img-fluid logo-image" />
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <img src="images/logo.png" class="img-fluid logo-image">
 
-          <div class="d-flex flex-column">
-            <a class="logo-text">5ademni</a>
-          </div>
-        </a>
+                <div class="d-flex flex-column">
+                    <strong class="logo-text">5ademni</strong>
+                    <small class="logo-slogan">Online Job Portal</small>
+                </div>
+            </a>
 
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <div
-          class="collapse navbar-collapse"
-          id="navbarNav"
-          style="margin-top: 5px"
-        >
-          <ul class="navbar-nav align-items-center ms-lg-5">
-            <li class="nav-item">
-              <a class="nav-link active" href="index.php">Page d'accueil</a>
-            </li>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav align-items-center ms-lg-5">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Homepage</a>
+                    </li>
 
-            <li class="nav-item">
-              <a class="nav-link" href="about.html">About 5ademni</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="eventButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">Événements</a>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="about.html">About Gotto</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="eventButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">Événements</a>
+                    
+                        <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="eventButton">
+                            <li><a class="dropdown-item" href="ajouter_evenement.php">Ajouter un événement</a></li>
+                            <li><a class="dropdown-item" href="trouver_evenement.php">Trouver un événement</a></li>
+                        </ul>
+                    </li>
+                    
+                    
           
-              <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="eventButton">
-                  <li><a class="dropdown-item" href="ajouter-evenement.php">Ajouter un événement</a></li>
-                  <li><a class="dropdown-item" href="trouver-evenement.php">Trouver un événement</a></li>
-              </ul>
-          </li>
-          
-            <li class="nav-item">
-              <a class="nav-link" href="blog.html">Blogs</a>
-            </li>
+                      <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
 
-            <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="navbarLightDropdownMenuLink"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-                >Pages</a
-              >
+                        <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">
+                            <li><a class="dropdown-item" href="job-listings.html">Job Listings</a></li>
 
-              <ul
-                class="dropdown-menu dropdown-menu-light"
-                aria-labelledby="navbarLightDropdownMenuLink"
-              >
-                <li>
-                  <a class="dropdown-item" href="job-listings.php"
-                    >Listes d'emplois</a
-                  >
-                </li>
+                            <li><a class="dropdown-item" href="job-details.html">Job Details</a></li>
+                        </ul>
+                    </li>
 
-                <li>
-                  <a class="dropdown-item" href="job-details.html"
-                    >Détails du poste</a
-                  >
-                </li>
-              </ul>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link" href="contact.html">Contact</a>
-            </li>
-
-            <li class="nav-item ms-lg-auto">
-              <a class="nav-link" href="#">Registre</a>
-            </li>
-
-            <li class="nav-item">
-              <a class="nav-link custom-btn btn" href="#">Login</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact</a>
+                    </li>
+                    </nav>
     <link href="https://fonts.googleapis.com/css?family=Cabin|Indie+Flower|Inknut+Antiqua|Lora|Ravi+Prakash" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"  />
         <main>

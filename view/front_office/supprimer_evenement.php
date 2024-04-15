@@ -13,7 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
     } catch (Exception $e) {
         echo 'Erreur: ' . $e->getMessage();
     }
-    header('Location: trouver-evenement.php');
+    header('Location: trouver_evenement.php');
     exit;
 }
 ?>
