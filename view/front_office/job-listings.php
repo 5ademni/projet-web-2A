@@ -249,6 +249,7 @@ Bootstrap 5 HTML CSS Template
                     </div>
 
                     <?php
+                    //MARK: main part
                     $list = $jobPostC->listJobPosts();
                     foreach ($list as $jobPost) {
                         $companyName = strtolower(str_replace(' ', '_', $jobPost['Company'])); // Replace spaces with underscores and convert to lowercase
@@ -316,7 +317,7 @@ Bootstrap 5 HTML CSS Template
                                             <?php echo $jobPost['Salary']; ?>
                                         </p>
 
-                                        <a href="job-details.html" class="custom-btn btn ms-auto">Apply now</a>
+                                        <a href="job-details.php?id=<?php echo $jobPost['JobID']; ?>" class="custom-btn btn ms-auto">Apply now</a>
                                     </div>
                                 </div>
                             </div>
