@@ -300,7 +300,7 @@
       <li class="nav-item">
         <a class="nav-link" href="blog.php">
           <i class="bi bi-pencil-square"></i>
-          <span>Blog</span>
+          <span>Blogs</span>
         </a>
       </li>
       <!-- End Blog Nav -->
