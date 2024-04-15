@@ -1370,6 +1370,16 @@ nav[aria-label="breadcrumb"] {
   transform: scale(1.15);
 }
 
+.edit-btn {
+  background-color: #ffffff; /* This makes the button white */
+  color: #007bff; /* This makes the text color blue */
+}
+
+.edit-btn:hover {
+  background-color: #007bff; /* This makes the button blue when hovered */
+  color: #ffffff; /* This makes the text white when hovered */
+}
+
 /*---------------------------------------
   RESPONSIVE STYLES               
 -----------------------------------------*/

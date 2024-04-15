@@ -262,7 +262,7 @@ Bootstrap 5 HTML CSS Template
                         <div class="col-lg-4 col-md-6 col-12">
                             <div class="job-thumb job-thumb-box">
                                 <div class="job-image-box-wrap">
-                                    <a href="job-details.html">
+                                    <a href="job-details.php?id=<?php echo $jobPost['JobID']; ?>">
                                         <img src="images/jobs/it-professional-works-startup-project.jpg" class="job-image img-fluid" alt="">
                                     </a>
 
@@ -282,7 +282,7 @@ Bootstrap 5 HTML CSS Template
 
                                 <div class="job-body">
                                     <h4 class="job-title">
-                                        <a href="job-details.html" class="job-title-link"><?php echo $jobPost['Title']; ?></a>
+                                        <a href="job-details.php?id=<?php echo $jobPost['JobID']; ?>" class="job-title-link"><?php echo $jobPost['Title']; ?></a>
                                     </h4>
 
                                     <div class="d-flex align-items-center">
