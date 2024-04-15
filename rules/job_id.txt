@@ -1,15 +1,18 @@
 LEVEL IDs:
+
 1- intership
 2- junior
 3- senior
 
 EMPLYMENT TYPE IDs:
+
 1- full time
 2- part time
 3- contract
 4- freelance
 
 FIELD IDs:
+
 100-comp sci:
 -101- web dev
 -102- mobile dev
