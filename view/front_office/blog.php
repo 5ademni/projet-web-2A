@@ -1,3 +1,22 @@
+<?php
+include "../../controller/articlesBlogC.php";
+$articlesBlogC = new ArticlesBlogC();
+
+if (isset($_GET['addDummy'])) {
+    $articlesBlogC->addDummyArticle();
+    header('Location: blog.php');
+    exit;
+}
+
+if (isset($_GET['delete'])) {
+    $articlesBlogC->deleteArticle($_GET['delete']);
+}
+
+$articlesBlogC = $articlesBlogC->listArticles();
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -75,6 +94,15 @@ Bootstrap 5 HTML CSS Template
             <li class="nav-item">
               <a class="nav-link active" href="about.html">About Gotto</a>
             </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="eventButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">Événements</a>
+          
+              <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="eventButton">
+                  <li><a class="dropdown-item" href="ajouter-evenement.html">Ajouter un événement</a></li>
+                  <li><a class="dropdown-item" href="trouver-evenement.html">Trouver un événement</a></li>
+              </ul>
+          </li>
+          
 
             <li class="nav-item dropdown">
               <a
@@ -188,6 +216,73 @@ Bootstrap 5 HTML CSS Template
         </p>
       </div>
     </div>
+
+
+
+
+
+    <div class="blog-card alt111">
+      <div class="meta">
+        <div
+          class="photo"
+          style="
+            background-image: url(https://storage.googleapis.com/chydlx/codepen/blog-cards/image-2.jpg);
+          "
+        ></div>
+        <ul class="details">
+          <li class="author"><a href="#">Jane Doe</a></li>
+          <li class="date">July. 15, 2015</li>
+          <li class="tags">
+            <ul>
+              <li><a href="#">Learn</a></li>
+              <li><a href="#">Code</a></li>
+              <li><a href="#">JavaScript</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div class="description">
+        <h1>dedicace l sahbi malek "MMH"</h1>
+        <h2>visca barça</h2>
+
+
+        <?php
+echo '<table>';
+foreach ($articlesBlogC as $ArticlesBlogC) {
+    echo '<tr>';
+    echo '<td>' . $ArticlesBlogC['id_article'] . '</td>';
+    echo '<td>' . $ArticlesBlogC['id_auteur'] . '</td>';
+    echo '<td>' . $ArticlesBlogC['titre'] . '</td>';
+    echo '<td>' . $ArticlesBlogC['contenu'] . '</td>';
+    echo '<td>' . $ArticlesBlogC['datePublication'] . '</td>';
+    echo '<td><a href="update_employe.php?id=' . $ArticlesBlogC['id_article'] . '">Update</a></td>';
+    echo '<td><a href="?delete=' . $ArticlesBlogC['id_article'] . '">Delete</a></td>';
+    echo '</tr>';
+}
+echo '</table>';
+?>
+
+
+
+
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad eum
+          dolorum architecto obcaecati enim dicta praesentium, quam nobis! Neque
+          ad aliquam facilis numquam. Veritatis, sit.
+        </p>
+        <p class="read-more">
+          <a href="#">Read More</a>
+        </p>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
 
     <footer class="site-footer">
       <div class="container">
