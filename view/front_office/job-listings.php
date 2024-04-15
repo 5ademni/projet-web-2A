@@ -1,7 +1,33 @@
 <?php
 include_once '../../controller/jobPostC.php';
+include_once '../../controller/jobFieldC.php';
+
 $jobPostC = new JobPostC();
+$jobFieldC = new jobFieldC();
+
 $totalJobs = $jobPostC->countJobPosts();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $current_date = date('Y-m-d H:i:s');
+    $id = null;
+
+    $jobPost = new JobPost(
+        $_POST['id'] = $id,
+        $_POST['job-titleT'],
+        $_POST['company_name'] = "login company",
+        $_POST['job-locationT'],
+        $_POST['date'] = $current_date,
+        $_POST['job-salaryT'],
+        $_POST['status'] = "1",
+        $_POST['fieldsT'],
+        $_POST['job-levelT'],
+        $_POST['job-typeT'],
+        $_POST['descriptionT']
+    );
+    $jobPostC->addJobPost($jobPost);
+    header('Location: job-listings.php');
+    exit;
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -219,26 +245,39 @@ Bootstrap 5 HTML CSS Template
                             <h3 class="text-white mb-3">Search for talent</h3>
 
                             <div class="row">
-                                <div class="col-lg-6 col-md-6 col-12">
+                                <div class="col-lg-4 col-md-4 col-12">
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1"><i class="bi-person custom-icon create-icon"></i></span>
-
                                         <input type="text" name="job-titleT" id="job-titleT" class="form-control" placeholder="Job Title" required>
                                     </div>
                                 </div>
 
-                                <div class="col-lg-6 col-md-6 col-12">
+                                <div class="col-lg-4 col-md-4 col-12">
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1"><i class="bi-geo-alt custom-icon create-icon"></i></span>
-
                                         <input type="text" name="job-locationT" id="job-locationT" class="form-control" placeholder="Location" required>
                                     </div>
                                 </div>
 
                                 <div class="col-lg-4 col-md-4 col-12">
                                     <div class="input-group">
-                                        <span class="input-group-text" id="basic-addon1"><i class="bi-cash custom-icon create-icon"></i></span>
+                                        <span class="input-group-text" id="basic-addon1"><i class="bi-briefcase custom-icon create-icon"></i></span>
+                                        <select class="form-select form-control" name="fieldsT" id="fieldsT" aria-label="Default select example">
+                                            <option selected>field</option>
+                                            <?php
+                                            $fieldlist = $jobFieldC->listJobFields();
 
+                                            foreach ($fieldlist as $field) {
+                                                echo '<option value="' . $field['FieldID'] . '">' . $field['FieldName'] . '</option>';
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-12">
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon1"><i class="bi-cash custom-icon create-icon"></i></span>
                                         <input type="text" class="form-control" name="job-salaryT" id="job-salaryT" placeholder="Enter Salary">
                                     </div>
                                 </div>
@@ -246,7 +285,6 @@ Bootstrap 5 HTML CSS Template
                                 <div class="col-lg-4 col-md-4 col-12">
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1"><i class="bi-laptop custom-icon create-icon"></i></span>
-
                                         <select class="form-select form-control" name="job-levelT" id="job-levelT" aria-label="Default select example">
                                             <option selected>Level</option>
                                             <option value="1">Internship</option>
@@ -259,7 +297,6 @@ Bootstrap 5 HTML CSS Template
                                 <div class="col-lg-4 col-md-4 col-12">
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1"><i class="bi-laptop custom-icon create-icon"></i></span>
-
                                         <select class="form-select form-control" name="job-typeT" id="job-typeT" aria-label="Default select example">
                                             <option selected>Type</option>
                                             <option value="1">Full Time</option>
@@ -272,7 +309,6 @@ Bootstrap 5 HTML CSS Template
                                 <div class="col-lg-12 col-12">
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1"><i class="bi-file-richtext custom-icon create-icon"></i></span>
-
                                         <input type="text" name="descriptionT" id="descriptionT" class="form-control" placeholder="Description">
                                     </div>
                                 </div>
