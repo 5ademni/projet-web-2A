@@ -102,6 +102,26 @@ class ArticlesBlogC
         }
     }
 
+
+public function getArticleById($id)
+{
+    $sql = "SELECT * FROM articlesblog WHERE id_article = ?";
+    $db = config::getConnexion();
+    try {
+        $stmt = $db->prepare($sql);
+        $stmt->execute([$id]);
+        $article = $stmt->fetch();
+        return $article;
+    } catch (Exception $e) {
+        die('Erreur: ' . $e->getMessage());
+    }
 }
+
+
+
+
+}
+
+
 
 

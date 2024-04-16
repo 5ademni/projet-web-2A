@@ -298,7 +298,7 @@
 
       <!-- Start Blog Nav -->
       <li class="nav-item">
-        <a class="nav-link" href="blog.php">
+        <a class="nav-link" href="blogs.php">
           <i class="bi bi-pencil-square"></i>
           <span>Blogs</span>
         </a>
