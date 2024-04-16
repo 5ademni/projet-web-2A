@@ -8,22 +8,19 @@ $ArticlesBlogC = new ArticlesBlogC();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $current_date = date('Y-m-d H:i:s');
 
-  
-    if (isset($_POST['id_article']) && isset($_POST['id_auteur']) && isset($_POST['titre']) && isset($_POST['contenu'])  && isset($_POST['datePublication'])) {
-      $ArticlesBlog = new ArticlesBlog(
+    $ArticlesBlog = new ArticlesBlog(
 
         $_POST['id_article'],
-        $_POST['id_auteur'], 
+        $_POST['id_auteur'],
         $_POST['titre'],
         $_POST['contenu'],
         //$_POST['datePublication'],
         $current_date,
-      );
-      $ArticlesBlogC->addArticle($ArticlesBlog);
-      header('Location: blog.php');
-      exit;
-    }
-  }
+    );
+    $ArticlesBlogC->addArticle($ArticlesBlog);
+    header('Location: blog.php');
+    exit;
+}
 ?>
 
 
@@ -31,6 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -46,6 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="css/owl.theme.default.min.css" rel="stylesheet">
     <link href="css/tooplate-gotto-job.css" rel="stylesheet">
 </head>
+
 <body class="about-page" id="top">
     <nav class="navbar navbar-expand-lg">
         <div class="container">
@@ -73,14 +72,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="eventButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">Événements</a>
-                    
+
                         <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="eventButton">
                             <li><a class="dropdown-item" href="ajouter-evenement.html">Ajouter un blog</a></li>
                             <li><a class="dropdown-item" href="trouver-evenement.html">Trouver un blog</a></li>
                         </ul>
                     </li>
-                    
-                    
+
+
 
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
@@ -95,7 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <li class="nav-item">
                         <a class="nav-link" href="contact.html">Contact</a>
                     </li>
-                    </nav>
+    </nav>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg">
         <!-- Votre code de navigation ici -->
@@ -138,7 +137,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </div>
                             <button type="submit" class="btn btn-primary">Ajouter le blog</button>
                         </form>
-                          
+
         </section>
     </main>
     <footer class="site-footer">
@@ -153,7 +152,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <strong class="logo-text">5ademni</strong>
                             <small class="logo-slogan">Online Job Portal</small>
                         </div>
-                    </div>  
+                    </div>
 
                     <p class="mb-2">
                         <i class="custom-icon bi-globe me-1"></i>
@@ -280,6 +279,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script src="controle_saisie_front.js"></script>
 
     <!-- JAVASCRIPT FILES -->
-    
+
 </body>
+
 </html>
