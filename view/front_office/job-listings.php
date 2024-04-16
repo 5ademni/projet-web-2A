@@ -153,7 +153,7 @@ Bootstrap 5 HTML CSS Template
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1"><i class="bi-person custom-icon"></i></span>
 
-                                        <input type="text" name="job-title" id="job-title" class="form-control" placeholder="Job Title" required>
+                                        <input type="text" name="job-title" id="job-title" class="form-control" placeholder="Job Title">
                                     </div>
                                 </div>
 
@@ -161,7 +161,7 @@ Bootstrap 5 HTML CSS Template
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1"><i class="bi-geo-alt custom-icon"></i></span>
 
-                                        <input type="text" name="job-location" id="job-location" class="form-control" placeholder="Location" required>
+                                        <input type="text" name="job-location" id="job-location" class="form-control" placeholder="Location">
                                     </div>
                                 </div>
 
@@ -248,14 +248,14 @@ Bootstrap 5 HTML CSS Template
                                 <div class="col-lg-4 col-md-4 col-12">
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1"><i class="bi-person custom-icon create-icon"></i></span>
-                                        <input type="text" name="job-titleT" id="job-titleT" class="form-control" placeholder="Job Title" required>
+                                        <input type="text" name="job-titleT" id="job-titleT" class="form-control" placeholder="Job Title">
                                     </div>
                                 </div>
 
                                 <div class="col-lg-4 col-md-4 col-12">
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1"><i class="bi-geo-alt custom-icon create-icon"></i></span>
-                                        <input type="text" name="job-locationT" id="job-locationT" class="form-control" placeholder="Location" required>
+                                        <input type="text" name="job-locationT" id="job-locationT" class="form-control" placeholder="Location">
                                     </div>
                                 </div>
 
@@ -548,7 +548,7 @@ Bootstrap 5 HTML CSS Template
                         <div class="input-group">
                             <span class="input-group-text" id="basic-addon1"><i class="bi-person"></i></span>
 
-                            <input type="text" name="newsletter-name" id="newsletter-name" class="form-control" placeholder="yourname@gmail.com" required>
+                            <input type="text" name="newsletter-name" id="newsletter-name" class="form-control" placeholder="yourname@gmail.com">
 
                             <button type="submit" class="form-control">
                                 <i class="bi-send"></i>
@@ -615,6 +615,7 @@ Bootstrap 5 HTML CSS Template
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/counter.js"></script>
     <script src="js/custom.js"></script>
+    <script src="js/input_control.js"></script>
 
 </body>
 
