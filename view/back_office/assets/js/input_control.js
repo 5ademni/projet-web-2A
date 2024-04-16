@@ -4,11 +4,13 @@ document.querySelector("#jobform").addEventListener("submit", function (event) {
   const salaryPattern = /^[0-9,]+(\$|TND)$/;
   const descriptionPattern =
     /^[a-zA-Z0-9\s,;:!?@#$%&*()-+=\[\]{}|<>.\'\"]{1,1000}$/;
+  const companyPattern = /^[a-zA-Z0-9\s]{1,30}$/;
 
   var titleInput = document.querySelector("#title");
   var locationInput = document.querySelector("#location");
   var salaryInput = document.querySelector("#salary");
   var descriptionInput = document.querySelector("#description");
+  var companyInput = document.querySelector("#company");
 
   // Remove any existing error messages
   document.querySelectorAll(".error-message").forEach(function (item) {
@@ -39,11 +41,19 @@ document.querySelector("#jobform").addEventListener("submit", function (event) {
     );
   }
 
-  if (!descriptionPattern.test(descriptionInput.value)) {
+  if (descriptionInput && !descriptionPattern.test(descriptionInput.value)) {
     event.preventDefault();
     displayError(
       "Invalid description. Please make sure your description is 1-1000 characters long.",
       descriptionInput
+    );
+  }
+
+  if (companyInput && !companyPattern.test(companyInput.value)) {
+    event.preventDefault();
+    displayError(
+      "Invalid company name. Please make sure your company name is 1-30 characters long and does not contain any special characters.",
+      companyInput
     );
   }
 });

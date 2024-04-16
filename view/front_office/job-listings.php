@@ -1,7 +1,47 @@
 <?php
 include_once '../../controller/jobPostC.php';
+include_once '../../controller/jobFieldC.php';
+
 $jobPostC = new JobPostC();
+$jobFieldC = new jobFieldC();
+
 $totalJobs = $jobPostC->countJobPosts();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $titlePattern = "/^[a-zA-Z0-9\s]{1,30}$/";
+    $locationPattern = "/^[a-zA-Z0-9\s]{1,30}$/";
+    $salaryPattern = "/^[0-9,]+(\$|TND)$/";
+    $descriptionPattern = "/^[a-zA-Z0-9\s,;:!?@#$%&*()-+=\[\]{}|<>.\'\"]{1,1000}$/";
+
+    $title = $_POST['job-titleT'];
+    $location = $_POST['job-locationT'];
+    $salary = $_POST['job-salaryT'];
+    $description = $_POST['descriptionT'];
+
+    if (!preg_match($titlePattern, $title) || !preg_match($locationPattern, $location) || !preg_match($salaryPattern, $salary) || !preg_match($descriptionPattern, $description)) {
+        echo "Data Error";
+    } else {
+        $current_date = date('Y-m-d H:i:s');
+        $id = null;
+
+        $jobPost = new JobPost(
+            $_POST['id'] = $id,
+            $title,
+            $_POST['company_name'] = "login company",
+            $location,
+            $_POST['date'] = $current_date,
+            $salary,
+            $_POST['status'] = "1",
+            $_POST['fieldsT'],
+            $_POST['job-levelT'],
+            $_POST['job-typeT'],
+            $description
+        );
+        $jobPostC->addJobPost($jobPost);
+        header('Location: job-listings.php');
+        exit;
+    }
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -70,14 +110,8 @@ Bootstrap 5 HTML CSS Template
                         <a class="nav-link" href="about.html">About Gotto</a>
                     </li>
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
-
-                        <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">
-                            <li><a class="dropdown-item active" href="job-listings.html">Job Listings</a></li>
-
-                            <li><a class="dropdown-item" href="job-details.html">Job Details</a></li>
-                        </ul>
+                    <li class="nav-item">
+                        <a class="nav-link" href="job-listings.php">Jobs</a>
                     </li>
 
                     <li class="nav-item">
@@ -133,7 +167,7 @@ Bootstrap 5 HTML CSS Template
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1"><i class="bi-person custom-icon"></i></span>
 
-                                        <input type="text" name="job-title" id="job-title" class="form-control" placeholder="Job Title" required>
+                                        <input type="text" name="job-title" id="job-title" class="form-control" placeholder="Job Title">
                                     </div>
                                 </div>
 
@@ -141,7 +175,7 @@ Bootstrap 5 HTML CSS Template
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1"><i class="bi-geo-alt custom-icon"></i></span>
 
-                                        <input type="text" name="job-location" id="job-location" class="form-control" placeholder="Location" required>
+                                        <input type="text" name="job-location" id="job-location" class="form-control" placeholder="Location">
                                     </div>
                                 </div>
 
@@ -214,6 +248,103 @@ Bootstrap 5 HTML CSS Template
             </div>
         </section>
 
+
+        <section class="pb-0 d-flex justify-content-center align-items-center">
+            <div class="container">
+                <div class="row">
+
+
+                    <div class="col-lg-12 col-12">
+                        <form class="custom-form hero-form create-form" action="#" method="post" role="form" id="jobform">
+                            <h3 class="text-white mb-3">Search for talent</h3>
+
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-12">
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon1"><i class="bi-person custom-icon create-icon"></i></span>
+                                        <input type="text" name="job-titleT" id="title" class="form-control" placeholder="Job Title">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-12">
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon1"><i class="bi-geo-alt custom-icon create-icon"></i></span>
+                                        <input type="text" name="job-locationT" id="location" class="form-control" placeholder="Location">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-12">
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon1"><i class="bi-briefcase custom-icon create-icon"></i></span>
+                                        <select class="form-select form-control" name="fieldsT" id="fieldsT" aria-label="Default select example">
+                                            <option selected>field</option>
+                                            <?php
+                                            $fieldlist = $jobFieldC->listJobFields();
+
+                                            foreach ($fieldlist as $field) {
+                                                echo '<option value="' . $field['FieldID'] . '">' . $field['FieldName'] . '</option>';
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-12">
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon1"><i class="bi-cash custom-icon create-icon"></i></span>
+                                        <input type="text" class="form-control" name="job-salaryT" id="salary" placeholder="Enter Salary">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-12">
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon1"><i class="bi-laptop custom-icon create-icon"></i></span>
+                                        <select class="form-select form-control" name="job-levelT" id="job-levelT" aria-label="Default select example">
+                                            <option selected>Level</option>
+                                            <option value="1">Internship</option>
+                                            <option value="2">Junior</option>
+                                            <option value="3">Senior</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-12">
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon1"><i class="bi-laptop custom-icon create-icon"></i></span>
+                                        <select class="form-select form-control" name="job-typeT" id="job-typeT" aria-label="Default select example">
+                                            <option selected>Type</option>
+                                            <option value="1">Full Time</option>
+                                            <option value="2">Contract</option>
+                                            <option value="3">Part Time</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-12">
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon1"><i class="bi-file-richtext custom-icon create-icon"></i></span>
+                                        <input type="text" name="descriptionT" id="description" class="form-control" placeholder="Description">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12 col-12">
+                                    <button type="submit" class="form-control create-button">
+                                        Post job
+                                    </button>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+
+
+                    <div class="col-lg-6 col-12">
+                        <img src="images/4557388.png" class="hero-image img-fluid" alt="">
+                    </div>
+
+                </div>
+            </div>
+        </section>
 
 
         <section class="job-section section-padding">
@@ -431,7 +562,7 @@ Bootstrap 5 HTML CSS Template
                         <div class="input-group">
                             <span class="input-group-text" id="basic-addon1"><i class="bi-person"></i></span>
 
-                            <input type="text" name="newsletter-name" id="newsletter-name" class="form-control" placeholder="yourname@gmail.com" required>
+                            <input type="text" name="newsletter-name" id="newsletter-name" class="form-control" placeholder="yourname@gmail.com">
 
                             <button type="submit" class="form-control">
                                 <i class="bi-send"></i>
@@ -498,6 +629,7 @@ Bootstrap 5 HTML CSS Template
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/counter.js"></script>
     <script src="js/custom.js"></script>
+    <script src="js/input_control.js"></script>
 
 </body>
 

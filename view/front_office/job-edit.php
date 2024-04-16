@@ -5,28 +5,41 @@ include_once '../../controller/jobFieldC.php';
 $jobPostC = new jobPostC();
 $jobFieldC = new jobFieldC();
 
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $id = $_GET['id']; // Get the id from the POST data
-    $current_date = date('Y-m-d H:i:s');
+    $titlePattern = "/^[a-zA-Z0-9\s]{1,30}$/";
+    $locationPattern = "/^[a-zA-Z0-9\s]{1,30}$/";
+    $salaryPattern = "/^[0-9,]+(\$|TND)$/";
+    $descriptionPattern = "/^[a-zA-Z0-9\s,;:!?@#$%&*()-+=\[\]{}|<>.\'\"]{1,1000}$/";
 
-    $jobPost = new JobPost(
-        $id,
-        $_POST['title'],
-        $_POST['company_name'],
-        $_POST['location'],
-        $_POST['date'] = $current_date,
-        $_POST['salary'],
-        $_POST['status'],
-        $_POST['field_id'],
-        $_POST['level_id'],
-        $_POST['employment_type_id'],
-        $_POST['description']
-    );
-    $jobPostC->updateJobPost($id, $jobPost);
-    $location = 'Location: job-details.php?id=' . $id;
-    header($location);
-    exit;
+    $title = $_POST['title'];
+    $location = $_POST['location'];
+    $salary = $_POST['salary'];
+    $description = $_POST['description'];
+
+    if (!preg_match($titlePattern, $title) || !preg_match($locationPattern, $location) || !preg_match($salaryPattern, $salary) || !preg_match($descriptionPattern, $description)) {
+        echo "Data Error";
+    } else {
+        $id = $_GET['id']; // Get the id from the POST data
+        $current_date = date('Y-m-d H:i:s');
+
+        $jobPost = new JobPost(
+            $id,
+            $title,
+            $_POST['company_name'],
+            $location,
+            $_POST['date'] = $current_date,
+            $salary,
+            $_POST['status'],
+            $_POST['field_id'],
+            $_POST['level_id'],
+            $_POST['employment_type_id'],
+            $description
+        );
+        $jobPostC->updateJobPost($id, $jobPost);
+        $location = 'Location: job-details.php?id=' . $id;
+        header($location);
+        exit;
+    }
 }
 
 if (isset($_GET['id'])) {
@@ -78,7 +91,7 @@ Bootstrap 5 HTML CSS Template
 
     <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="index.html">
+            <a class="navbar-brand d-flex align-items-center" href="index.php">
                 <img src="images/logo.png" class="img-fluid logo-image">
 
                 <div class="d-flex flex-column">
@@ -94,7 +107,7 @@ Bootstrap 5 HTML CSS Template
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav align-items-center ms-lg-5">
                     <li class="nav-item">
-                        <a class="nav-link" href="index.html">Homepage</a>
+                        <a class="nav-link" href="index.php">Homepage</a>
                     </li>
 
                     <li class="nav-item">
@@ -109,14 +122,8 @@ Bootstrap 5 HTML CSS Template
                         </ul>
                     </li>
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
-
-                        <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">
-                            <li><a class="dropdown-item" href="job-listings.html">Job Listings</a></li>
-
-                            <li><a class="dropdown-item active" href="job-details.html">Job Details</a></li>
-                        </ul>
+                    <li class="nav-item">
+                        <a class="nav-link" href="job-listings.php">Jobs</a>
                     </li>
 
                     <li class="nav-item">
@@ -148,7 +155,7 @@ Bootstrap 5 HTML CSS Template
 
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb justify-content-center">
-                                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                <li class="breadcrumb-item"><a href="index.php">Home</a></li>
 
                                 <li class="breadcrumb-item active" aria-current="page">Job Details</li>
                             </ol>
@@ -168,19 +175,19 @@ Bootstrap 5 HTML CSS Template
         }
         ?>
 
-        <form method="post">
+        <form method="post" id="jobform">
             <section class="job-section section-padding pb-0">
                 <div class="container">
                     <div class="row">
 
                         <div class="col-lg-8 col-12">
-                            <h2 class="job-title mb-0"><input type="text" name="title" value="<?php echo $jobPost['Title']; ?>"></h2>
+                            <h2 class="job-title mb-0"><input type="text" name="title" id="title" value="<?php echo $jobPost['Title']; ?>"></h2>
 
                             <div class="job-thumb job-thumb-detail">
                                 <div class="d-flex flex-wrap align-items-center border-bottom pt-lg-3 pt-2 pb-3 mb-4">
                                     <p class="job-location mb-0">
                                         <i class="custom-icon bi-geo-alt me-1"></i>
-                                        <input type="text" name="location" value="<?php echo $jobPost['Location']; ?>">
+                                        <input type="text" name="location" id="location" value="<?php echo $jobPost['Location']; ?>">
                                     </p>
 
                                     <p class="job-date mb-0">
@@ -190,7 +197,7 @@ Bootstrap 5 HTML CSS Template
 
                                     <p class="job-price mb-0">
                                         <i class="custom-icon bi-cash me-1"></i>
-                                        <input type="text" name="salary" value="<?php echo $jobPost['Salary']; ?>">
+                                        <input type="text" name="salary" id="salary" value="<?php echo $jobPost['Salary']; ?>">
                                     </p>
 
                                     <div class="d-flex">
@@ -230,7 +237,7 @@ Bootstrap 5 HTML CSS Template
 
                                 <h4 class="mt-4 mb-2">Job Description</h4>
 
-                                <textarea name="description"><?php echo $jobPost['JobDescription']; ?></textarea>
+                                <textarea name="description" id="description"><?php echo $jobPost['JobDescription']; ?></textarea>
 
                                 <input type="hidden" name="status" value="<?php echo $jobPost['Status']; ?>">
 
@@ -639,6 +646,7 @@ Bootstrap 5 HTML CSS Template
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/counter.js"></script>
     <script src="js/custom.js"></script>
+    <script src="js/input_control.js"></script>
 
 </body>
 

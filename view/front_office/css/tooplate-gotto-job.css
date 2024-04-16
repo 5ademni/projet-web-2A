@@ -1380,6 +1380,18 @@ nav[aria-label="breadcrumb"] {
   color: #ffffff; /* This makes the text white when hovered */
 }
 
+.create-form {
+  background-color: #0d47a1;
+}
+
+.create-form button[type="submit"] {
+  background-color: #42a5f5;
+}
+
+.create-form .create-icon {
+  color: #007bff;
+}
+
 /*---------------------------------------
   RESPONSIVE STYLES               
 -----------------------------------------*/
