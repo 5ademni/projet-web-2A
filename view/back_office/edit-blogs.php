@@ -600,7 +600,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <div class="row mb-3">
     <label for="inputText" class="col-sm-2 col-form-label">Titre</label>
     <div class="col-sm-10">
-      <textarea class="form-control" name="contenu"><?php echo $ArticlesBlog['titre']; ?></textarea>
+      <textarea class="form-control" name="titre"><?php echo $ArticlesBlog['titre']; ?></textarea>
     </div>
     <div class="row mb-3">
     <label for="inputText" class="col-sm-2 col-form-label">Contenu</label>
