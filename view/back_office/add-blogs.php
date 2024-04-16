@@ -5,24 +5,24 @@ include_once '../../model/articlesBlog.php';
 $ArticlesBlogC = new ArticlesBlogC();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $current_date = date('Y-m-d H:i:s');
-    $id_article = null;
-  
-    if (isset($_POST['id_auteur']) && isset($_POST['titre']) && isset($_POST['contenu'])  && isset($_POST['datePublication'])) {
-      $ArticlesBlog = new ArticlesBlog(
+  $current_date = date('Y-m-d H:i:s');
+  $id_article = null;
 
-        
-        $_POST['id_auteur'], 
-        $_POST['titre'],
-        $_POST['contenu'],
-        $_POST['datePublication'],
-        $current_date,
-      );
-      $ArticlesBlogC->addArticle($ArticlesBlog);
-      header('Location: blogs.php');
-      exit;
-    }
+  if (isset($_POST['id_auteur']) && isset($_POST['titre']) && isset($_POST['contenu'])  && isset($_POST['datePublication'])) {
+    $ArticlesBlog = new ArticlesBlog(
+
+
+      $_POST['id_auteur'],
+      $_POST['titre'],
+      $_POST['contenu'],
+      $_POST['datePublication'],
+      $current_date,
+    );
+    $ArticlesBlogC->addArticle($ArticlesBlog);
+    header('Location: blogs.php');
+    exit;
   }
+}
 ?>
 
 <!DOCTYPE html>
@@ -588,39 +588,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h5 class="card-title">Ajouter un blog</h5>
 
         <!-- General Form Elements -->
-        <form method="POST" id="form">
+        <form method="POST" id="formblog">
 
-  <div class="row mb-3">
-    <label for="id_auteur" class="col-sm-2 col-form-label">Id d'auteur</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control" id="id_auteur" name="id_auteur">
-      <div id="erreurId_auteur"></div>
-    </div>
-  </div>
-  <div class=" row mb-3">
-    <label for="titre" class="col-sm-2 col-form-label">Titre</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control" id="titre" name="titre">
-      <div id="erreurTitre"></div>
-    </div>
-  </div>
-  <div class="row mb-3">
-    <label for="contenu" class="col-sm-2 col-form-label">Contenu</label>
-    <div class="col-sm-10">
-      <input type="text" class="form-control" id="contenu" name="contenu">
-      <div id="erreurContenu"></div>
-    </div>
-  </div>
-  <fieldset class="row mb-3">
-    <legend class="col-form-label col-sm-2 pt-0">Date de création</legend>
-    <div class="col-sm-10">
-      <input class="form-control" type="date" id="datePublication" name="datePublication">
-      <div id="erreurDatePublication"></div>
-    </div>
-  </fieldset>
-  <button type="submit" class="btn btn-primary">Ajouter</button>
-</form>
-<!-- End General Form Elements -->
+          <div class="row mb-3">
+            <label for="id_auteur" class="col-sm-2 col-form-label">Id d'auteur</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="id_auteur" name="id_auteur">
+              <div id="erreurId_auteur"></div>
+            </div>
+          </div>
+          <div class=" row mb-3">
+            <label for="titre" class="col-sm-2 col-form-label">Titre</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="titre" name="titre">
+              <div id="erreurTitre"></div>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="contenu" class="col-sm-2 col-form-label">Contenu</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="contenu" name="contenu">
+              <div id="erreurContenu"></div>
+            </div>
+          </div>
+          <fieldset class="row mb-3">
+            <legend class="col-form-label col-sm-2 pt-0">Date de création</legend>
+            <div class="col-sm-10">
+              <input class="form-control" type="date" id="datePublication" name="datePublication">
+              <div id="erreurDatePublication"></div>
+            </div>
+          </fieldset>
+          <button type="submit" class="btn btn-primary">Ajouter</button>
+        </form>
+        <!-- End General Form Elements -->
 
       </div>
     </div>
@@ -637,7 +637,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       Designed by DevForce
     </div>
   </footer>
-  <script src="controle_saisie_back.js"></script>
   <!-- End Footer -->
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
@@ -657,6 +656,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   <!-- custom js -->
   <script src="assets/js/WYSIWYG.js"></script>
+  <script src="assets/js/controle_saisie_back.js"></script>
 
 </body>
 
