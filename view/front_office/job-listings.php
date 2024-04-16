@@ -255,21 +255,21 @@ Bootstrap 5 HTML CSS Template
 
 
                     <div class="col-lg-12 col-12">
-                        <form class="custom-form hero-form create-form" action="#" method="post" role="form">
+                        <form class="custom-form hero-form create-form" action="#" method="post" role="form" id="jobform">
                             <h3 class="text-white mb-3">Search for talent</h3>
 
                             <div class="row">
                                 <div class="col-lg-4 col-md-4 col-12">
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1"><i class="bi-person custom-icon create-icon"></i></span>
-                                        <input type="text" name="job-titleT" id="job-titleT" class="form-control" placeholder="Job Title">
+                                        <input type="text" name="job-titleT" id="title" class="form-control" placeholder="Job Title">
                                     </div>
                                 </div>
 
                                 <div class="col-lg-4 col-md-4 col-12">
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1"><i class="bi-geo-alt custom-icon create-icon"></i></span>
-                                        <input type="text" name="job-locationT" id="job-locationT" class="form-control" placeholder="Location">
+                                        <input type="text" name="job-locationT" id="location" class="form-control" placeholder="Location">
                                     </div>
                                 </div>
 
@@ -292,7 +292,7 @@ Bootstrap 5 HTML CSS Template
                                 <div class="col-lg-4 col-md-4 col-12">
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1"><i class="bi-cash custom-icon create-icon"></i></span>
-                                        <input type="text" class="form-control" name="job-salaryT" id="job-salaryT" placeholder="Enter Salary">
+                                        <input type="text" class="form-control" name="job-salaryT" id="salary" placeholder="Enter Salary">
                                     </div>
                                 </div>
 
@@ -323,7 +323,7 @@ Bootstrap 5 HTML CSS Template
                                 <div class="col-lg-12 col-12">
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1"><i class="bi-file-richtext custom-icon create-icon"></i></span>
-                                        <input type="text" name="descriptionT" id="descriptionT" class="form-control" placeholder="Description">
+                                        <input type="text" name="descriptionT" id="description" class="form-control" placeholder="Description">
                                     </div>
                                 </div>
 
