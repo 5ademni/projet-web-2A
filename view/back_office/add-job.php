@@ -593,36 +593,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h5 class="card-title">Create job</h5>
 
         <!-- General Form Elements -->
-        <form method="POST">
+        <form method="POST" id="jobform">
           <div class="row mb-3">
             <label for="inputText" class="col-sm-2 col-form-label">Job Title</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" name="title">
+              <input type="text" class="form-control" name="title" id="title">
             </div>
           </div>
           <div class="row mb-3">
             <label for="inputText" class="col-sm-2 col-form-label">Company Name</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" name="company_name">
+              <input type="text" class="form-control" name="company_name" id="company">
             </div>
           </div>
           <div class=" row mb-3">
             <label for="inputText" class="col-sm-2 col-form-label">Location</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" name="location">
+              <input type="text" class="form-control" name="location" id="location">
             </div>
           </div>
           <div class="row mb-3">
             <label for="inputText" class="col-sm-2 col-form-label">Salary</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" name="salary">
+              <input type="text" class="form-control" name="salary" id="salary">
             </div>
           </div>
           <fieldset class="row mb-3">
             <legend class="col-form-label col-sm-2 pt-0">Radios</legend>
             <div class="col-sm-10">
               <div class="form-check">
-                <input class="form-check-input" type="radio" name="status" id="gridRadios1" value="1">
+                <input checked class="form-check-input" type="radio" name="status" id="gridRadios1" value="1">
                 <label class="form-check-label" for="gridRadios1">
                   Active
                 </label>
@@ -682,7 +682,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               </div>
             </div>
           </div>
-          <input type="hidden" id="description" name="description">
+          <input type="hidden" name="description">
           <br>
           <br>
           <br>
@@ -730,6 +730,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   <!-- custom js -->
   <script src="assets/js/WYSIWYG.js"></script>
+  <script src="assets/js/input_control.js"></script>
 </body>
 
 </html>
