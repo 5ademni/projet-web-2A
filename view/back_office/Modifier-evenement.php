@@ -35,7 +35,7 @@ try {
 } catch (Exception $e) {
     echo 'Erreur: ' . $e->getMessage();
 }
-header('Location: evenement.php');
+header('Location: trouver_evenement.php');
 exit;
 }
 ?>

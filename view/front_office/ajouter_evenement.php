@@ -69,6 +69,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo 'Erreur: ' . $e->getMessage();
         }
     }
+    header('Location: trouver_evenement.php');
+    exit;
+
 }
 ?>
 
