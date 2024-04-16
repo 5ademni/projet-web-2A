@@ -8,21 +8,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $current_date = date('Y-m-d H:i:s');
   $id_article = null;
 
-  if (isset($_POST['id_auteur']) && isset($_POST['titre']) && isset($_POST['contenu'])  && isset($_POST['datePublication'])) {
-    $ArticlesBlog = new ArticlesBlog(
+  $ArticlesBlog = new ArticlesBlog(
 
-
-      $_POST['id_auteur'],
-      $_POST['titre'],
-      $_POST['contenu'],
-      $_POST['datePublication'],
-      $current_date,
-    );
-    $ArticlesBlogC->addArticle($ArticlesBlog);
-    header('Location: blogs.php');
-    exit;
-  }
+    $_POST['id_article'],
+    $_POST['id_auteur'],
+    $_POST['titre'],
+    $_POST['contenu'],
+    //$_POST['datePublication'],
+    $current_date,
+  );
+  $ArticlesBlogC->addArticle($ArticlesBlog);
+  header('Location: blogs.php');
+  exit;
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -588,39 +587,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h5 class="card-title">Ajouter un blog</h5>
 
         <!-- General Form Elements -->
-        <form method="POST" id="formblog">
-
+        <form method="POST">
           <div class="row mb-3">
-            <label for="id_auteur" class="col-sm-2 col-form-label">Id d'auteur</label>
+            <label for="inputText" class="col-sm-2 col-form-label">Id d'article</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="id_auteur" name="id_auteur">
-              <div id="erreurId_auteur"></div>
+              <input type="text" class="form-control" name="id_article">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="inputText" class="col-sm-2 col-form-label">Id d'auteur</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="id_auteur">
             </div>
           </div>
           <div class=" row mb-3">
-            <label for="titre" class="col-sm-2 col-form-label">Titre</label>
+            <label for="inputText" class="col-sm-2 col-form-label">Titre</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="titre" name="titre">
-              <div id="erreurTitre"></div>
+              <input type="text" class="form-control" name="titre">
             </div>
           </div>
           <div class="row mb-3">
-            <label for="contenu" class="col-sm-2 col-form-label">Contenu</label>
+            <label for="inputText" class="col-sm-2 col-form-label">Contenu</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="contenu" name="contenu">
-              <div id="erreurContenu"></div>
+              <input type="text" class="form-control" name="contenu">
             </div>
           </div>
           <fieldset class="row mb-3">
             <legend class="col-form-label col-sm-2 pt-0">Date de création</legend>
             <div class="col-sm-10">
-              <input class="form-control" type="date" id="datePublication" name="datePublication">
-              <div id="erreurDatePublication"></div>
+              <input class="form-control" type="date" name="datePublication" id="datePublication">
             </div>
           </fieldset>
           <button type="submit" class="btn btn-primary">Ajouter</button>
-        </form>
-        <!-- End General Form Elements -->
+        </form><!-- End General Form Elements -->
 
       </div>
     </div>
