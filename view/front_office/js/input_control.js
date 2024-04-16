@@ -12,31 +12,48 @@ document
     var salaryInput = document.querySelector("#job-salaryT");
     var descriptionInput = document.querySelector("#descriptionT");
 
+    // Remove any existing error messages
+    document.querySelectorAll(".error-message").forEach(function (item) {
+      item.remove();
+    });
+
     if (!titlePattern.test(titleInput.value)) {
       event.preventDefault();
-      alert(
-        "Invalid title. Please make sure your title is 1-30 characters long and does not contain any special characters."
+      displayError(
+        "Invalid title. Please make sure your title is 1-30 characters long and does not contain any special characters.",
+        titleInput
       );
     }
 
     if (!locationPattern.test(locationInput.value)) {
       event.preventDefault();
-      alert(
-        "Invalid location. Please make sure your location is 1-30 characters long and does not contain any special characters."
+      displayError(
+        "Invalid location. Please make sure your location is 1-30 characters long and does not contain any special characters.",
+        locationInput
       );
     }
 
     if (!salaryPattern.test(salaryInput.value)) {
       event.preventDefault();
-      alert(
-        "Invalid salary. Please make sure your salary is in the correct format (numbers followed by $ or TND)."
+      displayError(
+        "Invalid salary. Please make sure your salary is in the correct format (numbers followed by $ or TND).",
+        salaryInput
       );
     }
 
     if (!descriptionPattern.test(descriptionInput.value)) {
       event.preventDefault();
-      alert(
-        "Invalid description. Please make sure your description is 1-1000 characters long and does not contain any backslashes or forward slashes."
+      displayError(
+        "Invalid description. Please make sure your description is 1-1000 characters long.",
+        descriptionInput
       );
     }
   });
+
+function displayError(message, inputElement) {
+  var errorMessage = document.createElement("div");
+  errorMessage.className = "error-message";
+  errorMessage.style.color = "red";
+  errorMessage.textContent = message;
+  inputElement.parentNode.insertBefore(errorMessage, inputElement.nextSibling);
+}

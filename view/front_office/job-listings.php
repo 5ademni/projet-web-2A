@@ -8,25 +8,39 @@ $jobFieldC = new jobFieldC();
 $totalJobs = $jobPostC->countJobPosts();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $current_date = date('Y-m-d H:i:s');
-    $id = null;
+    $titlePattern = "/^[a-zA-Z0-9\s]{1,30}$/";
+    $locationPattern = "/^[a-zA-Z0-9\s]{1,30}$/";
+    $salaryPattern = "/^[0-9,]+(\$|TND)$/";
+    $descriptionPattern = "/^[a-zA-Z0-9\s,;:!?@#$%&*()-+=\[\]{}|<>.\'\"]{1,1000}$/";
 
-    $jobPost = new JobPost(
-        $_POST['id'] = $id,
-        $_POST['job-titleT'],
-        $_POST['company_name'] = "login company",
-        $_POST['job-locationT'],
-        $_POST['date'] = $current_date,
-        $_POST['job-salaryT'],
-        $_POST['status'] = "1",
-        $_POST['fieldsT'],
-        $_POST['job-levelT'],
-        $_POST['job-typeT'],
-        $_POST['descriptionT']
-    );
-    $jobPostC->addJobPost($jobPost);
-    header('Location: job-listings.php');
-    exit;
+    $title = $_POST['job-titleT'];
+    $location = $_POST['job-locationT'];
+    $salary = $_POST['job-salaryT'];
+    $description = $_POST['descriptionT'];
+
+    if (!preg_match($titlePattern, $title) || !preg_match($locationPattern, $location) || !preg_match($salaryPattern, $salary) || !preg_match($descriptionPattern, $description)) {
+        echo "Data Error";
+    } else {
+        $current_date = date('Y-m-d H:i:s');
+        $id = null;
+
+        $jobPost = new JobPost(
+            $_POST['id'] = $id,
+            $title,
+            $_POST['company_name'] = "login company",
+            $location,
+            $_POST['date'] = $current_date,
+            $salary,
+            $_POST['status'] = "1",
+            $_POST['fieldsT'],
+            $_POST['job-levelT'],
+            $_POST['job-typeT'],
+            $description
+        );
+        $jobPostC->addJobPost($jobPost);
+        header('Location: job-listings.php');
+        exit;
+    }
 }
 ?>
 <!doctype html>
