@@ -35,8 +35,7 @@ try {
 } catch (Exception $e) {
     echo 'Erreur: ' . $e->getMessage();
 }
-header('Location: trouver_evenement.php');
-exit;
+
 }
 ?>
 
@@ -158,12 +157,12 @@ exit;
   <input type="text" class="form-control" id="prix" name="prix" value="<?php echo $evenement['prix']; ?>">
 </div>
 <div class="form-group">
+  <label for="image">Image</label>
+  <input type="file" class="form-control" id="image" name="image" value="<?php echo $evenement['image']; ?>">
+<div class="form-group">
   <label for="nbPlaces">Nombre de Places</label>
   <input type="text" class="form-control" id="nbPlaces" name="nbPlaces" value="<?php echo $evenement['nbPlaces']; ?>">
 </div>
-<div class="form-group">
-  <label for="image">Image</label>
-  <input type="file" class="form-control" id="image" name="image" value="<?php echo $evenement['image']; ?>">
 <!-- ... -->
 
             <button type="submit" class="btn btn-primary">Modifier l'événement</button>

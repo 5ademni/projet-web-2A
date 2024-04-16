@@ -22,16 +22,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $id_auteur_err = "Veuillez entrer un ID d'auteur valide.";
     }
     if (empty($_POST['titre'])) {
-        $titre_err = "Veuillez entrer un titre.";
-    }
-    if (empty($_POST['contenu'])) {
-        $contenu_err = "Veuillez entrer un contenu.";
-    }
+      $titre_err = "Veuillez entrer un titre.";
+  } else {
+      $titre = $_POST['titre'];
+      if (!preg_match("/^[a-zA-ZÀ-ÿ ]*$/",$titre)) {
+          $titre_err = "Seules les lettres et les espaces blancs sont autorisés dans le titre.";
+      }
+  }
+  
+  if (empty($_POST['contenu'])) {
+      $contenu_err = "Veuillez entrer un contenu.";
+  } else {
+      $contenu = $_POST['contenu'];
+      if (!preg_match("/^[a-zA-ZÀ-ÿ ]*$/",$contenu)) {
+          $contenu_err = "Seules les lettres et les espaces blancs sont autorisés dans le contenu.";
+      }
+  }
+  
     if (empty($_POST['dateEvenement'])) {
         $dateEvenement_err = "Veuillez entrer une date d'événement.";
     }
     if (empty($_POST['lieu'])) {
         $lieu_err = "Veuillez entrer un lieu.";
+    }
+    else {
+        $lieu = $_POST['lieu'];
+        if (!preg_match("/^[a-zA-ZÀ-ÿ ]*$/",$lieu)) {
+            $lieu_err = "Seules les lettres et les espaces blancs sont autorisés dans le lieu.";
+        }
     }
     if (empty($_POST['prix']) || !is_numeric($_POST['prix'])) {
         $prix_err = "Veuillez entrer un prix valide.";
