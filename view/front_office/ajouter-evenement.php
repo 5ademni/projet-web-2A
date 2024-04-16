@@ -1,3 +1,39 @@
+<?php
+include_once '../../controller/event2.php';
+include_once '../../model/event.php';
+
+// Créer une instance du contrôleur
+$controller = new EvenementC();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Gérer l'upload de l'image
+    $target_dir = "../../sql/";
+    $target_file = $target_dir . basename($_FILES["image"]["name"]);
+    move_uploaded_file($_FILES["image"]["tmp_name"], $target_file);
+
+    // Créer une instance de la classe Evenement
+    $evenement = new Evenement(
+        $_POST['id_evenement'],
+        $_POST['id_auteur'],
+        $_POST['titre'],
+        $_POST['contenu'],
+        $_POST['dateEvenement'],
+        $_POST['lieu'],
+        $_POST['prix'],
+        $_POST['nbPlaces'],
+        $_POST['heureEvenement'],
+        $target_file
+    );
+
+    // Appeler la méthode addEvenement
+    try {
+        $controller->addEvenement($evenement);
+        echo "L'événement a été ajouté avec succès.";
+    } catch (Exception $e) {
+        echo 'Erreur: ' . $e->getMessage();
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -16,14 +52,55 @@
     <link href="css/tooplate-gotto-job.css" rel="stylesheet">
 </head>
 <body class="about-page" id="top">
-        <nav class="navbar navbar-expand-lg">
-            <div class="container d-flex justify-content-center">
-                <a class="navbar-brand d-flex flex-column align-items-center" href="index.html">
-                    <img src="images/logo.png" class="img-fluid logo-image">
-                    <span class="logo-text">5ademni</span>
-                </a>
-            </div>
-        </nav>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
+                <img src="images/logo.png" class="img-fluid logo-image">
+
+                <div class="d-flex flex-column">
+                    <strong class="logo-text">5ademni</strong>
+                    <small class="logo-slogan">Online Job Portal</small>
+                </div>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav align-items-center ms-lg-5">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Homepage</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link active" href="about.html">About Gotto</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="eventButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">Événements</a>
+                    
+                        <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="eventButton">
+                            <li><a class="dropdown-item" href="ajouter-evenement.html">Ajouter un événement</a></li>
+                            <li><a class="dropdown-item" href="trouver-evenement.html">Trouver un événement</a></li>
+                        </ul>
+                    </li>
+                    
+                    
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
+
+                        <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">
+                            <li><a class="dropdown-item" href="job-listings.html">Job Listings</a></li>
+
+                            <li><a class="dropdown-item" href="job-details.html">Job Details</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact</a>
+                    </li>
+                    </nav>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg">
         <!-- Votre code de navigation ici -->
@@ -39,24 +116,50 @@
                 <div class="row">
                     <div class="col-lg-12 col-12">
                         <!-- Formulaire pour ajouter un événement -->
-                        <form>
+                        <form method="POST" enctype="multipart/form-data">
                             <div class="form-group">
-                                <label for="eventName">Nom de l'événement</label>
-                                <input type="text" class="form-control" id="eventName" placeholder="Entrez le nom de l'événement">
+                            <label for="id_evenement">ID de l'événement</label>
+                           <input type="text" class="form-control" id="id_evenement" name="id_evenement" placeholder="Entrez l'ID de l'événement">
+                          </div>
+                         <div class="form-group">
+                          <label for="id_auteur">ID de l'auteur</label>
+                        <input type="text" class="form-control" id="id_auteur" name="id_auteur" placeholder="Entrez l'ID de l'auteur">
+                           </div>
+                              <label for="titre">Titre de l'événement</label>
+                              <input type="text" class="form-control" id="titre" name="titre" placeholder="Entrez le titre de l'événement">
                             </div>
                             <div class="form-group">
-                                <label for="eventDate">Date de l'événement</label>
-                                <input type="date" class="form-control" id="eventDate">
+                              <label for="contenu">Contenu de l'événement</label>
+                              <input type="text" class="form-control" id="contenu" name="contenu" placeholder="Entrez le contenu de l'événement">
                             </div>
                             <div class="form-group">
-                                <label for="eventLocation">Lieu de l'événement</label>
-                                <input type="text" class="form-control" id="eventLocation" placeholder="Entrez le lieu de l'événement">
+                              <label for="dateEvenement">Date de l'Evenement</label>
+                              <input type="date" class="form-control" id="dateEvenement" name="dateEvenement">
                             </div>
-                            <button type="submit" class="btn btn-primary">Ajouter l'événement</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
+                            <div class="form-group">
+                            <label for="heureEvenement">Heure de l'Evenement</label>
+                             <input type="time" class="form-control" id="heureEvenement" name="heureEvenement">
+                             </div>
+                            <div class="form-group">
+                              <label for="lieu">Lieu de l'événement</label>
+                              <input type="text" class="form-control" id="lieu" name="lieu" placeholder="Entrez le lieu de l'événement">
+                            </div>
+                            <div class="form-group">
+                              <label for="prix">Prix</label>
+                              <input type="text" class="form-control" id="prix" name="prix" placeholder="Entrez le prix de l'événement">
+                            </div>
+                            <div class="form-group">
+                              <label for="nbPlaces">Nombre de Places</label>
+                              <input type="text" class="form-control" id="nbPlaces" name="nbPlaces" placeholder="Entrez le nombre de places disponibles">
+                            </div>
+
+                            <div class="form-group">
+                              <label for="image">Image</label>
+                              <input type="file" class="form-control" id="image" name="image">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Ajouter un evenement</button>
+                          </form>
+                          
         </section>
     </main>
     <footer class="site-footer">
@@ -197,13 +300,6 @@
     </footer>
 
     <!-- JAVASCRIPT FILES -->
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/owl.carousel.min.js"></script>
-    <script src="js/counter.js"></script>
-    <script src="js/custom.js"></script>
-    <!-- Fichiers JavaScript -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
 </body>
 </html>

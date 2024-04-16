@@ -1,34 +1,32 @@
 <?php
-include_once '../../controller/jobPostC.php';
-include_once '../../controller/jobFieldC.php';
+include_once '../../Controller/articlesBlogC.php';
+include_once '../../model/articlesBlog.php';
 
-$jobPostC = new jobPostC();
-$jobFieldC = new jobFieldC();
-
-
+$ArticlesBlogC = new ArticlesBlogC();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $current_date = date('Y-m-d H:i:s');
-  $id = null;
+  $id_article = $_GET['id_article']; // Get the id from the POST data
 
-  $jobPost = new JobPost(
-    $_POST['id'] = $id,
-    $_POST['title'],
-    $_POST['company_name'],
-    $_POST['location'],
-    $_POST['date'] = $current_date,
-    $_POST['salary'],
-    $_POST['status'],
-    $_POST['field_id'],
-    $_POST['level_id'],
-    $_POST['employment_type_id'],
-    $_POST['description']
+  $ArticlesBlog = new ArticlesBlog(
+    $id_article,
+    $_POST['id_auteur'],
+    $_POST['titre'],
+    $_POST['contenu'],
+    //$_POST['datePublication']
+    $current_date,
   );
-  $jobPostC->addJobPost($jobPost);
-  header('Location: job-posts.php');
+  $ArticlesBlogC->updateArticle($id_article, $ArticlesBlog);
+  header('Location: blogs.php');
   exit;
+} elseif (isset($_GET['id_article'])) {
+  $ArticlesBlog = $ArticlesBlogC->getArticle($_GET['id_article']);
+} else {
+  // Initialize the ArticlesBlog object with default values
+  $ArticlesBlog = new ArticlesBlog(0, '', '', '', '');
 }
 ?>
+
+<!-- Your HTML code here -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -577,12 +575,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   ?>
   <main id="main" class="main">
     <div class="pagetitle">
-      <h1>Users</h1>
+      <h1>Utilisateurs</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-          <li class="breadcrumb-item"><a href="job-posts.php">posts d'emploi</a></li>
-          <li class="breadcrumb-item active">creation post demploi </li>
+          <li class="breadcrumb-item"><a href="job-posts.php">Blogs</a></li>
+          <li class="breadcrumb-item active">modification du blogs <?php echo $ArticlesBlog->getIdArticle();; ?></li>
         </ol>
       </nav>
     </div>
@@ -590,111 +588,47 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title">Create job</h5>
+      <h5 class="card-title">modifier blog <?php echo $ArticlesBlog->getIdArticle(); ?></h5>
 
         <!-- General Form Elements -->
-        <form method="POST" id="jobform">
-          <div class="row mb-3">
-            <label for="inputText" class="col-sm-2 col-form-label">Job Title</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" name="title" id="title">
-            </div>
-          </div>
-          <div class="row mb-3">
-            <label for="inputText" class="col-sm-2 col-form-label">Company Name</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" name="company_name" id="company">
-            </div>
-          </div>
-          <div class=" row mb-3">
-            <label for="inputText" class="col-sm-2 col-form-label">Location</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" name="location" id="location">
-            </div>
-          </div>
-          <div class="row mb-3">
-            <label for="inputText" class="col-sm-2 col-form-label">Salary</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" name="salary" id="salary">
-            </div>
-          </div>
-          <fieldset class="row mb-3">
-            <legend class="col-form-label col-sm-2 pt-0">Radios</legend>
-            <div class="col-sm-10">
-              <div class="form-check">
-                <input checked class="form-check-input" type="radio" name="status" id="gridRadios1" value="1">
-                <label class="form-check-label" for="gridRadios1">
-                  Active
-                </label>
-              </div>
-              <div class="form-check">
-                <input class="form-check-input" type="radio" name="status" id="gridRadios2" value="0">
-                <label class="form-check-label" for="gridRadios2">
-                  Inactive
-                </label>
-              </div>
-            </div>
-          </fieldset>
-
-          <div class="row mb-3">
-
-            <label class="col-sm-2 col-form-label">Field</label>
-            <div class="col-sm-10">
-              <select class="form-select" name="field_id" aria-label="Default select example">
-                <?php
-                $fieldlist = $jobFieldC->listJobFields();
-
-                foreach ($fieldlist as $field) {
-                  echo '<option value="' . $field['FieldID'] . '">' . $field['FieldName'] . '</option>';
-                }
-                ?>
-              </select>
-            </div>
-          </div>
-
-          <div class="row mb-3">
-            <label class="col-sm-2 col-form-label">Level</label>
-            <div class="col-sm-10">
-              <select class="form-select" name="level_id" aria-label="Default select example">
-                <option selected value="1">intership</option>
-                <option value="2">junior</option>
-                <option value="3">senior</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="row mb-3">
-            <label class="col-sm-2 col-form-label">Type</label>
-            <div class="col-sm-10">
-              <select class="form-select" name="employment_type_id" aria-label="Default select example">
-                <option selected value="1">full time</option>
-                <option value="2">part time</option>
-                <option value="3">contract</option>
-                <option value="4">Freelance</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="row mb-3">
-            <label class="col-sm-2 col-form-label">Description</label>
-            <div class="col-sm-10">
-              <div class="quill-editor-full">
-              </div>
-            </div>
-          </div>
-          <input type="hidden" name="description">
-          <br>
-          <br>
-          <br>
-
-          <div class="row mb-3">
-            <label class="col-sm-2 col-form-label">Submit Button</label>
-            <div class="col-sm-10">
-              <button type="submit" class="btn btn-primary" value="Submit">Submit Form</button>
-            </div>
-          </div>
-
-        </form><!-- End General Form Elements -->
+<!-- General Form Elements -->
+<form method="POST">
+  <div class="row mb-3">
+    <label for="inputText" class="col-sm-2 col-form-label">Id d'article</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" name="titre" value="<?php echo $ArticlesBlog->getTitre(); ?>">
+    </div>
+  </div>
+  <div class="row mb-3">
+    <label for="inputText" class="col-sm-2 col-form-label">Id d'auteur</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" name="id_auteur" value="<?php echo $ArticlesBlog->getIdAuteur(); ?>">
+    </div>
+  </div>
+  <div class="row mb-3">
+    <label for="inputText" class="col-sm-2 col-form-label">Titre</label>
+    <div class="col-sm-10">
+      <textarea class="form-control" name="contenu"><?php echo $ArticlesBlog->getContenu(); ?></textarea>
+    </div>
+    <div class="row mb-3">
+    <label for="inputText" class="col-sm-2 col-form-label">Contenu</label>
+    <div class="col-sm-10">
+      <textarea class="form-control" name="contenu"><?php echo $ArticlesBlog->getContenu(); ?></textarea>
+    </div>
+  </div>
+  <div class="row mb-3">
+    <label for="inputText" class="col-sm-2 col-form-label">Date de publication </label>
+    <div class="col-sm-10">
+      <input type="date" class="form-control" name="datePublication" value="<?php echo $ArticlesBlog->getDatePublication(); ?>">
+    </div>
+  </div>
+  <div class="row mb-3">
+    <div class="col-sm-10">
+      <button type="submit" class="btn btn-primary" value="Submit">Modifier blog</button>
+    </div>
+  </div>
+</form>
+<!-- End General Form Elements -->
 
       </div>
     </div>
@@ -730,7 +664,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   <!-- custom js -->
   <script src="assets/js/WYSIWYG.js"></script>
-  <script src="assets/js/input_control.js"></script>
 </body>
 
 </html>
