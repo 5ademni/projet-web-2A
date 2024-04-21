@@ -120,4 +120,14 @@
    div.container {
      margin: 0 20px auto
    }
- }
+   
+ 
+ 
+   .event-image {
+    width: 50%; /* Réduisez la largeur à 50% */
+    height: auto; /* Ajustez la hauteur automatiquement pour maintenir les proportions de l'image */
+    display: block; /* Centre l'image */
+    margin: 0 auto;
+    max-width: 100%; /* Assurez-vous que l'image ne dépasse pas son conteneur */
+    object-fit: cover; /* Redimensionnez l'image pour remplir le conteneur tout en conservant son aspect */
+  }}

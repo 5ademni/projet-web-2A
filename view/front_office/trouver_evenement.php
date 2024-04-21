@@ -1,31 +1,31 @@
+
 <?php
+session_start();
+var_dump($_SESSION['id']);
 include_once '../../controller/event2.php';
 $Eventc = new EvenementC();
 $events = $Eventc->getEvents();
 ?>
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Événements</title>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter un événement</title>
 
     <!-- CSS FILES -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" type="text/css" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@100;300;400;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link href="css/bootstrap.min.css" rel="stylesheet" />
-    <link href="css/bootstrap-icons.css" rel="stylesheet" />
-    <link href="css/owl.carousel.min.css" rel="stylesheet" />
-    <link href="css/owl.theme.default.min.css" rel="stylesheet" />
-    <link href="css/tooplate-gotto-job.css" rel="stylesheet" />
-    <link href="css/ticket.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@100;300;400;600;700&display=swap" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-icons.css" rel="stylesheet">
+    <link href="css/owl.carousel.min.css" rel="stylesheet">
+    <link href="css/owl.theme.default.min.css" rel="stylesheet">
+    <link href="css/tooplate-gotto-job.css" rel="stylesheet">
+    <link href="css/valid.css" rel="stylesheet">
+    <link href="css/ticket.css" rel="stylesheet">
 
-    
-    </head>
+</head>
 <body class="about-page" id="top">
     <nav class="navbar navbar-expand-lg">
         <div class="container">
@@ -56,13 +56,13 @@ $events = $Eventc->getEvents();
                     
                         <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="eventButton">
                             <li><a class="dropdown-item" href="ajouter_evenement.php">Ajouter un événement</a></li>
-                            <li><a class="dropdown-item" href="trouver_evenement.php">Trouver un événement</a></li>
+                            <li><a class="dropdown-item" href="trouver_id_auteur.php">Trouver un événement</a></li>
                         </ul>
                     </li>
                     
                     
-          
-                      <li class="nav-item dropdown">
+
+                    <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
 
                         <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">
@@ -76,6 +76,15 @@ $events = $Eventc->getEvents();
                         <a class="nav-link" href="contact.html">Contact</a>
                     </li>
                     </nav>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg">
+        <!-- Votre code de navigation ici -->
+    </nav>
+    <main>
+        <header class="site-header">
+            <!-- En-tête de la page -->
+        </header>
+
     <link href="https://fonts.googleapis.com/css?family=Cabin|Indie+Flower|Inknut+Antiqua|Lora|Ravi+Prakash" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"  />
         <main>
@@ -100,6 +109,7 @@ $events = $Eventc->getEvents();
             <i class="fa fa-table"></i>
           </div>
           <p><?= date('l jS F Y', strtotime($event['dateEvenement'])) ?> <br/> <?= date('H:i', strtotime($event['heureEvenement'])) ?></p>
+          <img class="event-image" src="<?= $event['image'] ?>" alt="Image de l'événement" />
         </div>
         <div class="fix"></div>
         <div class="loc">
@@ -116,16 +126,17 @@ $events = $Eventc->getEvents();
           <p><?= $event['nbPlaces'] ?> Places disponibles</p>
         </div>
         <div class="fix"></div>
-        <a href="Modifier_evenement.php?id=<?php echo $event['id_evenement'] ?>"class="modify" style="background-color: blue; color: white;">Modifier</button></a>
+        <?php 
+        var_dump($event['id_auteur']);
+        if ($event['id_auteur'] == $_SESSION['id']) : ?>
+        <a href="Modifier_evenement.php?id=<?php echo $event['id_evenement'] ?>"class="modify" style="background-color: blue; color: white;">Modifier</a>
         <a href="supprimer_evenement.php?id=<?php echo $event['id_evenement'] ?>" class="delete" style="background-color: red; color: white; margin-left: 10px;">Supprimer</a>
+        <?php endif; ?>
         <button class="tickets"><?= $event['prix'] ?> TND </button>
       </div> <!-- end item-right -->
     </div> <!-- end item -->
   <?php endforeach; ?>
 </div> 
-
-
-
 
 
     </main>

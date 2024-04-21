@@ -44,7 +44,7 @@
                     
                         <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="eventButton">
                             <li><a class="dropdown-item" href="ajouter_evenement.php">Ajouter un événement</a></li>
-                            <li><a class="dropdown-item" href="trouver_evenement.php">Trouver un événement</a></li>
+                            <li><a class="dropdown-item" href="verifier_id_auteur.php">Trouver un événement</a></li>
                         </ul>
                     </li>
                     

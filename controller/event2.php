@@ -129,4 +129,17 @@ public function getEvenement($id)
             die('Erreur: ' . $e->getMessage());
         }
     }
-}
+
+public function existeid_auteur($id_auteur)
+{
+    $sql = "SELECT * FROM evenement WHERE id_auteur = :id_auteur";
+    $db = config::getConnexion();
+    try {
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':id_auteur', $id_auteur);
+        $stmt->execute();
+        return $stmt->fetch();
+    } catch (Exception $e) {
+        die('Erreur: ' . $e->getMessage());
+    }
+}}

@@ -22,6 +22,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($_POST['id_auteur']) || !is_numeric($_POST['id_auteur'])) {
         $id_auteur_err = "Veuillez entrer un ID d'auteur valide.";
     }
+    if(($controller->existeid_auteur($_POST['id_auteur']))==false){
+        $id_auteur_err = "Cet auteur n'existe pas.";
+    }
     if (empty($_POST['titre'])) {
         $titre_err = "Veuillez entrer un titre.";
     } else {
@@ -140,7 +143,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     
                         <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="eventButton">
                             <li><a class="dropdown-item" href="ajouter_evenement.php">Ajouter un événement</a></li>
-                            <li><a class="dropdown-item" href="trouver_evenement.php">Trouver un événement</a></li>
+                            <li><a class="dropdown-item" href="trouver_id_auteur.php">Trouver un événement</a></li>
                         </ul>
                     </li>
                     
