@@ -118,6 +118,22 @@ public function getArticleById($id)
 }
 
 
+public function getArticlesByAuteur($id_auteur)
+{
+    $sql = "SELECT * FROM articlesblog WHERE id_auteur = :id_auteur";
+    $db = config::getConnexion();
+    try {
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':id_auteur', $id_auteur);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    } catch (Exception $e) {
+        die('Erreur: ' . $e->getMessage());
+    }
+}
+
+
+
 
 
 }

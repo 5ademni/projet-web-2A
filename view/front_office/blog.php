@@ -1,5 +1,8 @@
 <?php
-include "../../controller/articlesBlogC.php";
+include_once "../../controller/articlesBlogC.php";
+include_once '../../controller/auteursC.php';
+
+
 $articlesBlogC = new ArticlesBlogC();
 
 if (isset($_GET['addDummy'])) {
@@ -13,7 +16,24 @@ if (isset($_GET['delete'])) {
 }
 
 $articlesBlogC = $articlesBlogC->listArticles();
+
+
+
+$AuteursC = new AuteursC();
+$ArticlesBlogC = new ArticlesBlogC();
+
+if (isset($_GET['auteur']) && $_GET['auteur'] != '') {
+    $id_auteur = $_GET['auteur']; 
+    $articlesBlogC = $ArticlesBlogC->getArticlesByAuteur($id_auteur);
+ //   var_dump($articles);
+} else {
+    $articlesBlogC = $ArticlesBlogC->listArticles();
+}
+
+$auteurs = $AuteursC->listAuteurs();
+
 ?>
+
 
 
 
@@ -66,7 +86,7 @@ Bootstrap 5 HTML CSS Template
         <img src="images/logo.png" class="img-fluid logo-image" />
 
         <div class="d-flex flex-column">
-          <strong class="logo-text">Gotto</strong>
+          <strong class="logo-text">5ademni</strong>
           <small class="logo-slogan">Online Job Portal</small>
         </div>
       </a>
@@ -169,21 +189,17 @@ Bootstrap 5 HTML CSS Template
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<form action="blog.php" method="get">
+    <select name="auteur">
+        <option value="">Sélectionnez un auteur</option>
+        <?php
+        foreach ($auteurs as $auteur) {
+            echo "<option value=\"" . $auteur['id_auteur'] . "\">" . $auteur['nom'] . "</option>";
+        }
+        ?>
+    </select>
+    <input type="submit" value="Trouver les articles">
+</form>
 
 
 
@@ -251,7 +267,6 @@ Bootstrap 5 HTML CSS Template
 
         <div class="col-lg-2 col-md-3 col-6">
           <h6 class="site-footer-title">Resources</h6>
-
           <ul class="footer-menu">
             <li class="footer-menu-item">
               <a href="#" class="footer-menu-link">Guide</a>
