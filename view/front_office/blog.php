@@ -62,7 +62,7 @@ Bootstrap 5 HTML CSS Template
 <body class="about-page" id="top">
   <nav class="navbar navbar-expand-lg">
     <div class="container">
-      <a class="navbar-brand d-flex align-items-center" href="index.html">
+      <a class="navbar-brand d-flex align-items-center" href="index.php">
         <img src="images/logo.png" class="img-fluid logo-image" />
 
         <div class="d-flex flex-column">
@@ -78,7 +78,7 @@ Bootstrap 5 HTML CSS Template
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav align-items-center ms-lg-5">
           <li class="nav-item">
-            <a class="nav-link" href="index.html">Homepage</a>
+            <a class="nav-link" href="index.php">Homepage</a>
           </li>
 
           <li class="nav-item">
@@ -110,6 +110,9 @@ Bootstrap 5 HTML CSS Template
 
           <li class="nav-item">
             <a class="nav-link" href="contact.html">Contact</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="add-blog.php">Ajouter blog</a>
           </li>
 
           <li class="nav-item ms-lg-auto">
@@ -151,8 +154,9 @@ Bootstrap 5 HTML CSS Template
         <h1><?php echo $ArticlesBlogC['titre']; ?></h1>
         <p><?php echo $ArticlesBlogC['contenu']; ?></p>
         <p class="read-more">
-          <a href="update_employe.php?id=<?php echo $ArticlesBlogC['id_article']; ?>">Update</a>
-          <a href="?delete=<?php echo $ArticlesBlogC['id_article']; ?>">Delete</a>
+          <a href="blog-edit.php?id=<?php echo $ArticlesBlogC['id_article']; ?>">Modifier le blog</a>
+          <br>
+          <a href="?delete=<?php echo $ArticlesBlogC['id_article']; ?>">Supprimer le blog</a>
         </p>
       </div>
     </div>
@@ -241,6 +245,7 @@ Bootstrap 5 HTML CSS Template
             <li class="footer-menu-item">
               <a href="#" class="footer-menu-link">Contact</a>
             </li>
+            
           </ul>
         </div>
 
