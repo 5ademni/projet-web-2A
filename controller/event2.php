@@ -18,7 +18,7 @@ class EvenementC
 
     public function addEvenement(Evenement $evenement)
     {
-        $sql = "INSERT INTO evenement (id_evenement,id_auteur, titre, contenu, dateEvenement, lieu, prix, nbPlaces, image,heureEvenement) VALUES (:id_evenement,:id_auteur, :titre, :contenu, :dateEvenement, :lieu, :prix, :nbPlaces, :image,:heureEvenement)";
+        $sql = "INSERT INTO evenement (id_evenement,id_auteur, titre, contenu, dateEvenement, lieu, prix, nbPlaces, image,heureEvenement,id_categorie) VALUES (:id_evenement,:id_auteur, :titre, :contenu, :dateEvenement, :lieu, :prix, :nbPlaces, :image,:heureEvenement,:id_categorie)";
         $db = config::getConnexion();
         try {
             $stmt = $db->prepare($sql);
@@ -32,6 +32,7 @@ class EvenementC
             $stmt->bindValue(':nbPlaces', $evenement->getNbPlaces());
             $stmt->bindValue(':image', $evenement->getImage());
             $stmt->bindValue(':heureEvenement', $evenement->getHeureEvenement());
+            $stmt->bindValue(':id_categorie', $evenement->getIdCategorie());
 
             $stmt->execute();
         } catch (Exception $e) {

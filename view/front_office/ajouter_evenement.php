@@ -201,9 +201,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             $categorieController = new CategorieEvenementC(); 
                           $categories = $categorieController->listCategories();
                           foreach ($categories as $categorie) {
-                           $id_categorie = $categorie->getId_categorie();
-                          $nom_categorie = $categorie->getNom_categorie();
-                          echo "<option value=\"" . $id_categorie . "\">" . $nom_categorie . "</option>";
+                          echo "<option value=\"" . $categorie['id_categorie'] . "\">" . $categorie['nom_categorie']. "</option>";
                            }
                           ?>
                           </select>

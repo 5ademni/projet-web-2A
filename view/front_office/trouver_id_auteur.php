@@ -21,7 +21,6 @@
     <link href="css/owl.carousel.min.css" rel="stylesheet" />
     <link href="css/owl.theme.default.min.css" rel="stylesheet" />
     <link href="css/tooplate-gotto-job.css" rel="stylesheet" />
-    <link href="css/ticket.css" rel="stylesheet" />
 
     
     </head>
