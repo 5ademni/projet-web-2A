@@ -142,4 +142,20 @@ public function existeid_auteur($id_auteur)
     } catch (Exception $e) {
         die('Erreur: ' . $e->getMessage());
     }
-}}
+
+}
+public function getEventsByCategory($id_categorie)
+{
+    $sql = "SELECT * FROM evenement WHERE id_categorie = :id_categorie";
+    $db = config::getConnexion();
+    try {
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':id_categorie', $id_categorie);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    } catch (Exception $e) {
+        die('Erreur: ' . $e->getMessage());
+    }
+}
+}
+?>

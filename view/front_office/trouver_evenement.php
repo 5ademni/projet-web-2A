@@ -3,8 +3,18 @@
 session_start();
 var_dump($_SESSION['id']);
 include_once '../../controller/event2.php';
+include_once '../../controller/Categorie_Evenement2.php'; // Inclure le fichier correct
 $Eventc = new EvenementC();
-$events = $Eventc->getEvents();
+$CategorieEvenementC = new CategorieEvenementC(); // Utiliser la classe correcte
+
+if (isset($_GET['categorie']) && $_GET['categorie'] != '') {
+    $categorie_id = $_GET['categorie'];
+    $events = $Eventc->getEventsByCategory($categorie_id);
+} else {
+    $events = $Eventc->getEvents();
+}
+
+$categories = $CategorieEvenementC->listCategories();
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -80,6 +90,17 @@ $events = $Eventc->getEvents();
     <nav class="navbar navbar-expand-lg">
         <!-- Votre code de navigation ici -->
     </nav>
+    <form action="trouver_evenement.php" method="get">
+  <select name="categorie">
+    <option value="">Sélectionnez une catégorie</option>
+    <?php
+    foreach ($categories as $categorie) {
+        echo "<option value=\"" . $categorie['id_categorie'] . "\">" . $categorie['nom_categorie'] . "</option>";
+    }
+    ?>
+  </select>
+  <input type="submit" value="Rechercher">
+</form>
     <main>
         <header class="site-header">
             <!-- En-tête de la page -->

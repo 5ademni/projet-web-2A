@@ -1,12 +1,14 @@
 <?php
 include_once '../../controller/event2.php';
 include_once '../../model/event.php';
+include_once '../../controller/categorie_evenement2.php';
 
 // Créer une instance du contrôleur
 $controller = new EvenementC();
 
+
 // Initialiser les messages d'erreur
-$id_evenement_err = $id_auteur_err = $titre_err = $contenu_err = $dateEvenement_err = $lieu_err = $prix_err = $nbPlaces_err = $image_err = $heureEvenement_err = "";
+$id_evenement_err = $id_auteur_err = $titre_err = $contenu_err = $dateEvenement_err = $lieu_err = $prix_err = $nbPlaces_err = $image_err = $heureEvenement_err = $id_categorie_err = ""; // Ajout de $id_categorie_err
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Gérer l'upload de l'image
@@ -61,12 +63,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($_POST['nbPlaces']) || !is_numeric($_POST['nbPlaces'])) {
         $nbPlaces_err = "Veuillez entrer un nombre de places valide.";
     }
-    
-    if (empty($_POST['heureEvenement'])) {
-        $heureEvenement_err = "Veuillez entrer une heure d'événement.";
+
+    // Ajout de la validation pour id_categorie
+    if (empty($_POST['id_categorie']) || !is_numeric($_POST['id_categorie'])) {
+        $id_categorie_err = "Veuillez sélectionner une catégorie.";
     }
 
-    if (empty($id_evenement_err) && empty($id_auteur_err) && empty($titre_err) && empty($contenu_err) && empty($dateEvenement_err) && empty($lieu_err) && empty($prix_err) && empty($nbPlaces_err) && empty($image_err) && empty($heureEvenement_err)) {
+    if (empty($id_evenement_err) && empty($id_auteur_err) && empty($titre_err) && empty($contenu_err) && empty($dateEvenement_err) && empty($lieu_err) && empty($prix_err) && empty($nbPlaces_err) && empty($image_err) && empty($heureEvenement_err) && empty($id_categorie_err)) { // Ajout de $id_categorie_err à la condition
         // Créer une instance de la classe Evenement
         $evenement = new Evenement(
             $_POST['id_evenement'],
@@ -79,6 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_POST['nbPlaces'],
             $target_file,
             $_POST['heureEvenement'],
+            $_POST['id_categorie'] // Ajout de id_categorie à la construction de l'objet Evenement
         );
 
         // Appeler la méthode addEvenement
@@ -89,10 +93,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo 'Erreur: ' . $e->getMessage();
         }
     }
-    
-
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -183,10 +186,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <input type="text" class="form-control" id="id_evenement" name="id_evenement" placeholder="Entrez l'ID de l'événement">
                             <span class="error"><?php echo $id_evenement_err;?></span>
                         </div>
-                        <div class="form-group
+                        <div class="form-group">
                             <label for="id_auteur">ID de l'auteur</label>
                             <input type="text" class="form-control" id="id_auteur" name="id_auteur" placeholder="Entrez l'ID de l'auteur">
                             <span class="error"><?php echo $id_auteur_err;?></span>
+                        </div>
+                            <div class="form-group">
+                            <label for="id_categorie">Catégorie</label>
+                            <select class="form-control" id="id_categorie" name="id_categorie">
+                            <?php
+                            ini_set('display_errors', 1);
+                            ini_set('display_startup_errors', 1);
+                            error_reporting(E_ALL);
+                            $categorieController = new CategorieEvenementC(); 
+                          $categories = $categorieController->listCategories();
+                          foreach ($categories as $categorie) {
+                           $id_categorie = $categorie->getId_categorie();
+                          $nom_categorie = $categorie->getNom_categorie();
+                          echo "<option value=\"" . $id_categorie . "\">" . $nom_categorie . "</option>";
+                           }
+                          ?>
+                          </select>
+                          <span class="error"><?php echo $id_categorie_err;?></span>
                         </div>
                         <div class="form-group
                             <label for="titre">Titre</label>
