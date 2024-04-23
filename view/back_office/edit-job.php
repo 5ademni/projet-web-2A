@@ -576,7 +576,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   ?>
   <main id="main" class="main">
     <div class="pagetitle">
-      <h1>Users</h1>
+      <h1>Job posts</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
@@ -592,29 +592,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <h5 class="card-title">Edit job <?php echo $job_post['JobID']; ?></h5>
 
         <!-- General Form Elements -->
-        <form method="POST">
+        <form method="POST" id="jobform">
           <div class="row mb-3">
             <label for="inputText" class="col-sm-2 col-form-label">Job Title</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" name="title" value="<?php echo $job_post['Title']; ?>">
+              <input type="text" class="form-control" name="title" id="title" value="<?php echo $job_post['Title']; ?>">
             </div>
           </div>
           <div class="row mb-3">
             <label for="inputText" class="col-sm-2 col-form-label">Company Name</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" name="company_name" value="<?php echo $job_post['Company']; ?>">
+              <input type="text" class="form-control" name="company_name" id="company" value="<?php echo $job_post['Company']; ?>">
             </div>
           </div>
           <div class=" row mb-3">
             <label for="inputText" class="col-sm-2 col-form-label">Location</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" name="location" value="<?php echo $job_post['Location']; ?>">
+              <input type="text" class="form-control" name="location" id="location" value="<?php echo $job_post['Location']; ?>">
             </div>
           </div>
           <div class="row mb-3">
             <label for="inputText" class="col-sm-2 col-form-label">Salary</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" name="salary" value="<?php echo $job_post['Salary']; ?>">
+              <input type="text" class="form-control" name="salary" id="salary" value="<?php echo $job_post['Salary']; ?>">
             </div>
           </div>
           <fieldset class="row mb-3">
@@ -684,7 +684,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               </div>
             </div>
           </div>
-          <input type="hidden" id="description" name="description">
+          <input type="hidden" name="description">
           <br>
           <br>
           <br>
@@ -732,6 +732,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   <!-- custom js -->
   <script src="assets/js/WYSIWYG.js"></script>
+  <script src="assets/js/input_control.js"></script>
 </body>
 
 </html>

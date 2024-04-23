@@ -1370,6 +1370,28 @@ nav[aria-label="breadcrumb"] {
   transform: scale(1.15);
 }
 
+.edit-btn {
+  background-color: #ffffff; /* This makes the button white */
+  color: #007bff; /* This makes the text color blue */
+}
+
+.edit-btn:hover {
+  background-color: #007bff; /* This makes the button blue when hovered */
+  color: #ffffff; /* This makes the text white when hovered */
+}
+
+.create-form {
+  background-color: #0d47a1;
+}
+
+.create-form button[type="submit"] {
+  background-color: #42a5f5;
+}
+
+.create-form .create-icon {
+  color: #007bff;
+}
+
 /*---------------------------------------
   RESPONSIVE STYLES               
 -----------------------------------------*/

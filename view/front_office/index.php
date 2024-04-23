@@ -42,7 +42,7 @@ Bootstrap 5 HTML CSS Template
 
     <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="index.html">
+            <a class="navbar-brand d-flex align-items-center" href="index.php">
                 <img src="images/logo.png" class="img-fluid logo-image">
 
                 <div class="d-flex flex-column">
@@ -57,7 +57,7 @@ Bootstrap 5 HTML CSS Template
             <div class="collapse navbar-collapse" id="navbarNav" style="margin-top: 5px;">
                 <ul class="navbar-nav align-items-center ms-lg-5">
                     <li class="nav-item">
-                        <a class="nav-link active" href="index.html">Page d'accueil</a>
+                        <a class="nav-link active" href="index.php">Page d'accueil</a>
                     </li>
 
                     <li class="nav-item">
@@ -68,14 +68,8 @@ Bootstrap 5 HTML CSS Template
                         <a class="nav-link" href="blog.php">Blogs</a>
                     </li>
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
-
-                        <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">
-                            <li><a class="dropdown-item" href="job-listings.html">Listes d'emplois</a></li>
-
-                            <li><a class="dropdown-item" href="job-details.html">Détails du poste</a></li>
-                        </ul>
+                    <li class="nav-item">
+                        <a class="nav-link" href="job-listings.php">Jobs</a>
                     </li>
 
                     <li class="nav-item">
