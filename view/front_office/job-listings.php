@@ -69,6 +69,10 @@ if (isset($_GET['search'])) {
         $locationS = $_GET['job-locationS'];
         $list = array_merge($list, $jobPostC->searchJobPostByLocation($locationS));
     }
+    if (!empty($_GET['fieldsS'])) {
+        $fieldsS = $_GET['fieldsS'];
+        $list = array_merge($list, $jobPostC->searchJobPostByFieldId($fieldsS));
+    }
     $list = array_unique($list, SORT_REGULAR);
 } else {
     $list = $jobPostC->listJobPosts();
@@ -212,7 +216,7 @@ Bootstrap 5 HTML CSS Template
                                     </div>
                                 </div>
 
-                                <div class="col-lg-6 col-md-6 col-12">
+                                <div class="col-lg-4 col-md-4 col-12">
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1"><i class="bi-laptop custom-icon"></i></span>
 
@@ -225,7 +229,7 @@ Bootstrap 5 HTML CSS Template
                                     </div>
                                 </div>
 
-                                <div class="col-lg-6 col-md-6 col-12">
+                                <div class="col-lg-4 col-md-4 col-12">
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1"><i class="bi-laptop custom-icon"></i></span>
 
@@ -236,6 +240,22 @@ Bootstrap 5 HTML CSS Template
                                             <option value="3">Contract</option>
                                             <option value="4">Freelance</option>
                                             <option value="5">Remote</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-12">
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon1"><i class="bi-briefcase custom-icon create-icon"></i></span>
+                                        <select class="form-select form-control" name="fieldsS" id="fieldsT" aria-label="Default select example">
+                                            <option selected>field</option>
+                                            <?php
+                                            $fieldlist = $jobFieldC->listJobFields();
+
+                                            foreach ($fieldlist as $field) {
+                                                echo '<option value="' . $field['FieldID'] . '">' . $field['FieldName'] . '</option>';
+                                            }
+                                            ?>
                                         </select>
                                     </div>
                                 </div>

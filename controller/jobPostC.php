@@ -119,7 +119,12 @@ class JobPostC
 
   public function searchJobPostByFieldId($fieldId)
   {
-    $sql = "SELECT * FROM jobpostings WHERE FieldID = ?";
+    $sql = "SELECT jobpostings.*, fields.FieldName, levels.LevelName, employmenttypes.EmploymentTypeName 
+            FROM jobpostings 
+            LEFT JOIN fields ON jobpostings.FieldID = fields.FieldID 
+            LEFT JOIN levels ON jobpostings.LevelID = levels.LevelID 
+            LEFT JOIN employmenttypes ON jobpostings.EmploymentTypeID = employmenttypes.EmploymentTypeID
+            WHERE jobpostings.FieldID = ?";
     $db = config::getConnexion();
     try {
       $stmt = $db->prepare($sql);
@@ -133,7 +138,12 @@ class JobPostC
 
   public function searchJobPostByLevelId($levelId)
   {
-    $sql = "SELECT * FROM jobpostings WHERE LevelID = ?";
+    $sql = "SELECT jobpostings.*, fields.FieldName, levels.LevelName, employmenttypes.EmploymentTypeName 
+            FROM jobpostings 
+            LEFT JOIN fields ON jobpostings.FieldID = fields.FieldID 
+            LEFT JOIN levels ON jobpostings.LevelID = levels.LevelID 
+            LEFT JOIN employmenttypes ON jobpostings.EmploymentTypeID = employmenttypes.EmploymentTypeID
+            WHERE jobpostings.LevelID = ?";
     $db = config::getConnexion();
     try {
       $stmt = $db->prepare($sql);
@@ -147,7 +157,12 @@ class JobPostC
 
   public function searchJobPostByEmploymentTypeId($employmentTypeId)
   {
-    $sql = "SELECT * FROM jobpostings WHERE EmploymentTypeID = ?";
+    $sql = "SELECT jobpostings.*, fields.FieldName, levels.LevelName, employmenttypes.EmploymentTypeName 
+            FROM jobpostings 
+            LEFT JOIN fields ON jobpostings.FieldID = fields.FieldID 
+            LEFT JOIN levels ON jobpostings.LevelID = levels.LevelID 
+            LEFT JOIN employmenttypes ON jobpostings.EmploymentTypeID = employmenttypes.EmploymentTypeID
+            WHERE jobpostings.EmploymentTypeID = ?";
     $db = config::getConnexion();
     try {
       $stmt = $db->prepare($sql);
@@ -161,7 +176,12 @@ class JobPostC
 
   public function searchJobPostByTitle($title)
   {
-    $sql = "SELECT * FROM jobpostings WHERE Title = ?";
+    $sql = "SELECT jobpostings.*, fields.FieldName, levels.LevelName, employmenttypes.EmploymentTypeName 
+            FROM jobpostings 
+            LEFT JOIN fields ON jobpostings.FieldID = fields.FieldID 
+            LEFT JOIN levels ON jobpostings.LevelID = levels.LevelID 
+            LEFT JOIN employmenttypes ON jobpostings.EmploymentTypeID = employmenttypes.EmploymentTypeID
+            WHERE jobpostings.Title = ?";
     $db = config::getConnexion();
     try {
       $stmt = $db->prepare($sql);
@@ -175,7 +195,12 @@ class JobPostC
 
   public function searchJobPostBySalary($salary)
   {
-    $sql = "SELECT * FROM jobpostings WHERE Salary = ?";
+    $sql = "SELECT jobpostings.*, fields.FieldName, levels.LevelName, employmenttypes.EmploymentTypeName 
+            FROM jobpostings 
+            LEFT JOIN fields ON jobpostings.FieldID = fields.FieldID 
+            LEFT JOIN levels ON jobpostings.LevelID = levels.LevelID 
+            LEFT JOIN employmenttypes ON jobpostings.EmploymentTypeID = employmenttypes.EmploymentTypeID
+            WHERE jobpostings.Salary = ?";
     $db = config::getConnexion();
     try {
       $stmt = $db->prepare($sql);
@@ -189,11 +214,16 @@ class JobPostC
 
   public function searchJobPostByLocation($location)
   {
-    $sql = "SELECT * FROM jobpostings WHERE Location = ?";
+    $sql = "SELECT jobpostings.*, fields.FieldName, levels.LevelName, employmenttypes.EmploymentTypeName 
+            FROM jobpostings 
+            LEFT JOIN fields ON jobpostings.FieldID = fields.FieldID 
+            LEFT JOIN levels ON jobpostings.LevelID = levels.LevelID 
+            LEFT JOIN employmenttypes ON jobpostings.EmploymentTypeID = employmenttypes.EmploymentTypeID
+            WHERE jobpostings.Location LIKE ?";
     $db = config::getConnexion();
     try {
       $stmt = $db->prepare($sql);
-      $stmt->execute([$location]);
+      $stmt->execute([$location . '%']); // append '%' to the end of $location
       $job_posts = $stmt->fetchAll();
       return $job_posts;
     } catch (Exception $e) {
