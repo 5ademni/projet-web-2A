@@ -200,7 +200,7 @@ class JobPostC
             LEFT JOIN fields ON jobpostings.FieldID = fields.FieldID 
             LEFT JOIN levels ON jobpostings.LevelID = levels.LevelID 
             LEFT JOIN employmenttypes ON jobpostings.EmploymentTypeID = employmenttypes.EmploymentTypeID
-            WHERE jobpostings.Salary = ?";
+            WHERE jobpostings.Salary >= ?";
     $db = config::getConnexion();
     try {
       $stmt = $db->prepare($sql);
