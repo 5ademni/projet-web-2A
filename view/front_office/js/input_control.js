@@ -1,7 +1,7 @@
 document.querySelector("#jobform").addEventListener("submit", function (event) {
   const titlePattern = /^[a-zA-Z0-9\s]{1,30}$/;
   const locationPattern = /^[a-zA-Z0-9\s]{1,30}$/;
-  const salaryPattern = /^[0-9,]+(\$|TND)$/;
+  const salaryPattern = /^\d{1,8}$/;
   const descriptionPattern =
     /^[a-zA-Z0-9\s,;:!?@#$%&*()-+=\[\]{}|<>.\'\"]{1,1000}$/;
 
@@ -34,7 +34,7 @@ document.querySelector("#jobform").addEventListener("submit", function (event) {
   if (!salaryPattern.test(salaryInput.value)) {
     event.preventDefault();
     displayError(
-      "Invalid salary. Please make sure your salary is in the correct format (numbers followed by $ or TND).",
+      "Invalid salary. Please make sure your salary is a number with a maximum of 8 digits.",
       salaryInput
     );
   }
