@@ -493,7 +493,7 @@ Bootstrap 5 HTML CSS Template
                                     <div class="d-flex align-items-center border-top pt-3">
                                         <p class="job-price mb-0">
                                             <i class="custom-icon bi-cash me-1"></i>
-                                            <?php echo $jobPost['Salary']; ?>
+                                            <?php echo $jobPost['Salary']; ?> TND
                                         </p>
 
                                         <a href="job-details.php?id=<?php echo $jobPost['JobID']; ?>" class="custom-btn btn ms-auto">Apply now</a>

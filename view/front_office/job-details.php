@@ -189,7 +189,7 @@ Bootstrap 5 HTML CSS Template
 
                                 <p class="job-price mb-0">
                                     <i class="custom-icon bi-cash me-1"></i>
-                                    <?php echo $jobPost['Salary']; ?>
+                                    <?php echo $jobPost['Salary']; ?> TND
                                 </p>
 
                                 <div class="d-flex">
