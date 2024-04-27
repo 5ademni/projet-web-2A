@@ -42,6 +42,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 }
+//SEARCH
+$list = [];
+if (isset($_GET['search'])) {
+    if (!empty($_GET['job-fieldS'])) {
+        $fieldS = $_GET['job-fieldS'];
+        $list = array_merge($list, $jobPostC->searchJobPostByFieldId($fieldS));
+    }
+    if (!empty($_GET['job-levelS'])) {
+        $levelS = $_GET['job-levelS'];
+        $list = array_merge($list, $jobPostC->searchJobPostByLevelId($levelS));
+    }
+    if (!empty($_GET['job-typeS'])) {
+        $typeS = $_GET['job-typeS'];
+        $list = array_merge($list, $jobPostC->searchJobPostByEmploymentTypeId($typeS));
+    }
+    if (!empty($_GET['job-titleS'])) {
+        $titleS = $_GET['job-titleS'];
+        $list = array_merge($list, $jobPostC->searchJobPostByTitle($titleS));
+    }
+    if (!empty($_GET['job-salaryS'])) {
+        $salaryS = $_GET['job-salaryS'];
+        $list = array_merge($list, $jobPostC->searchJobPostBySalary($salaryS));
+    }
+    if (!empty($_GET['job-locationS'])) {
+        $locationS = $_GET['job-locationS'];
+        $list = array_merge($list, $jobPostC->searchJobPostByLocation($locationS));
+    }
+    $list = array_unique($list, SORT_REGULAR);
+} else {
+    $list = $jobPostC->listJobPosts();
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -155,6 +186,7 @@ Bootstrap 5 HTML CSS Template
         </header>
         <?php
         //MARK: job search
+        //S is for search
         ?>
         <section class="section-padding pb-0 d-flex justify-content-center align-items-center">
             <div class="container">
@@ -168,7 +200,7 @@ Bootstrap 5 HTML CSS Template
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1"><i class="bi-cash custom-icon"></i></span>
-                                        <input type="text" class="form-control" name="job-salaryT" id="salary" placeholder="Enter Salary">
+                                        <input type="text" class="form-control" name="job-salaryS" id="salary" placeholder="Enter Salary">
                                     </div>
                                 </div>
 
@@ -176,7 +208,7 @@ Bootstrap 5 HTML CSS Template
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1"><i class="bi-geo-alt custom-icon"></i></span>
 
-                                        <input type="text" name="job-location" id="job-location" class="form-control" placeholder="Location">
+                                        <input type="text" name="job-locationS" id="job-location" class="form-control" placeholder="Location">
                                     </div>
                                 </div>
 
@@ -184,7 +216,7 @@ Bootstrap 5 HTML CSS Template
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1"><i class="bi-laptop custom-icon"></i></span>
 
-                                        <select class="form-select form-control" name="job-level" id="job-level" aria-label="Default select example">
+                                        <select class="form-select form-control" name="job-levelS" id="job-level" aria-label="Default select example">
                                             <option selected>Level</option>
                                             <option value="1">Internship</option>
                                             <option value="2">Junior</option>
@@ -197,7 +229,7 @@ Bootstrap 5 HTML CSS Template
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1"><i class="bi-laptop custom-icon"></i></span>
 
-                                        <select class="form-select form-control" name="job-remote" id="job-remote" aria-label="Default select example">
+                                        <select class="form-select form-control" name="job-typeS" id="job-type" aria-label="Default select example">
                                             <option selected>Type</option>
                                             <option value="1">Full Time</option>
                                             <option value="2">Part Time</option>
@@ -209,7 +241,7 @@ Bootstrap 5 HTML CSS Template
                                 </div>
 
                                 <div class="col-lg-12 col-12">
-                                    <button type="submit" class="form-control">
+                                    <button type="submit" class="form-control" name="search">
                                         Search job
                                     </button>
                                 </div>
@@ -246,6 +278,7 @@ Bootstrap 5 HTML CSS Template
 
                     <?php
                     //MARK: job post
+                    //T is from talent
                     ?>
                     <div class="col-lg-12 col-12">
                         <form class="custom-form hero-form create-form" action="#" method="post" role="form" id="jobform">
@@ -376,7 +409,7 @@ Bootstrap 5 HTML CSS Template
 
                     <?php
                     //MARK: main part
-                    $list = $jobPostC->listJobPosts();
+                    //moved the list part to the top to integrate the search
                     foreach ($list as $jobPost) {
                         $companyName = strtolower(str_replace(' ', '_', $jobPost['Company'])); // Replace spaces with underscores and convert to lowercase
                         $imagePath = 'images/logos/'; // Replace this with the actual path to your images
