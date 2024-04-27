@@ -186,10 +186,6 @@ Bootstrap 5 HTML CSS Template
                                     <i class="custom-icon bi-clock me-1"></i>
                                     <?php echo $timeAgo; ?>
                                 </p>
-                                <p class="job-date mb-0">
-                                    <i class="custom-icon bi-clock me-1"></i>
-                                    <?php echo $timeAgo; ?>
-                                </p>
 
                                 <p class="job-price mb-0">
                                     <i class="custom-icon bi-cash me-1"></i>

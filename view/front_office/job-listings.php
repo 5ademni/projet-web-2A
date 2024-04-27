@@ -204,7 +204,7 @@ Bootstrap 5 HTML CSS Template
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1"><i class="bi-cash custom-icon"></i></span>
-                                        <input type="text" class="form-control" name="job-salaryS" id="salary" placeholder="Enter Salary">
+                                        <input type="text" class="form-control" name="job-salaryS" id="salaryS" placeholder="Enter Salary">
                                     </div>
                                 </div>
 
