@@ -115,5 +115,89 @@ class JobPostC
       die('Erreur: ' . $e->getMessage());
     }
   }
+  //===SEARCH FUNCTIONS===
+
+  public function searchJobPostByFieldId($fieldId)
+  {
+    $sql = "SELECT * FROM jobpostings WHERE FieldID = ?";
+    $db = config::getConnexion();
+    try {
+      $stmt = $db->prepare($sql);
+      $stmt->execute([$fieldId]);
+      $job_posts = $stmt->fetchAll();
+      return $job_posts;
+    } catch (Exception $e) {
+      die('Erreur: ' . $e->getMessage());
+    }
+  }
+
+  public function searchJobPostByLevelId($levelId)
+  {
+    $sql = "SELECT * FROM jobpostings WHERE LevelID = ?";
+    $db = config::getConnexion();
+    try {
+      $stmt = $db->prepare($sql);
+      $stmt->execute([$levelId]);
+      $job_posts = $stmt->fetchAll();
+      return $job_posts;
+    } catch (Exception $e) {
+      die('Erreur: ' . $e->getMessage());
+    }
+  }
+
+  public function searchJobPostByEmploymentTypeId($employmentTypeId)
+  {
+    $sql = "SELECT * FROM jobpostings WHERE EmploymentTypeID = ?";
+    $db = config::getConnexion();
+    try {
+      $stmt = $db->prepare($sql);
+      $stmt->execute([$employmentTypeId]);
+      $job_posts = $stmt->fetchAll();
+      return $job_posts;
+    } catch (Exception $e) {
+      die('Erreur: ' . $e->getMessage());
+    }
+  }
+
+  public function searchJobPostByTitle($title)
+  {
+    $sql = "SELECT * FROM jobpostings WHERE Title = ?";
+    $db = config::getConnexion();
+    try {
+      $stmt = $db->prepare($sql);
+      $stmt->execute([$title]);
+      $job_posts = $stmt->fetchAll();
+      return $job_posts;
+    } catch (Exception $e) {
+      die('Erreur: ' . $e->getMessage());
+    }
+  }
+
+  public function searchJobPostBySalary($salary)
+  {
+    $sql = "SELECT * FROM jobpostings WHERE Salary = ?";
+    $db = config::getConnexion();
+    try {
+      $stmt = $db->prepare($sql);
+      $stmt->execute([$salary]);
+      $job_posts = $stmt->fetchAll();
+      return $job_posts;
+    } catch (Exception $e) {
+      die('Erreur: ' . $e->getMessage());
+    }
+  }
+
+  public function searchJobPostByLocation($location)
+  {
+    $sql = "SELECT * FROM jobpostings WHERE Location = ?";
+    $db = config::getConnexion();
+    try {
+      $stmt = $db->prepare($sql);
+      $stmt->execute([$location]);
+      $job_posts = $stmt->fetchAll();
+      return $job_posts;
+    } catch (Exception $e) {
+      die('Erreur: ' . $e->getMessage());
+    }
+  }
 }
-?>

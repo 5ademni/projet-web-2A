@@ -153,7 +153,9 @@ Bootstrap 5 HTML CSS Template
                 </div>
             </div>
         </header>
-
+        <?php
+        //MARK: job search
+        ?>
         <section class="section-padding pb-0 d-flex justify-content-center align-items-center">
             <div class="container">
                 <div class="row">
@@ -165,9 +167,8 @@ Bootstrap 5 HTML CSS Template
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="input-group">
-                                        <span class="input-group-text" id="basic-addon1"><i class="bi-person custom-icon"></i></span>
-
-                                        <input type="text" name="job-title" id="job-title" class="form-control" placeholder="Job Title">
+                                        <span class="input-group-text" id="basic-addon1"><i class="bi-cash custom-icon"></i></span>
+                                        <input type="text" class="form-control" name="job-salaryT" id="salary" placeholder="Enter Salary">
                                     </div>
                                 </div>
 
@@ -179,19 +180,7 @@ Bootstrap 5 HTML CSS Template
                                     </div>
                                 </div>
 
-                                <div class="col-lg-4 col-md-4 col-12">
-                                    <div class="input-group">
-                                        <span class="input-group-text" id="basic-addon1"><i class="bi-cash custom-icon"></i></span>
-
-                                        <select class="form-select form-control" name="job-salary" id="job-salary" aria-label="Default select example">
-                                            <option selected>Salary Range</option>
-                                            <option value="1">$300k - $500k</option>
-                                            <option value="2">$10000k - $45000k</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4 col-md-4 col-12">
+                                <div class="col-lg-6 col-md-6 col-12">
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1"><i class="bi-laptop custom-icon"></i></span>
 
@@ -199,20 +188,22 @@ Bootstrap 5 HTML CSS Template
                                             <option selected>Level</option>
                                             <option value="1">Internship</option>
                                             <option value="2">Junior</option>
-                                            <option value="2">Senior</option>
+                                            <option value="3">Senior</option>
                                         </select>
                                     </div>
                                 </div>
 
-                                <div class="col-lg-4 col-md-4 col-12">
+                                <div class="col-lg-6 col-md-6 col-12">
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1"><i class="bi-laptop custom-icon"></i></span>
 
                                         <select class="form-select form-control" name="job-remote" id="job-remote" aria-label="Default select example">
-                                            <option selected>Remote</option>
+                                            <option selected>Type</option>
                                             <option value="1">Full Time</option>
-                                            <option value="2">Contract</option>
                                             <option value="2">Part Time</option>
+                                            <option value="3">Contract</option>
+                                            <option value="4">Freelance</option>
+                                            <option value="5">Remote</option>
                                         </select>
                                     </div>
                                 </div>
@@ -253,7 +244,9 @@ Bootstrap 5 HTML CSS Template
             <div class="container">
                 <div class="row">
 
-
+                    <?php
+                    //MARK: job post
+                    ?>
                     <div class="col-lg-12 col-12">
                         <form class="custom-form hero-form create-form" action="#" method="post" role="form" id="jobform">
                             <h3 class="text-white mb-3">Search for talent</h3>
@@ -314,8 +307,10 @@ Bootstrap 5 HTML CSS Template
                                         <select class="form-select form-control" name="job-typeT" id="job-typeT" aria-label="Default select example">
                                             <option selected>Type</option>
                                             <option value="1">Full Time</option>
-                                            <option value="2">Contract</option>
-                                            <option value="3">Part Time</option>
+                                            <option value="2">Part Time</option>
+                                            <option value="3">Contract</option>
+                                            <option value="4">Freelance</option>
+                                            <option value="5">Remote</option>
                                         </select>
                                     </div>
                                 </div>
