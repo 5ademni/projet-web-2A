@@ -12,9 +12,17 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
     $event_id = $_GET['id'];
     $evenement = $controller->getEvenement($event_id);
 } elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $target_dir = "../../sql/";
-    $target_file = $target_dir . basename($_FILES["image"]["name"]);
-    move_uploaded_file($_FILES["image"]["tmp_name"], $target_file);
+  $target_dir = "../../upload/";
+  $default_image = $target_dir . "event-imagef.png"; // Chemin vers votre image par défaut
+
+  // Vérifiez si une image a été téléchargée
+  if (!empty($_FILES["image"]["name"])) {
+      $target_file = $target_dir . basename($_FILES["image"]["name"]);
+      move_uploaded_file($_FILES["image"]["tmp_name"], $target_file);
+  } else {
+      // Si aucune image n'a été téléchargée, utilisez l'image par défaut
+      $target_file = $default_image;
+  }
     // Créer une instance de la classe Evenement
     $evenement = new Evenement(
         $_POST['id_evenement'],
@@ -709,6 +717,7 @@ exit;
 
   <!-- custom js -->
   <script src="assets/js/WYSIWYG.js"></script>
+  <script src="js/controlesaisiemodif.js"></script>
 </body>
 
 </html>

@@ -15,8 +15,17 @@ $id_auteur_err = $titre_err = $contenu_err = $dateEvenement_err = $lieu_err = $p
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Gérer l'upload de l'image
     $target_dir = "../../upload/";
-    $target_file = $target_dir . basename($_FILES["image"]["name"]);
-    move_uploaded_file($_FILES["image"]["tmp_name"], $target_file);
+    $default_image = $target_dir . "event-imagef.png"; // Chemin vers votre image par défaut
+
+    // Vérifiez si une image a été téléchargée
+    if (!empty($_FILES["image"]["name"])) {
+        $target_file = $target_dir . basename($_FILES["image"]["name"]);
+        move_uploaded_file($_FILES["image"]["tmp_name"], $target_file);
+    } else {
+        // Si aucune image n'a été téléchargée, utilisez l'image par défaut
+        $target_file = $default_image;
+    }
+
 
     if (empty($_POST['id_auteur']) || !is_numeric($_POST['id_auteur'])) {
         $id_auteur_err = "Veuillez entrer un ID d'auteur valide.";
@@ -210,11 +219,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <input type="text" class="form-control" id="contenu" name="contenu" placeholder="Entrez le contenu">
                             <span class="error"><?php echo $contenu_err;?></span>
                         </div>
-                        <div class="form-group
-                            <label for="dateEvenement">Date de l'événement</label>
-                            <input type="date" class="form-control" id="dateEvenement" name="dateEvenement" placeholder="Entrez la date de l'événement">
-                            <span class="error"><?php echo $dateEvenement_err;?></span>
+                        <div class="form-group">
+                       <label for="dateEvenement">Date de l'événement</label>
+                       <input type="date" class="form-control" id="dateEvenement" name="dateEvenement">
                         </div>
+
+                         <script>
+                         var today = new Date();
+                            var dd = String(today.getDate()).padStart(2, '0');
+                            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                            var yyyy = today.getFullYear();
+
+                            today = yyyy + '-' + mm + '-' + dd;
+                            document.getElementById("dateEvenement").setAttribute("min", today);
+                            </script>
+
                         <div class="form-group
                             <label for="lieu">Lieu</label>
                             <input type="text" class="form-control" id="lieu" name="lieu" placeholder="Entrez le lieu">

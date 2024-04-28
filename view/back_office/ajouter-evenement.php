@@ -19,8 +19,16 @@ $id_evenement = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Gérer l'upload de l'image
     $target_dir = "../../upload/";
-    $target_file = $target_dir . basename($_FILES["image"]["name"]);
-    move_uploaded_file($_FILES["image"]["tmp_name"], $target_file);
+    $default_image = $target_dir . "event-imagef.png"; // Chemin vers votre image par défaut
+
+    // Vérifiez si une image a été téléchargée
+    if (!empty($_FILES["image"]["name"])) {
+        $target_file = $target_dir . basename($_FILES["image"]["name"]);
+        move_uploaded_file($_FILES["image"]["tmp_name"], $target_file);
+    } else {
+        // Si aucune image n'a été téléchargée, utilisez l'image par défaut
+        $target_file = $default_image;
+    }
 
     // Créer une instance de la classe Evenement
 
