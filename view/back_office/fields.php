@@ -1,5 +1,7 @@
 <?php
 include_once '../../controller/jobFieldC.php';
+include_once '../../model/jobField.php';
+
 $jobFieldC = new jobFieldC();
 $fieldlist = $jobFieldC->listJobFields();
 
@@ -11,6 +13,19 @@ if (isset($_GET['see-more'])) {
 if (isset($_GET['edit'])) {
   $fieldId = $_GET['edit'];
   $fieldCrud = $jobFieldC->getFieldById($fieldId);
+}
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $id = $_GET['edit']; // Get the id from the POST data
+
+  $editedField = new jobField(
+    $_POST['edit-id'],
+    $_POST['edit-name'],
+    $_POST['description-name'],
+
+  );
+  $jobFieldC->updateField($id, $editedField);
+  header('Location: fields.php');
+  exit;
 }
 ?>
 
@@ -660,7 +675,7 @@ if (isset($_GET['edit'])) {
                       You must select a field first.
                     </div>
                   <?php else : ?>
-                    <form class="row g-3">
+                    <form class="row g-3" method="POST">
                       <div class="col-md-6">
                         <label for="inputID" class="form-label">ID</label>
                         <input type="text" class="form-control" id="inputID" name="edit-id" value="<?php echo $fieldCrud['FieldID']; ?>">
