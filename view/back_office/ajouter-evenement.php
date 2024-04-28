@@ -1,27 +1,104 @@
 <?php
-include_once '../../controller/articlesBlogC.php';
-include_once '../../model/articlesBlog.php';
+include_once '../../controller/event2.php';
+include_once '../../model/event.php';
+include_once '../../controller/Categorie_Evenement2.php';
+include_once '../../controller/auteurE.php';
 
-$ArticlesBlogC = new ArticlesBlogC();
+
+// Créer une instance du contrôleur
+$controller = new EvenementC();
+$controller2 = new auteurEC();
+
+
+// Initialiser les messages d'erreur
+$id_auteur_err = $titre_err = $contenu_err = $dateEvenement_err = $lieu_err = $prix_err = $nbPlaces_err = $image_err = $heureEvenement_err = "";
+
+// Initialiser l'ID de l'événement
+$id_evenement = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $current_date = date('Y-m-d H:i:s');
-  $id_article = null;
+    // Gérer l'upload de l'image
+    $target_dir = "../../upload/";
+    $target_file = $target_dir . basename($_FILES["image"]["name"]);
+    move_uploaded_file($_FILES["image"]["tmp_name"], $target_file);
 
-  $ArticlesBlog = new ArticlesBlog(
+    // Créer une instance de la classe Evenement
 
-    $_POST['id_article'],
-    $_POST['id_auteur'],
-    $_POST['titre'],
-    $_POST['contenu'],
-    //$_POST['datePublication'],
-    $current_date,
-  );
-  $ArticlesBlogC->addArticle($ArticlesBlog);
-  header('Location: blogs.php');
-  exit;
+    // Valider les entrées
+    if (empty($_POST['id_auteur']) || !is_numeric($_POST['id_auteur'])) {
+        $id_auteur_err = "Veuillez entrer un ID d'auteur valide.";
+    }
+    if(($controller2->existeAuteur($_POST['id_auteur']))==false){
+      $id_auteur_err = "Cet auteur n'existe pas.";
+     }
+    if (empty($_POST['titre'])) {
+      $titre_err = "Veuillez entrer un titre.";
+  } else {
+      $titre = $_POST['titre'];
+      if (!preg_match("/^[a-zA-ZÀ-ÿ ]*$/",$titre)) {
+          $titre_err = "Seules les lettres et les espaces blancs sont autorisés dans le titre.";
+      }
+  }
+  
+  if (empty($_POST['contenu'])) {
+      $contenu_err = "Veuillez entrer un contenu.";
+  } else {
+      $contenu = $_POST['contenu'];
+      if (!preg_match("/^[a-zA-ZÀ-ÿ ]*$/",$contenu)) {
+          $contenu_err = "Seules les lettres et les espaces blancs sont autorisés dans le contenu.";
+      }
+  }
+  
+    if (empty($_POST['dateEvenement'])) {
+        $dateEvenement_err = "Veuillez entrer une date d'événement.";
+    }
+    if (empty($_POST['lieu'])) {
+        $lieu_err = "Veuillez entrer un lieu.";
+    }
+    else {
+        $lieu = $_POST['lieu'];
+        if (!preg_match("/^[a-zA-ZÀ-ÿ ]*$/",$lieu)) {
+            $lieu_err = "Seules les lettres et les espaces blancs sont autorisés dans le lieu.";
+        }
+    }
+    if (empty($_POST['prix']) || !is_numeric($_POST['prix'])) {
+        $prix_err = "Veuillez entrer un prix valide.";
+    }
+    if (empty($_POST['nbPlaces']) || !is_numeric($_POST['nbPlaces'])) {
+        $nbPlaces_err = "Veuillez entrer un nombre de places valide.";
+    }
+    if (empty($_FILES["image"]["name"])) {
+        $image_err = "Veuillez télécharger une image.";
+    }
+    if (empty($_POST['heureEvenement'])) {
+        $heureEvenement_err = "Veuillez entrer une heure d'événement.";
+    }
+
+    if (empty($id_auteur_err) && empty($titre_err) && empty($contenu_err) && empty($dateEvenement_err) && empty($lieu_err) && empty($prix_err) && empty($nbPlaces_err) && empty($image_err) && empty($heureEvenement_err) ) {
+        // Créer une instance de la classe Evenement
+        $evenement = new Evenement(
+          $id_evenement,
+          $_POST['id_auteur'],
+          $_POST['titre'],
+          $_POST['contenu'],
+          $_POST['dateEvenement'],
+          $_POST['lieu'],
+          $_POST['prix'],
+          $_POST['nbPlaces'],
+          $target_file,
+          $_POST['heureEvenement'],
+          $_POST['id_categorie']
+      );
+        // Appeler la méthode addEvenement
+        try {
+            $controller->addEvenement($evenement);
+            echo "L'événement a été ajouté avec succès.";
+            $id_evenement = $evenement->getId_evenement();
+        } catch (Exception $e) {
+            echo 'Erreur: ' . $e->getMessage();
+        }
+    }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -51,6 +128,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet" />
   <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet" />
   <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet" />
+  <link href="valid.css" rel="stylesheet" />
 
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet" />
@@ -320,6 +398,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <span>Job Posts</span>
         </a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="evenement.php">
+          <i class="bi bi-briefcase"></i>
+          <span>Les evenements</span>
+        </a>
+      </li>
       <!-- End Job Posts Nav -->
 
       <!-- Start Blog Nav -->
@@ -575,8 +659,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-          <li class="breadcrumb-item"><a href="job-posts.php">posts d'emploi</a></li>
-          <li class="breadcrumb-item active">creation post demploi </li>
+          <li class="breadcrumb-item"><a href="evenement.php">Les evenements </a></li>
+          <li class="breadcrumb-item active">Ajouter un evenement </li>
         </ol>
       </nav>
     </div>
@@ -584,42 +668,80 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title">Ajouter un blog</h5>
+        <h5 class="card-title">Ajout evenement</h5>
 
         <!-- General Form Elements -->
-        <form method="POST">
-          <div class="row mb-3">
-            <label for="inputText" class="col-sm-2 col-form-label">Id d'article</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" name="id_article">
-            </div>
-          </div>
-          <div class="row mb-3">
-            <label for="inputText" class="col-sm-2 col-form-label">Id d'auteur</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" name="id_auteur">
-            </div>
-          </div>
-          <div class=" row mb-3">
-            <label for="inputText" class="col-sm-2 col-form-label">Titre</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" name="titre">
-            </div>
-          </div>
-          <div class="row mb-3">
-            <label for="inputText" class="col-sm-2 col-form-label">Contenu</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" name="contenu">
-            </div>
-          </div>
-          <fieldset class="row mb-3">
-            <legend class="col-form-label col-sm-2 pt-0">Date de création</legend>
-            <div class="col-sm-10">
-              <input class="form-control" type="date" name="datePublication" id="datePublication">
-            </div>
-          </fieldset>
-          <button type="submit" class="btn btn-primary">Ajouter</button>
-        </form><!-- End General Form Elements -->
+        <section class="about-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 col-12">
+                        <!-- Formulaire pour ajouter un événement -->
+                        <form method="POST" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="id_auteur">ID de l'auteur</label>
+                            <input type="text" class="form-control" id="id_auteur" name="id_auteur" placeholder="Entrez l'ID de l'auteur">
+                            <span class="error"><?php echo $id_auteur_err;?></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_categorie">Catégorie</label>
+                            <select class="form-control select-css" id="id_categorie" name="id_categorie">
+                            <?php
+                            ini_set('display_errors', 1);
+                            ini_set('display_startup_errors', 1);
+                            error_reporting(E_ALL);
+                            $categorieController = new CategorieEvenementC(); 
+                          $categories = $categorieController->listCategories();
+                          foreach ($categories as $categorie) {
+                          echo "<option value=\"" . $categorie['id_categorie'] . "\">" . $categorie['nom_categorie']. "</option>";
+                           }
+                          ?>
+                          </select>   
+                           </div>
+                        <div class="form-group
+                            <label for="titre">Titre</label>
+                            <input type="text" class="form-control" id="titre" name="titre" placeholder="Entrez le titre">
+                            <span class="error"><?php echo $titre_err;?></span>
+                        </div>
+                        <div class="form-group
+                            <label for="contenu">Contenu</label>
+                            <input type="text" class="form-control" id="contenu" name="contenu" placeholder="Entrez le contenu">
+                            <span class="error"><?php echo $contenu_err;?></span>
+                        </div>
+                        <div class="form-group
+                            <label for="dateEvenement">Date de l'événement</label>
+                            <input type="date" class="form-control" id="dateEvenement" name="dateEvenement" placeholder="Entrez la date de l'événement">
+                            <span class="error"><?php echo $dateEvenement_err;?></span>
+                        </div>
+                        <div class="form-group
+                            <label for="lieu">Lieu</label>
+                            <input type="text" class="form-control" id="lieu" name="lieu" placeholder="Entrez le lieu">
+                            <span class="error"><?php echo $lieu_err;?></span>
+                        </div>
+                        <div class="form-group
+                            <label for="prix">Prix</label>
+                            <input type="text" class="form-control" id="prix" name="prix" placeholder="Entrez le prix">
+                            <span class="error"><?php echo $prix_err;?></span>
+                        </div>
+                        <div class="form-group
+                            <label for="nbPlaces">Nombre de places</label>
+                            <input type="text" class="form-control" id="nbPlaces" name="nbPlaces" placeholder="Entrez le nombre de places">
+                            <span class="error"><?php echo $nbPlaces_err;?></span>
+                        </div>
+                        <div class="form-group
+                            <label for="image">Image</label>
+                            <input type="file" class="form-control" id="image" name="image" placeholder="Téléchargez une image">
+                            <span class="error"><?php echo $image_err;?></span>
+                        </div>
+                        <div class="form-group
+                            <label for="heureEvenement">Heure de l'événement</label>
+                            <input type="time" class="form-control" id="heureEvenement" name="heureEvenement" placeholder="Entrez l'heure de l'événement">
+                            <span class="error"><?php echo $heureEvenement_err;?></span>
+                        </div>
+                            <button type="submit" class="btn btn-primary">Ajouter un evenement</button>
+                          </form>
+                          
+        </section>
+
 
       </div>
     </div>
@@ -655,8 +777,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   <!-- custom js -->
   <script src="assets/js/WYSIWYG.js"></script>
-  <script src="assets/js/controle_saisie_back.js"></script>
-
 </body>
 
 </html>

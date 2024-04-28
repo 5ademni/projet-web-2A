@@ -1,39 +1,100 @@
 <?php
 include_once '../../controller/event2.php';
 include_once '../../model/event.php';
+include_once '../../controller/Categorie_Evenement2.php';
+include_once '../../controller/auteurE.php';
 
 // Créer une instance du contrôleur
 $controller = new EvenementC();
+$controller2 = new auteurEC();
+
+$id_evenement = "";
+// Initialiser les messages d'erreur
+$id_auteur_err = $titre_err = $contenu_err = $dateEvenement_err = $lieu_err = $prix_err = $nbPlaces_err = $image_err = $heureEvenement_err = $id_categorie_err = ""; // Ajout de $id_categorie_err
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Gérer l'upload de l'image
-    $target_dir = "../../sql/";
+    $target_dir = "../../upload/";
     $target_file = $target_dir . basename($_FILES["image"]["name"]);
     move_uploaded_file($_FILES["image"]["tmp_name"], $target_file);
 
-    // Créer une instance de la classe Evenement
-    $evenement = new Evenement(
-        $_POST['id_evenement'],
-        $_POST['id_auteur'],
-        $_POST['titre'],
-        $_POST['contenu'],
-        $_POST['dateEvenement'],
-        $_POST['lieu'],
-        $_POST['prix'],
-        $_POST['nbPlaces'],
-        $_POST['heureEvenement'],
-        $target_file
-    );
+    if (empty($_POST['id_auteur']) || !is_numeric($_POST['id_auteur'])) {
+        $id_auteur_err = "Veuillez entrer un ID d'auteur valide.";
+    }
+    if(($controller2->existeAuteur($_POST['id_auteur']))==false){
+        $id_auteur_err = "Cet auteur n'existe pas.";
+    }
+    if (empty($_POST['titre'])) {
+        $titre_err = "Veuillez entrer un titre.";
+    } else {
+        $titre = $_POST['titre'];
+        if (!preg_match("/^[a-zA-ZÀ-ÿ ]*$/",$titre)) {
+            $titre_err = "Seules les lettres et les espaces blancs sont autorisés dans le titre.";
+        }
+    }
+    
+    if (empty($_POST['contenu'])) {
+        $contenu_err = "Veuillez entrer un contenu.";
+    } else {
+        $contenu = $_POST['contenu'];
+        if (!preg_match("/^[a-zA-ZÀ-ÿ ]*$/",$contenu)) {
+            $contenu_err = "Seules les lettres et les espaces blancs sont autorisés dans le contenu.";
+        }
+    }
+    
+    if (empty($_POST['dateEvenement'])) {
+        $dateEvenement_err = "Veuillez entrer une date d'événement.";
+    }
+    if (empty($_POST['lieu'])) {
+        $lieu_err = "Veuillez entrer un lieu.";
+    }
+    else {
+        $lieu = $_POST['lieu'];
+        if (!preg_match("/^[a-zA-ZÀ-ÿ ]*$/",$lieu)) {
+            $lieu_err = "Seules les lettres et les espaces blancs sont autorisés dans le lieu.";
+        }
+    }
+    if (empty($_POST['prix']) || !is_numeric($_POST['prix'])) {
+        $prix_err = "Veuillez entrer un prix valide.";
+    }
+    if (empty($_POST['nbPlaces']) || !is_numeric($_POST['nbPlaces'])) {
+        $nbPlaces_err = "Veuillez entrer un nombre de places valide.";
+    }
 
-    // Appeler la méthode addEvenement
-    try {
-        $controller->addEvenement($evenement);
-        echo "L'événement a été ajouté avec succès.";
-    } catch (Exception $e) {
-        echo 'Erreur: ' . $e->getMessage();
+    // Ajout de la validation pour id_categorie
+    if (empty($_POST['id_categorie']) || !is_numeric($_POST['id_categorie'])) {
+        $id_categorie_err = "Veuillez sélectionner une catégorie.";
+    }
+
+    if (empty($id_auteur_err) && empty($titre_err) && empty($contenu_err) && empty($dateEvenement_err) && empty($lieu_err) && empty($prix_err) && empty($nbPlaces_err) && empty($image_err) && empty($heureEvenement_err) && empty($id_categorie_err)) { // Ajout de $id_categorie_err à la condition
+        // Créer une instance de la classe Evenement
+        $evenement = new Evenement(
+            $id_evenement,
+            $_POST['id_auteur'],
+            $_POST['titre'],
+            $_POST['contenu'],
+            $_POST['dateEvenement'],
+            $_POST['lieu'],
+            $_POST['prix'],
+            $_POST['nbPlaces'],
+            $target_file,
+            $_POST['heureEvenement'],
+            $_POST['id_categorie'] // Ajout de id_categorie à la construction de l'objet Evenement
+        );
+
+        // Appeler la méthode addEvenement
+        try {
+            $controller->addEvenement($evenement);
+            echo "L'événement a été ajouté avec succès.";
+            $id_evenement = $evenement->getId_evenement();
+        } catch (Exception $e) {
+            echo 'Erreur: ' . $e->getMessage();
+        }
     }
 }
 ?>
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -50,6 +111,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="css/owl.carousel.min.css" rel="stylesheet">
     <link href="css/owl.theme.default.min.css" rel="stylesheet">
     <link href="css/tooplate-gotto-job.css" rel="stylesheet">
+    <link href="css/valid.css" rel="stylesheet">
+
 </head>
 <body class="about-page" id="top">
     <nav class="navbar navbar-expand-lg">
@@ -80,8 +143,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <a class="nav-link dropdown-toggle" href="#" id="eventButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">Événements</a>
                     
                         <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="eventButton">
-                            <li><a class="dropdown-item" href="ajouter-evenement.html">Ajouter un événement</a></li>
-                            <li><a class="dropdown-item" href="trouver-evenement.html">Trouver un événement</a></li>
+                            <li><a class="dropdown-item" href="ajouter_evenement.php">Ajouter un événement</a></li>
+                            <li><a class="dropdown-item" href="trouver_id_auteur.php">Trouver un événement</a></li>
                         </ul>
                     </li>
                     
@@ -105,7 +168,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <nav class="navbar navbar-expand-lg">
         <!-- Votre code de navigation ici -->
     </nav>
-
     <main>
         <header class="site-header">
             <!-- En-tête de la page -->
@@ -117,46 +179,67 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="col-lg-12 col-12">
                         <!-- Formulaire pour ajouter un événement -->
                         <form method="POST" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="id_auteur">ID de l'auteur</label>
+                            <input type="text" class="form-control" id="id_auteur" name="id_auteur" placeholder="Entrez l'ID de l'auteur">
+                            <span class="error"><?php echo $id_auteur_err;?></span>
+                        </div>
                             <div class="form-group">
-                            <label for="id_evenement">ID de l'événement</label>
-                           <input type="text" class="form-control" id="id_evenement" name="id_evenement" placeholder="Entrez l'ID de l'événement">
-                          </div>
-                         <div class="form-group">
-                          <label for="id_auteur">ID de l'auteur</label>
-                        <input type="text" class="form-control" id="id_auteur" name="id_auteur" placeholder="Entrez l'ID de l'auteur">
-                           </div>
-                              <label for="titre">Titre de l'événement</label>
-                              <input type="text" class="form-control" id="titre" name="titre" placeholder="Entrez le titre de l'événement">
-                            </div>
-                            <div class="form-group">
-                              <label for="contenu">Contenu de l'événement</label>
-                              <input type="text" class="form-control" id="contenu" name="contenu" placeholder="Entrez le contenu de l'événement">
-                            </div>
-                            <div class="form-group">
-                              <label for="dateEvenement">Date de l'Evenement</label>
-                              <input type="date" class="form-control" id="dateEvenement" name="dateEvenement">
-                            </div>
-                            <div class="form-group">
-                            <label for="heureEvenement">Heure de l'Evenement</label>
-                             <input type="time" class="form-control" id="heureEvenement" name="heureEvenement">
-                             </div>
-                            <div class="form-group">
-                              <label for="lieu">Lieu de l'événement</label>
-                              <input type="text" class="form-control" id="lieu" name="lieu" placeholder="Entrez le lieu de l'événement">
-                            </div>
-                            <div class="form-group">
-                              <label for="prix">Prix</label>
-                              <input type="text" class="form-control" id="prix" name="prix" placeholder="Entrez le prix de l'événement">
-                            </div>
-                            <div class="form-group">
-                              <label for="nbPlaces">Nombre de Places</label>
-                              <input type="text" class="form-control" id="nbPlaces" name="nbPlaces" placeholder="Entrez le nombre de places disponibles">
-                            </div>
-
-                            <div class="form-group">
-                              <label for="image">Image</label>
-                              <input type="file" class="form-control" id="image" name="image">
-                            </div>
+                            <label for="id_categorie">Catégorie</label>
+                            <select class="form-control select-css" id="id_categorie" name="id_categorie">
+                            <?php
+                            ini_set('display_errors', 1);
+                            ini_set('display_startup_errors', 1);
+                            error_reporting(E_ALL);
+                            $categorieController = new CategorieEvenementC(); 
+                          $categories = $categorieController->listCategories();
+                          foreach ($categories as $categorie) {
+                          echo "<option value=\"" . $categorie['id_categorie'] . "\">" . $categorie['nom_categorie']. "</option>";
+                           }
+                          ?>
+                          </select>
+                          <span class="error"><?php echo $id_categorie_err;?></span>
+                        </div>
+                        <div class="form-group
+                            <label for="titre">Titre</label>
+                            <input type="text" class="form-control" id="titre" name="titre" placeholder="Entrez le titre">
+                            <span class="error"><?php echo $titre_err;?></span>
+                        </div>
+                        <div class="form-group
+                            <label for="contenu">Contenu</label>
+                            <input type="text" class="form-control" id="contenu" name="contenu" placeholder="Entrez le contenu">
+                            <span class="error"><?php echo $contenu_err;?></span>
+                        </div>
+                        <div class="form-group
+                            <label for="dateEvenement">Date de l'événement</label>
+                            <input type="date" class="form-control" id="dateEvenement" name="dateEvenement" placeholder="Entrez la date de l'événement">
+                            <span class="error"><?php echo $dateEvenement_err;?></span>
+                        </div>
+                        <div class="form-group
+                            <label for="lieu">Lieu</label>
+                            <input type="text" class="form-control" id="lieu" name="lieu" placeholder="Entrez le lieu">
+                            <span class="error"><?php echo $lieu_err;?></span>
+                        </div>
+                        <div class="form-group
+                            <label for="prix">Prix</label>
+                            <input type="text" class="form-control" id="prix" name="prix" placeholder="Entrez le prix">
+                            <span class="error"><?php echo $prix_err;?></span>
+                        </div>
+                        <div class="form-group
+                            <label for="nbPlaces">Nombre de places</label>
+                            <input type="text" class="form-control" id="nbPlaces" name="nbPlaces" placeholder="Entrez le nombre de places">
+                            <span class="error"><?php echo $nbPlaces_err;?></span>
+                        </div>
+                        <div class="form-group
+                            <label for="image">Image</label>
+                            <input type="file" class="form-control" id="image" name="image" placeholder="Téléchargez une image">
+                            <span class="error"><?php echo $image_err;?></span>
+                        </div>
+                        <div class="form-group
+                            <label for="heureEvenement">Heure de l'événement</label>
+                            <input type="time" class="form-control" id="heureEvenement" name="heureEvenement" placeholder="Entrez l'heure de l'événement">
+                            <span class="error"><?php echo $heureEvenement_err;?></span>
+                        </div>
                             <button type="submit" class="btn btn-primary">Ajouter un evenement</button>
                           </form>
                           

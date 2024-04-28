@@ -1,18 +1,12 @@
 <?php
-include "../../controller/articlesBlogC.php";
-$articlesBlogC = new ArticlesBlogC();
-
-if (isset($_GET['addDummy'])) {
-  $articlesBlogC->addDummyArticle();
-  header('Location: blogs.php');
-  exit;
-}
+include "../../controller/event2.php";
+$evenementC = new EvenementC();
 
 if (isset($_GET['delete'])) {
-  $articlesBlogC->deleteArticle($_GET['delete']);
+  $evenementC->deleteEvenement($_GET['delete']);
 }
 
-$articlesBlogC = $articlesBlogC->listArticles();
+$evenementC = $evenementC->listEvenements();
 ?>
 
 
@@ -63,7 +57,7 @@ $articlesBlogC = $articlesBlogC->listArticles();
   <header id="header" class="header fixed-top d-flex align-items-center">
 
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index.php" class="logo d-flex align-items-center">
+      <a href="index.html" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="">
         <span class="d-none d-lg-block">NiceAdmin</span>
       </a>
@@ -294,11 +288,30 @@ $articlesBlogC = $articlesBlogC->listArticles();
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="index.php">
+        <a class="nav-link collapsed" href="index.html">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
-      </li><!-- End Dashboard Nav -->
+      </li>
+      <li class="nav-item">
+    <a class="nav-link collapsed" data-bs-target="#evenement-nav" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-briefcase"></i><span>Les evenements</span><i class="bi bi-chevron-down ms-auto"></i>
+    </a>
+    <ul id="evenement-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <li>
+            <a href="evenement.php">
+                <i class="bi bi-eye"></i><span>Afficher les evenements</span>
+            </a>
+        </li>
+        <li>
+            <a href="id_auteur.php">
+                <i class="bi bi-circle"></i><span>Les catégories</span>
+            </a>
+        </li>
+    </ul>
+</li>
+
+<!-- End Dashboard Nav -->
 <!-- we start from here -->
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
@@ -528,12 +541,11 @@ $articlesBlogC = $articlesBlogC->listArticles();
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Blank Page</h1>
+      <h1>Page d'événements</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-          <li class="breadcrumb-item">Blogs</li>
-          <li class="breadcrumb-item active">Blank</li>
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item active">Evenements</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -545,8 +557,8 @@ $articlesBlogC = $articlesBlogC->listArticles();
       <div class="card-body">
         
         <div class="d-flex justify-content-between align-items-center">
-          <h5 class="card-title">Liste des blogs</h5>
-          <a href="add-blogs.php" class="btn btn-primary">
+          <h5 class="card-title">Liste des evenements</h5>
+          <a href="ajouter-evenement.php" class="btn btn-primary">
             <i class="bi bi-plus-lg"></i>
           </a>
         </div>
@@ -554,27 +566,40 @@ $articlesBlogC = $articlesBlogC->listArticles();
         <table class="table table-striped">
         <thead>
   <tr>
-    <th scope="col">Id d'article</th>
+    <th scope="col">Id d'evenement</th>
     <th scope="col">Id d'auteur</th>
     <th scope="col">Titre</th>
     <th scope="col">Contenu</th>
-    <th scope="col">Date de publication</th>
+    <th scope="col">Date d'evenement</th>
+    <th scope="col">Lieu</th>
+    <th scope="col">Prix</th>
+    <th scope="col">Nombre de places</th>
+    <th scope="col">Image</th>
+    <th scope="col">heureEvenement</th>
+
   </tr>
 </thead>
 <tbody>
   <?php
-  $list = $articlesBlogC;
-  foreach ($list as $article) {
+  $list = $evenementC;
+  foreach ($list as $evenement) {
   ?>
     <tr>
-      <th scope="row"><?php echo $article['id_article']; ?></th>
-      <td><?php echo $article['id_auteur']; ?></td>
-      <td><?php echo $article['titre']; ?></td>
-      <td><?php echo $article['contenu']; ?></td>
-      <td><?php echo $article['datePublication']; ?></td>
+      <th scope="row"><?php echo $evenement['id_evenement']; ?></th>
+      <td><?php echo $evenement['id_auteur']; ?></td>
+      <td><?php echo $evenement['titre']; ?></td>
+      <td><?php echo $evenement['contenu']; ?></td>
+      <td><?php echo $evenement['dateEvenement']; ?></td>
+        <td><?php echo $evenement['lieu']; ?></td>
+        <td><?php echo $evenement['prix']; ?></td>
+        <td><?php echo $evenement['nbPlaces']; ?></td>
+        <td><img src="<?php echo $evenement['image']; ?>" alt="Image de l'événement" style="width:100px;height:100px;border-radius:50%;"></td>
+        <td><?php echo $evenement['heureEvenement']; ?></td>
+
       <td>
-        <a href="edit-blogs.php?id=<?php echo $article['id_article']; ?>" class="btn btn-primary">Modifier</a>
-        <a href="?delete=<?php echo $article['id_article']; ?>" class="btn btn-primary">Supprimer</a>
+      <a href="Modifier-evenement.php?id=<?php echo $evenement['id_evenement']; ?>" class="btn btn-success">Modifier</a>
+<a href="?delete=<?php echo $evenement['id_evenement']; ?>" class="btn btn-danger">Supprimer</a>
+
         
     </tr>
   <?php
