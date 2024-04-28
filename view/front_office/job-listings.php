@@ -5,7 +5,6 @@ include_once '../../controller/jobFieldC.php';
 $jobPostC = new JobPostC();
 $jobFieldC = new jobFieldC();
 
-$totalJobs = $jobPostC->countJobPosts();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $titlePattern = "/^[a-zA-Z0-9\s]{1,30}$/";
@@ -76,7 +75,11 @@ if (isset($_GET['search'])) {
     $list = array_unique($list, SORT_REGULAR);
 } else {
     $list = $jobPostC->listJobPosts();
+    if ($list instanceof PDOStatement) {
+        $list = $list->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
+$totalJobs = count($list);
 ?>
 <!doctype html>
 <html lang="en">
