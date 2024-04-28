@@ -630,50 +630,58 @@ if (isset($_GET['edit'])) {
               <div class="tab-content pt-2" id="myTabjustifiedContent">
                 <div class="tab-pane fade show <?php echo isset($_GET['see-more']) ? 'active' : ''; ?>" id="home-justified" role="tabpanel" aria-labelledby="home-tab">
                   <!-- Multi Columns Form -->
-                  <form class="row g-3">
-                    <div class="col-md-6">
-                      <label for="inputID" class="form-label">ID</label>
-                      <input type="text" class="form-control" id="inputID" name="see-more-id" value="<?php echo $fieldCrud['FieldID']; ?>">
+                  <?php if (!isset($_GET['see-more']) && !isset($_GET['edit'])) : ?>
+                    <div class="alert alert-warning" role="alert">
+                      You must select a field first.
                     </div>
-                    <div class="col-md-6">
-                      <label for="inputField" class="form-label">Field Name</label>
-                      <input type="text" class="form-control" id="inputField" name="see-more-name" value="<?php echo $fieldCrud['FieldName']; ?>">
-                    </div>
-                    <div class="col-12">
-                      <label for="inputDescription" class="form-label">Description</label>
-                      <input type="text" class="form-control" id="inputDescription" name="see-more-description" value="<?php echo $fieldCrud['Description']; ?>">
-                    </div>
-
-                  </form><!-- End Multi Columns Form -->
+                  <?php else : ?>
+                    <form class="row g-3">
+                      <div class="col-md-6">
+                        <label for="inputID" class="form-label">ID</label>
+                        <input type="text" class="form-control" id="inputID" name="see-more-id" value="<?php echo $fieldCrud['FieldID']; ?>">
+                      </div>
+                      <div class="col-md-6">
+                        <label for="inputField" class="form-label">Field Name</label>
+                        <input type="text" class="form-control" id="inputField" name="see-more-name" value="<?php echo $fieldCrud['FieldName']; ?>">
+                      </div>
+                      <div class="col-12">
+                        <label for="inputDescription" class="form-label">Description</label>
+                        <input type="text" class="form-control" id="inputDescription" name="see-more-description" value="<?php echo $fieldCrud['Description']; ?>">
+                      </div>
+                    </form><!-- End Multi Columns Form -->
+                  <?php endif; ?>
                 </div>
                 <!-- End See More Tab -->
                 <!--EDIT TAB-->
                 <div class="tab-pane fade show <?php echo isset($_GET['edit']) ? 'active' : ''; ?>" id="profile-justified" role="tabpanel" aria-labelledby="profile-tab">
                   <!-- Multi Columns Form -->
-                  <form class="row g-3">
-                    <div class="col-md-6">
-                      <label for="inputID" class="form-label">ID</label>
-                      <input type="text" class="form-control" id="inputID" name="edit-id" value="<?php echo $fieldCrud['FieldID']; ?>">
+                  <?php if (!isset($_GET['see-more']) && !isset($_GET['edit'])) : ?>
+                    <div class="alert alert-warning" role="alert">
+                      You must select a field first.
                     </div>
-                    <div class="col-md-6">
-                      <label for="inputField" class="form-label">Field Name</label>
-                      <input type="text" class="form-control" id="inputField" name="edit-name" value="<?php echo $fieldCrud['FieldName']; ?>">
-                    </div>
-                    <div class="col-12">
-                      <label for="inputDescription" class="form-label">Description</label>
-                      <input type="text" class="form-control" id="inputDescription" name="description-name" value="<?php echo $fieldCrud['Description']; ?>">
-                    </div>
-
-                    <div class="text-center">
-                      <button type="submit" class="btn btn-primary">Submit</button>
-                      <button type="reset" class="btn btn-secondary">Reset</button>
-                    </div>
-                  </form><!-- End Multi Columns Form -->
+                  <?php else : ?>
+                    <form class="row g-3">
+                      <div class="col-md-6">
+                        <label for="inputID" class="form-label">ID</label>
+                        <input type="text" class="form-control" id="inputID" name="edit-id" value="<?php echo $fieldCrud['FieldID']; ?>">
+                      </div>
+                      <div class="col-md-6">
+                        <label for="inputField" class="form-label">Field Name</label>
+                        <input type="text" class="form-control" id="inputField" name="edit-name" value="<?php echo $fieldCrud['FieldName']; ?>">
+                      </div>
+                      <div class="col-12">
+                        <label for="inputDescription" class="form-label">Description</label>
+                        <input type="text" class="form-control" id="inputDescription" name="description-name" value="<?php echo $fieldCrud['Description']; ?>">
+                      </div>
+                      <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="reset" class="btn btn-secondary">Reset</button>
+                      </div>
+                    </form><!-- End Multi Columns Form -->
+                  <?php endif; ?>
                 </div>
                 <!-- End Edit Tab -->
               </div><!-- End Default Tabs -->
-
-
             </div>
           </div>
         </div>
