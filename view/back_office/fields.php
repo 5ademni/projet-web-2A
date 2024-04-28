@@ -595,7 +595,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <h5 class="card-title">Field List</h5>
               </div>
 
-              <table class="table table-striped">
+              <table class="table table-striped datatable">
                 <thead>
                   <tr>
                     <th scope="col">Field ID</th>
@@ -611,7 +611,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <tr>
                       <th scope="row"><?php echo $field['FieldID']; ?></th>
                       <td><?php echo $field['FieldName']; ?></td>
-                      <td><?php echo $field['Description']; ?></td>
+                      <td><?php echo $field['Description'] !== null ? mb_substr($field['Description'], 0, 20) . (strlen($field['Description']) > 20 ? '...' : '') : ''; ?></td>
                       <td>
                         <a href="fields.php?see-more=<?php echo $field['FieldID']; ?>" class="btn btn-primary"><i class="bi bi-eye"></i></a>
                         <a href="fields.php?edit=<?php echo $field['FieldID']; ?>" class="btn btn-success"><i class="bi bi-pencil"></i></a>
