@@ -690,7 +690,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                       </div>
                       <div class="text-center">
                         <button type="submit" class="btn btn-primary">Submit</button>
-                        <button type="reset" class="btn btn-secondary">Reset</button>
                       </div>
                     </form><!-- End Multi Columns Form -->
                   <?php endif; ?>
