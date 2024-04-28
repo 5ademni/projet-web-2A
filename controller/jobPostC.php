@@ -115,5 +115,119 @@ class JobPostC
       die('Erreur: ' . $e->getMessage());
     }
   }
+  //===SEARCH FUNCTIONS===
+
+  public function searchJobPostByFieldId($fieldId)
+  {
+    $sql = "SELECT jobpostings.*, fields.FieldName, levels.LevelName, employmenttypes.EmploymentTypeName 
+            FROM jobpostings 
+            LEFT JOIN fields ON jobpostings.FieldID = fields.FieldID 
+            LEFT JOIN levels ON jobpostings.LevelID = levels.LevelID 
+            LEFT JOIN employmenttypes ON jobpostings.EmploymentTypeID = employmenttypes.EmploymentTypeID
+            WHERE jobpostings.FieldID = ?";
+    $db = config::getConnexion();
+    try {
+      $stmt = $db->prepare($sql);
+      $stmt->execute([$fieldId]);
+      $job_posts = $stmt->fetchAll();
+      return $job_posts;
+    } catch (Exception $e) {
+      die('Erreur: ' . $e->getMessage());
+    }
+  }
+
+  public function searchJobPostByLevelId($levelId)
+  {
+    $sql = "SELECT jobpostings.*, fields.FieldName, levels.LevelName, employmenttypes.EmploymentTypeName 
+            FROM jobpostings 
+            LEFT JOIN fields ON jobpostings.FieldID = fields.FieldID 
+            LEFT JOIN levels ON jobpostings.LevelID = levels.LevelID 
+            LEFT JOIN employmenttypes ON jobpostings.EmploymentTypeID = employmenttypes.EmploymentTypeID
+            WHERE jobpostings.LevelID = ?";
+    $db = config::getConnexion();
+    try {
+      $stmt = $db->prepare($sql);
+      $stmt->execute([$levelId]);
+      $job_posts = $stmt->fetchAll();
+      return $job_posts;
+    } catch (Exception $e) {
+      die('Erreur: ' . $e->getMessage());
+    }
+  }
+
+  public function searchJobPostByEmploymentTypeId($employmentTypeId)
+  {
+    $sql = "SELECT jobpostings.*, fields.FieldName, levels.LevelName, employmenttypes.EmploymentTypeName 
+            FROM jobpostings 
+            LEFT JOIN fields ON jobpostings.FieldID = fields.FieldID 
+            LEFT JOIN levels ON jobpostings.LevelID = levels.LevelID 
+            LEFT JOIN employmenttypes ON jobpostings.EmploymentTypeID = employmenttypes.EmploymentTypeID
+            WHERE jobpostings.EmploymentTypeID = ?";
+    $db = config::getConnexion();
+    try {
+      $stmt = $db->prepare($sql);
+      $stmt->execute([$employmentTypeId]);
+      $job_posts = $stmt->fetchAll();
+      return $job_posts;
+    } catch (Exception $e) {
+      die('Erreur: ' . $e->getMessage());
+    }
+  }
+
+  public function searchJobPostByTitle($title)
+  {
+    $sql = "SELECT jobpostings.*, fields.FieldName, levels.LevelName, employmenttypes.EmploymentTypeName 
+            FROM jobpostings 
+            LEFT JOIN fields ON jobpostings.FieldID = fields.FieldID 
+            LEFT JOIN levels ON jobpostings.LevelID = levels.LevelID 
+            LEFT JOIN employmenttypes ON jobpostings.EmploymentTypeID = employmenttypes.EmploymentTypeID
+            WHERE jobpostings.Title = ?";
+    $db = config::getConnexion();
+    try {
+      $stmt = $db->prepare($sql);
+      $stmt->execute([$title]);
+      $job_posts = $stmt->fetchAll();
+      return $job_posts;
+    } catch (Exception $e) {
+      die('Erreur: ' . $e->getMessage());
+    }
+  }
+
+  public function searchJobPostBySalary($salary)
+  {
+    $sql = "SELECT jobpostings.*, fields.FieldName, levels.LevelName, employmenttypes.EmploymentTypeName 
+            FROM jobpostings 
+            LEFT JOIN fields ON jobpostings.FieldID = fields.FieldID 
+            LEFT JOIN levels ON jobpostings.LevelID = levels.LevelID 
+            LEFT JOIN employmenttypes ON jobpostings.EmploymentTypeID = employmenttypes.EmploymentTypeID
+            WHERE jobpostings.Salary >= ?";
+    $db = config::getConnexion();
+    try {
+      $stmt = $db->prepare($sql);
+      $stmt->execute([$salary]);
+      $job_posts = $stmt->fetchAll();
+      return $job_posts;
+    } catch (Exception $e) {
+      die('Erreur: ' . $e->getMessage());
+    }
+  }
+
+  public function searchJobPostByLocation($location)
+  {
+    $sql = "SELECT jobpostings.*, fields.FieldName, levels.LevelName, employmenttypes.EmploymentTypeName 
+            FROM jobpostings 
+            LEFT JOIN fields ON jobpostings.FieldID = fields.FieldID 
+            LEFT JOIN levels ON jobpostings.LevelID = levels.LevelID 
+            LEFT JOIN employmenttypes ON jobpostings.EmploymentTypeID = employmenttypes.EmploymentTypeID
+            WHERE jobpostings.Location LIKE ?";
+    $db = config::getConnexion();
+    try {
+      $stmt = $db->prepare($sql);
+      $stmt->execute([$location . '%']); // append '%' to the end of $location
+      $job_posts = $stmt->fetchAll();
+      return $job_posts;
+    } catch (Exception $e) {
+      die('Erreur: ' . $e->getMessage());
+    }
+  }
 }
-?>

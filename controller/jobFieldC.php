@@ -42,26 +42,31 @@ class JobFieldC
   }
 
 
-  public function updateField($fieldId, $fieldName)
+  public function updateField($oldFieldId, $field)
   {
-    $sql = "UPDATE fields SET FieldName = :fieldName WHERE FieldID = :fieldId";
+    $sql = "UPDATE fields SET FieldID = :newFieldId, FieldName = :fieldName, Description = :description WHERE FieldID = :oldFieldId";
     $db = config::getConnexion();
     $stmt = $db->prepare($sql);
     try {
-      $stmt->execute([':fieldId' => $fieldId, ':fieldName' => $fieldName]);
+      $stmt->execute([
+        ':oldFieldId' => $oldFieldId,
+        ':newFieldId' => $field->getFieldId(),
+        ':fieldName' => $field->getFieldName(),
+        ':description' => $field->getDescription()
+      ]);
     } catch (Exception $e) {
       die('Erreur: ' . $e->getMessage());
     }
   }
 
 
-  public function addField($fieldId, $fieldName)
+  public function addField($fieldId, $fieldName, $description)
   {
-    $sql = "INSERT INTO fields (FieldID, FieldName) VALUES (:fieldId, :fieldName)";
+    $sql = "INSERT INTO fields (FieldID, FieldName, Description) VALUES (:fieldId, :fieldName, :description)";
     $db = config::getConnexion();
     $stmt = $db->prepare($sql);
     try {
-      $stmt->execute([':fieldId' => $fieldId, ':fieldName' => $fieldName]);
+      $stmt->execute([':fieldId' => $fieldId, ':fieldName' => $fieldName, ':description' => $description]);
     } catch (Exception $e) {
       die('Erreur: ' . $e->getMessage());
     }
