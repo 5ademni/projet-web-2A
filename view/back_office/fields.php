@@ -710,18 +710,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit'])) {
                       You must select a field first.
                     </div>
                   <?php else : ?>
-                    <form class="row g-3" method="POST" id="fieldform">
+                    <form class="row g-3" method="POST" id="editFieldForm">
                       <div class="col-md-6">
-                        <label for="inputID" class="form-label">ID</label>
-                        <input type="text" class="form-control" id="inputID" name="edit-id" value="<?php echo $fieldCrud['FieldID']; ?>">
+                        <label for="editInputID" class="form-label">ID</label>
+                        <input type="text" class="form-control" id="editInputID" name="edit-id" value="<?php echo $fieldCrud['FieldID']; ?>">
                       </div>
                       <div class="col-md-6">
-                        <label for="inputField" class="form-label">Field Name</label>
-                        <input type="text" class="form-control" id="inputField" name="edit-name" value="<?php echo $fieldCrud['FieldName']; ?>">
+                        <label for="editInputField" class="form-label">Field Name</label>
+                        <input type="text" class="form-control" id="editInputField" name="edit-name" value="<?php echo $fieldCrud['FieldName']; ?>">
                       </div>
                       <div class="col-12">
-                        <label for="inputDescription" class="form-label">Description</label>
-                        <input type="text" class="form-control" id="inputDescription" name="description-name" value="<?php echo $fieldCrud['Description']; ?>">
+                        <label for="editInputDescription" class="form-label">Description</label>
+                        <input type="text" class="form-control" id="editInputDescription" name="description-name" value="<?php echo $fieldCrud['Description']; ?>">
                       </div>
                       <div class="text-center">
                         <button type="submit" class="btn btn-primary">Submit</button>
