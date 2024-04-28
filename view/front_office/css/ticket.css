@@ -1,0 +1,186 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  background: #ddd;
+  font-family: "Inknut Antiqua", serif;
+  font-family: "Ravi Prakash", cursive;
+  font-family: "Lora", serif;
+  font-family: "Indie Flower", cursive;
+  font-family: "Cabin", sans-serif;
+}
+.upcomming {
+  font-size: 45px;
+  text-transform: uppercase;
+  border-left: 14px solid rgba(255, 235, 59, 0.78);
+  padding-left: 12px;
+  margin: 18px 8px;
+}
+.container .item {
+  width: 48%;
+  float: left;
+  padding: 0 20px;
+  background: #fff;
+  overflow: hidden;
+  margin: 10px;
+}
+.container .item-right,
+.container .item-left {
+  float: left;
+  padding: 20px;
+}
+.container .item-right {
+  padding: 79px 50px;
+  margin-right: 20px;
+  width: 25%;
+  position: relative;
+  height: 286px;
+}
+.container .item-right .up-border,
+.container .item-right .down-border {
+  padding: 14px 15px;
+  background-color: #ddd;
+  border-radius: 50%;
+  position: absolute;
+}
+.container .item-right .up-border {
+  top: -8px;
+  right: -35px;
+}
+.container .item-right .down-border {
+  bottom: -13px;
+  right: -35px;
+}
+.container .item-right .num {
+  font-size: 60px;
+  text-align: center;
+  color: #111;
+}
+.container .item-right .day,
+.container .item-left .event {
+  color: #555;
+  font-size: 20px;
+  margin-bottom: 9px;
+}
+.container .item-right .day {
+  text-align: center;
+  font-size: 25px;
+}
+.container .item-left {
+  width: 71%;
+  padding: 34px 0px 19px 46px;
+  border-left: 3px dotted #999;
+}
+.container .item-left .title {
+  color: #111;
+  font-size: 34px;
+  margin-bottom: 12px;
+}
+.container .item-left .sce {
+  margin-top: 5px;
+  display: block;
+}
+.container .item-left .sce .icon,
+.container .item-left .sce p,
+.container .item-left .loc .icon,
+.container .item-left .loc p {
+  float: left;
+  word-spacing: 5px;
+  letter-spacing: 1px;
+  color: #888;
+  margin-bottom: 10px;
+}
+.container .item-left .sce .icon,
+.container .item-left .loc .icon {
+  margin-right: 10px;
+  font-size: 20px;
+  color: #666;
+}
+.container .item-left .loc {
+  display: block;
+}
+.fix {
+  clear: both;
+}
+.container .item .tickets,
+.booked,
+.cancel {
+  color: #fff;
+  padding: 6px 14px;
+  float: right;
+  margin-top: 10px;
+  font-size: 18px;
+  border: none;
+  cursor: pointer;
+}
+.container .item .tickets {
+  background: #777;
+}
+.container .item .booked {
+  background: #3d71e9;
+}
+.container .item .cancel {
+  background: #df5454;
+}
+.linethrough {
+  text-decoration: line-through;
+}
+@media only screen and (max-width: 1150px) {
+  .container .item {
+    width: 100%;
+    margin-right: 20px;
+  }
+  div.container {
+    margin: 0 20px auto;
+  }
+}
+.event-image {
+  width: 100px; /* Définissez la largeur à 100px */
+  height: 100px; /* Définissez la hauteur à 100px */
+  display: block; /* Centre l'image */
+  margin-left: 20px; /* Déplace l'image un peu vers la gauche */
+  object-fit: scale-down; /* Redimensionne l'image pour s'adapter au conteneur */
+  border-radius: 50%; /* Rend l'image circulaire */
+}
+.site-footer {
+  margin-top: 50px !important; /* Ajoutez l'espace que vous voulez ici */
+}
+.container .item .tickets {
+  background: #008000; /* Vert pour les tickets disponibles */
+}
+
+.container .item .cancel {
+  background: #ff0000; /* Rouge pour les tickets complets */
+}
+.container .item .inscrit {
+  background: #800080; /* Mauve pour les tickets inscrits */
+}
+.site-footer {
+  color: #fff; /* change text color to white */
+  padding: 20px 0; /* add some padding */
+}
+
+.site-footer .container {
+  display: flex; /* align items in a row */
+  justify-content: space-between; /* distribute items evenly */
+}
+
+.site-footer .copyright-text,
+.site-footer .footer-menu {
+  margin: 0; /* remove default margins */
+}
+
+.site-footer .footer-menu-item {
+  margin-left: 10px; /* add some space between menu items */
+}
+
+.site-footer .back-top-icon {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+}
+
+
+
