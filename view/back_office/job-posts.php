@@ -577,7 +577,7 @@ if (isset($_GET['delete-job'])) {
           </a>
         </div>
 
-        <table class="table table-striped">
+        <table class="table table-striped datatable">
           <thead>
             <tr>
               <th scope="col">ID</th>
