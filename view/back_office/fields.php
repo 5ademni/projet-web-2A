@@ -14,16 +14,24 @@ if (isset($_GET['edit'])) {
   $fieldId = $_GET['edit'];
   $fieldCrud = $jobFieldC->getFieldById($fieldId);
 }
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $id = $_GET['edit']; // Get the id from the POST data
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit'])) {
+  $id = $_POST['edit']; // Get the id from the POST data
 
   $editedField = new jobField(
     $_POST['edit-id'],
     $_POST['edit-name'],
     $_POST['description-name'],
-
   );
   $jobFieldC->updateField($id, $editedField);
+  header('Location: fields.php');
+  exit;
+} elseif ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['create'])) {
+  $newField = new jobField(
+    $_POST['create-id'],
+    $_POST['create-name'],
+    $_POST['create-description'],
+  );
+  //$jobFieldC->createField($newField);
   header('Location: fields.php');
   exit;
 }
@@ -638,6 +646,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   <button class="nav-link w-100 <?php echo isset($_GET['see-more']) ? 'active' : ''; ?>" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-justified" type="button" role="tab" aria-controls="home" aria-selected="<?php echo isset($_GET['see-more']) ? 'true' : 'false'; ?>">See More</button>
                 </li>
                 <li class="nav-item flex-fill" role="presentation">
+                  <button class="nav-link w-100 <?php echo isset($_GET['create']) ? 'active' : ''; ?>" id="create-tab" data-bs-toggle="tab" data-bs-target="#create-justified" type="button" role="tab" aria-controls="create" aria-selected="<?php echo isset($_GET['create']) ? 'true' : 'false'; ?>">Create</button>
+                </li>
+                <li class="nav-item flex-fill" role="presentation">
                   <button class="nav-link w-100 <?php echo isset($_GET['edit']) ? 'active' : ''; ?>" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-justified" type="button" role="tab" aria-controls="profile" aria-selected="<?php echo isset($_GET['edit']) ? 'true' : 'false'; ?>">Edit</button>
                 </li>
               </ul>
@@ -667,6 +678,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                   <?php endif; ?>
                 </div>
                 <!-- End See More Tab -->
+                <!-- New Tab Content -->
+                <div class="tab-pane fade show <?php echo isset($_GET['create']) ? 'active' : ''; ?>" id="create-justified" role="tabpanel" aria-labelledby="create-tab">
+                  <!-- Multi Columns Form -->
+                  <form class="row g-3" method="POST">
+                    <div class="col-md-6">
+                      <label for="inputID" class="form-label">ID</label>
+                      <input type="text" class="form-control" id="inputID" name="create-id">
+                    </div>
+                    <div class="col-md-6">
+                      <label for="inputField" class="form-label">Field Name</label>
+                      <input type="text" class="form-control" id="inputField" name="create-name">
+                    </div>
+                    <div class="col-12">
+                      <label for="inputDescription" class="form-label">Description</label>
+                      <input type="text" class="form-control" id="inputDescription" name="create-description">
+                    </div>
+                    <div class="text-center">
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                  </form><!-- End Multi Columns Form -->
+                </div>
+                <!-- End New Tab Content -->
                 <!--EDIT TAB-->
                 <div class="tab-pane fade show <?php echo isset($_GET['edit']) ? 'active' : ''; ?>" id="profile-justified" role="tabpanel" aria-labelledby="profile-tab">
                   <!-- Multi Columns Form -->
