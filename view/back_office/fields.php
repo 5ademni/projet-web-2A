@@ -25,13 +25,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit'])) {
   $jobFieldC->updateField($id, $editedField);
   header('Location: fields.php');
   exit;
-} elseif ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['create'])) {
+} elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
   $newField = new jobField(
     $_POST['create-id'],
     $_POST['create-name'],
     $_POST['create-description'],
   );
-  //$jobFieldC->createField($newField);
+  $jobFieldC->addField($newField);
   header('Location: fields.php');
   exit;
 }
@@ -661,27 +661,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit'])) {
                       You must select a field first.
                     </div>
                   <?php else : ?>
+                    <!-- READ ONLY FORM -->
                     <form class="row g-3">
                       <div class="col-md-6">
                         <label for="inputID" class="form-label">ID</label>
-                        <input type="text" class="form-control" id="inputID" name="see-more-id" value="<?php echo $fieldCrud['FieldID']; ?>">
+                        <input readonly type="text" class="form-control" id="inputID" name="see-more-id" value="<?php echo $fieldCrud['FieldID']; ?>">
                       </div>
                       <div class="col-md-6">
                         <label for="inputField" class="form-label">Field Name</label>
-                        <input type="text" class="form-control" id="inputField" name="see-more-name" value="<?php echo $fieldCrud['FieldName']; ?>">
+                        <input readonly type="text" class="form-control" id="inputField" name="see-more-name" value="<?php echo $fieldCrud['FieldName']; ?>">
                       </div>
                       <div class="col-12">
                         <label for="inputDescription" class="form-label">Description</label>
-                        <input type="text" class="form-control" id="inputDescription" name="see-more-description" value="<?php echo $fieldCrud['Description']; ?>">
+                        <input readonly type="text" class="form-control" id="inputDescription" name="see-more-description" value="<?php echo $fieldCrud['Description']; ?>">
                       </div>
-                    </form><!-- End Multi Columns Form -->
+                    </form>
+                    <!-- END READ ONLY FORM --><!-- End Multi Columns Form -->
                   <?php endif; ?>
                 </div>
                 <!-- End See More Tab -->
                 <!-- New Tab Content -->
                 <div class="tab-pane fade show <?php echo isset($_GET['create']) ? 'active' : ''; ?>" id="create-justified" role="tabpanel" aria-labelledby="create-tab">
                   <!-- Multi Columns Form -->
-                  <form class="row g-3" method="POST">
+                  <form class="row g-3" method="POST" id="fieldform">
                     <div class="col-md-6">
                       <label for="inputID" class="form-label">ID</label>
                       <input type="text" class="form-control" id="inputID" name="create-id">
@@ -708,7 +710,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit'])) {
                       You must select a field first.
                     </div>
                   <?php else : ?>
-                    <form class="row g-3" method="POST">
+                    <form class="row g-3" method="POST" id="fieldform">
                       <div class="col-md-6">
                         <label for="inputID" class="form-label">ID</label>
                         <input type="text" class="form-control" id="inputID" name="edit-id" value="<?php echo $fieldCrud['FieldID']; ?>">
@@ -767,6 +769,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit'])) {
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+  <script src="assets/js/input_control_job.js"></script>
 </body>
 
 </html>

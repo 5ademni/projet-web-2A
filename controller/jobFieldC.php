@@ -60,13 +60,17 @@ class JobFieldC
   }
 
 
-  public function addField($fieldId, $fieldName, $description)
+  public function addField($field)
   {
     $sql = "INSERT INTO fields (FieldID, FieldName, Description) VALUES (:fieldId, :fieldName, :description)";
     $db = config::getConnexion();
     $stmt = $db->prepare($sql);
     try {
-      $stmt->execute([':fieldId' => $fieldId, ':fieldName' => $fieldName, ':description' => $description]);
+      $stmt->execute([
+        ':fieldId' => $field->getFieldId(),
+        ':fieldName' => $field->getFieldName(),
+        ':description' => $field->getDescription()
+      ]);
     } catch (Exception $e) {
       die('Erreur: ' . $e->getMessage());
     }

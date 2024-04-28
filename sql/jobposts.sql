@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 22, 2024 at 07:05 PM
+-- Generation Time: Apr 28, 2024 at 04:00 PM
 -- Server version: 8.2.0
 -- PHP Version: 8.2.13
 
@@ -20,73 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `5ademni`
 --
-
--- --------------------------------------------------------
-
---
--- Table structure for table `articlesblog`
---
-
-DROP TABLE IF EXISTS `articlesblog`;
-CREATE TABLE IF NOT EXISTS `articlesblog` (
-  `id_article` int NOT NULL AUTO_INCREMENT,
-  `id_auteur` int DEFAULT NULL,
-  `titre` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `contenu` text COLLATE utf8mb4_general_ci NOT NULL,
-  `datePublication` datetime DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id_article`),
-  KEY `ID_Auteur` (`id_auteur`)
-) ENGINE=InnoDB AUTO_INCREMENT=8889 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `articlesblog`
---
-
-INSERT INTO `articlesblog` (`id_article`, `id_auteur`, `titre`, `contenu`, `datePublication`) VALUES
-(1, 1, 'll', 'll', '2024-04-16 10:12:47'),
-(3, 3, 'moncof blog', 'bnj bnj', '2024-03-31 16:18:54'),
-(777, 3, 'hello', 'aaaa', '2024-04-16 10:21:44'),
-(8888, 1, 'a', 'gh', '2024-04-16 10:21:11');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `auteurs`
---
-
-DROP TABLE IF EXISTS `auteurs`;
-CREATE TABLE IF NOT EXISTS `auteurs` (
-  `id_auteur` int NOT NULL AUTO_INCREMENT,
-  `nom` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  PRIMARY KEY (`id_auteur`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `auteurs`
---
-
-INSERT INTO `auteurs` (`id_auteur`, `nom`, `email`) VALUES
-(1, 'helo', 'eaea@esprit.tn'),
-(2, 'moncof', 'moncof@esprit.tn'),
-(3, 'moncof', 'moncof@esprit.tn');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `commentaires`
---
-
-DROP TABLE IF EXISTS `commentaires`;
-CREATE TABLE IF NOT EXISTS `commentaires` (
-  `id_commentaire` int NOT NULL AUTO_INCREMENT,
-  `id_article` int DEFAULT NULL,
-  `nom` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `commentaire` text COLLATE utf8mb4_general_ci NOT NULL,
-  `dateCommentaire` datetime DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id_commentaire`),
-  KEY `ID_Article` (`id_article`)
-) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -109,7 +42,8 @@ INSERT INTO `employmenttypes` (`EmploymentTypeID`, `EmploymentTypeName`) VALUES
 (1, 'full time'),
 (2, 'part time'),
 (3, 'contract'),
-(4, 'freelance');
+(4, 'freelance'),
+(5, 'remote');
 
 -- --------------------------------------------------------
 
@@ -121,6 +55,7 @@ DROP TABLE IF EXISTS `fields`;
 CREATE TABLE IF NOT EXISTS `fields` (
   `FieldID` int NOT NULL,
   `FieldName` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Description` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`FieldID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -128,15 +63,15 @@ CREATE TABLE IF NOT EXISTS `fields` (
 -- Dumping data for table `fields`
 --
 
-INSERT INTO `fields` (`FieldID`, `FieldName`) VALUES
-(101, 'web dev'),
-(102, 'mobile dev'),
-(105, 'AI'),
-(108, 'game dev'),
-(201, 'marketing'),
-(206, 'human resources'),
-(555, 'teacher'),
-(999, 'AAAAAAAA');
+INSERT INTO `fields` (`FieldID`, `FieldName`, `Description`) VALUES
+(101, 'web dev', 'TEST'),
+(102, 'mobile dev', '#flutter #kotlin'),
+(105, 'AI', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBB'),
+(108, 'game dev', NULL),
+(201, 'marketing', NULL),
+(206, 'human resources', NULL),
+(555, 'teacher', NULL),
+(999, 'AAAAAAAA', NULL);
 
 -- --------------------------------------------------------
 
@@ -151,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `jobpostings` (
   `Company` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `Location` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `PostingDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `Salary` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `Salary` int DEFAULT NULL,
   `Status` tinyint(1) NOT NULL DEFAULT '1',
   `FieldID` int DEFAULT NULL,
   `LevelID` int DEFAULT NULL,
@@ -161,14 +96,15 @@ CREATE TABLE IF NOT EXISTS `jobpostings` (
   KEY `FieldID` (`FieldID`),
   KEY `EmploymentTypeID` (`EmploymentTypeID`),
   KEY `LevelID` (`LevelID`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `jobpostings`
 --
 
 INSERT INTO `jobpostings` (`JobID`, `Title`, `Company`, `Location`, `PostingDate`, `Salary`, `Status`, `FieldID`, `LevelID`, `EmploymentTypeID`, `JobDescription`) VALUES
-(13, 'AAAAAAA', 'meta', 'ariana', '2024-04-16 10:56:51', '9999TND', 1, 555, 1, 1, '');
+(13, 'AAAAAAA', 'meta', 'ariana', '2024-04-16 10:56:51', 9999, 1, 555, 1, 1, ''),
+(14, 'ss', 'login company', 'usa', '2024-04-27 01:15:36', 555555, 1, 105, 1, 2, 'OHOHO');
 
 -- --------------------------------------------------------
 
@@ -195,18 +131,6 @@ INSERT INTO `levels` (`LevelID`, `LevelName`) VALUES
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `articlesblog`
---
-ALTER TABLE `articlesblog`
-  ADD CONSTRAINT `articlesblog_ibfk_1` FOREIGN KEY (`id_auteur`) REFERENCES `auteurs` (`id_auteur`);
-
---
--- Constraints for table `commentaires`
---
-ALTER TABLE `commentaires`
-  ADD CONSTRAINT `commentaires_ibfk_1` FOREIGN KEY (`id_article`) REFERENCES `articlesblog` (`id_article`);
 
 --
 -- Constraints for table `jobpostings`
