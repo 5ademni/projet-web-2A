@@ -1,29 +1,25 @@
 <?php
-include_once '../../Controller/articlesBlogC.php';
+include_once "../../controller/articlesBlogC.php";
+include_once '../../controller/auteursC.php';
+include_once '../../model/articlesBlog.php';
 
-$ArticlesBlogC = new ArticlesBlogC();
+$articlesBlogC = new ArticlesBlogC();
+$AuteursC = new AuteursC();
 
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $id = $_GET['id']; // Get the id from the POST data
-    $current_date = date('Y-m-d H:i:s');
-
-    $Articles_Blog = new ArticlesBlog(
-        $id,
-        $_POST['id_auteur'],
-        $_POST['titre'],
-        $_POST['contenu'],
-        $_POST['datePublication'] = $current_date,
-    );
-    $ArticlesBlogC->updateArticle($id, $Articles_Blog);
-    $location = 'Location: blog.php?id=' . $id;
-    header($location);
-    exit;
+if (isset($_GET['id']) && $_GET['id'] != '') {
+  $id_article = $_GET['id'];
+  $articlesBlog = $articlesBlogC->getArticlesById($id_article);
+} else {
+  $articlesBlog = $articlesBlogC->listArticles();
 }
 
-if (isset($_GET['id'])) {
-    $ArticlesBlog = $ArticlesBlogC->getArticlesById($_GET['id']);
-}
+$auteurs = $AuteursC->listAuteurs();
+
+
+$article = $articlesBlogC->getArticlesById($id_article);
+echo $article->id_auteur;
+echo $article->id_article;
+
 ?>
 
 <!doctype html>
@@ -74,7 +70,7 @@ Bootstrap 5 HTML CSS Template
                 <img src="images/logo.png" class="img-fluid logo-image">
 
                 <div class="d-flex flex-column">
-                    <strong class="logo-text">Gotto</strong>
+                    <strong class="logo-text">5ademni</strong>
                     <small class="logo-slogan">Online Job Portal</small>
                 </div>
             </a>
@@ -101,14 +97,8 @@ Bootstrap 5 HTML CSS Template
                         </ul>
                     </li>
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
-
-                        <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">
-                            <li><a class="dropdown-item" href="job-listings.html">Job Listings</a></li>
-
-                            <li><a class="dropdown-item active" href="job-details.html">Job Details</a></li>
-                        </ul>
+                    <li class="nav-item">
+                        <a class="nav-link" href="job-listings.php">Jobs</a>
                     </li>
 
                     <li class="nav-item">
@@ -136,13 +126,13 @@ Bootstrap 5 HTML CSS Template
                 <div class="row">
 
                     <div class="col-lg-12 col-12 text-center">
-                        <h1 class="text-white">Job Details</h1>
+                        <h1 class="text-white">Details du blog</h1>
 
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb justify-content-center">
                                 <li class="breadcrumb-item"><a href="index.php">Home</a></li>
 
-                                <li class="breadcrumb-item active" aria-current="page">Job Details</li>
+                                <li class="breadcrumb-item active" aria-current="page">Details du blog</li>
                             </ol>
                         </nav>
                     </div>
@@ -151,106 +141,71 @@ Bootstrap 5 HTML CSS Template
             </div>
         </header>
 
-        <?php
-        $titre = strtolower(str_replace(' ', '_', $ArticlesBlog['titre'])); // Replace spaces with underscores and convert to lowercase
-        $imagePath = 'images/logos/'; // Replace this with the actual path to your images
-        $imageSrc = $imagePath . $titre . '.png';
-        if (!file_exists($imageSrc)) {
-            $imageSrc = $imagePath . 'generic.png';
-        }
-        ?>
 
-        <form method="post">
-            <section class="job-section section-padding pb-0">
-                <div class="container">
-                    <div class="row">
 
-                        <div class="col-lg-8 col-12">
-                            <h2 class="job-title mb-0"><input type="text" name="id_auteur" value="<?php echo $ArticlesBlogC['id_auteur']; ?>"></h2>
 
-                            <div class="job-thumb job-thumb-detail">
-                                <class="d-flex flex-wrap align-items-center border-bottom pt-lg-3 pt-2 pb-3 mb-4">
-                                    <p class="job-location mb-0">
-                                        <i class="custom-icon bi-geo-alt me-1"></i>
-                                        <input type="text" name="titre" value="<?php echo $ArticlesBlogC['titre']; ?>">
-                                    </p>
 
-                                    <p class="job-date mb-0">
-                                        <i class="custom-icon bi-clock me-1"></i>
-                                        <input type="text" name="contenu" value="<?php echo $ArticlesBlog['contenu']; ?>">
-                                    </p>
 
-                                    <p class="job-price mb-0">
-                                        <i class="custom-icon bi-cash me-1"></i>
-                                        <input type="text" name="datePublication" value="<?php echo $ArticlesBlog['datePublication']; ?>">
-                                    </p>
-<!--
-                                    <div class="d-flex">
-                                        <p class="mb-0">
-                                            <select class="form-select" name="level_id" aria-label="Default select example">
-                                                <option selected value="<?php echo $ArticlesBlog['id_auteur']; ?>"><?php echo $ArticlesBlog['nom']; ?></option>
-                                                <option value="1">helo</option>
-                                                <option value="2">moncof</option>
-                                                <option value="3">moncof</option>
-                                            </select>
-                                        </p>
-    -->
-                                        
-                                    </div>
-                                </div>
 
-        </form>
 
-        <div class="d-flex justify-content-center flex-wrap mt-5 border-top pt-4">
 
-            <button type="submit" class="custom-btn custom-border-btn btn edit-btn mt-2 ms-lg-4 ms-3" style="background-color: #0d47a1;">Modifier blog</button>
 
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="job-section section-padding pb-0">
+    <div class="container">
+        <div class="row">
+        <h4 class="mt-4 mb-2">Blog Description</h4>   
+        <p><?php  echo $articlesBlog->getIdAuteur(); ?></p>
+        <div class="d-flex justify-content-center flex-wrap mt-5 border-top pt-4">                        
+            <a href="#" class="custom-btn btn mt-2">Apply now</a>
+            <a href="#" class="custom-btn custom-border-btn btn mt-2 ms-lg-4 ms-3">Save this blog</a>
+            <a href="blog-edit.php?id=<?php echo $articlesBlog->getIdArticle(); ?>" class="custom-btn custom-border-btn btn edit-btn mt-2 ms-lg-4 ms-3">Modifier ce blog</a>
             <div class="job-detail-share d-flex align-items-center">
-                <p class="mb-0 me-lg-4 me-3">Partager:</p>
-
+                <p class="mb-0 me-lg-4 me-3">Share:</p>
                 <a href="#" class="bi-facebook"></a>
-
                 <a href="#" class="bi-twitter mx-3"></a>
-
                 <a href="#" class="bi-share"></a>
             </div>
         </div>
-        </div>
-        </div>
+    </div>
+ </section>
 
 
 
-        </div>
-        </div>
-        </section>
 
 
-      
-
-        <section class="cta-section">
-            <div class="section-overlay"></div>
-
-            <div class="container">
-                <div class="row">
-
-                    <div class="col-lg-6 col-10">
-                        <h2 class="text-white mb-2">Over 10k opening jobs</h2>
-
-                        <p class="text-white">Gotto Job is a free HTML CSS template for job hunting related websites. This layout is based on the famous Bootstrap 5 CSS framework. Thank you for visiting Tooplate website.</p>
-                    </div>
-
-                    <div class="col-lg-4 col-12 ms-auto">
-                        <div class="custom-border-btn-wrap d-flex align-items-center mt-lg-4 mt-2">
-                            <a href="#" class="custom-btn custom-border-btn btn me-4">Create an account</a>
-
-                            <a href="#" class="custom-link">Post a job</a>
-                        </div>
-                    </div>
-
+<section class="cta-section">
+    <div class="section-overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-10">
+                    <h2 class="text-white mb-2">Over 10k opening jobs</h2>
                 </div>
+
+                <div class="col-lg-4 col-12 ms-auto">
+                    <div class="custom-border-btn-wrap d-flex align-items-center mt-lg-4 mt-2">
+                        <a href="#" class="custom-btn custom-border-btn btn me-4">Create an account</a>
+
+                        <a href="#" class="custom-link">Post a job</a>
+                    </div>
+                </div>
+
             </div>
-        </section>
-    </main>
+        </div>
+    </div>
+</section>
+</main>
 
     <footer class="site-footer">
         <div class="container">
@@ -344,7 +299,7 @@ Bootstrap 5 HTML CSS Template
                 <div class="row">
 
                     <div class="col-lg-4 col-12 d-flex align-items-center">
-                        <p class="copyright-text">Copyright © Gotto Job 2048</p>
+                        <p class="copyright-text">Copyright © 5ademni 2024</p>
 
                         <ul class="footer-menu d-flex">
                             <li class="footer-menu-item"><a href="#" class="footer-menu-link">Privacy Policy</a></li>

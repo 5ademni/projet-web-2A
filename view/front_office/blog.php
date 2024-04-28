@@ -15,23 +15,34 @@ if (isset($_GET['delete'])) {
   $articlesBlogC->deleteArticle($_GET['delete']);
 }
 
-$articlesBlogC = $articlesBlogC->listArticles();
-
 
 
 $AuteursC = new AuteursC();
-$ArticlesBlogC = new ArticlesBlogC();
+
+
+$articlesBlogInstance = new ArticlesBlogC();
 
 if (isset($_GET['auteur']) && $_GET['auteur'] != '') {
     $id_auteur = $_GET['auteur']; 
-    $articlesBlogC = $ArticlesBlogC->getArticlesByAuteur($id_auteur);
- //   var_dump($articles);
+    $articlesBlogC = $articlesBlogInstance->getArticlesById($id_auteur);
 } else {
-    $articlesBlogC = $ArticlesBlogC->listArticles();
+    $articlesBlogC = $articlesBlogInstance->listArticles();
 }
 
 $auteurs = $AuteursC->listAuteurs();
 
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["tri"])) {
+  $tri = $_POST["tri"];
+  if ($tri == "contenu_croissant") {
+      $articlesBlogC = $articlesBlogInstance->trierArticlesParContenuCroissant();
+  } else if ($tri == "contenu_decroissant") {
+      $articlesBlogC = $articlesBlogInstance->trierArticlesParContenuDecroissant();
+  } else if ($tri == "date_croissant") {
+      $articlesBlogC = $articlesBlogInstance->trierArticlesParDateCroissante();
+  } else if ($tri == "date_decroissant") {
+      $articlesBlogC = $articlesBlogInstance->trierArticlesParDateDecroissante();
+  }
+}
 ?>
 
 
@@ -47,7 +58,7 @@ $auteurs = $AuteursC->listAuteurs();
   <meta name="description" content="" />
   <meta name="author" content="" />
 
-  <title>About Gotto Job Portal</title>
+  <title>About 5ademni Job Portal</title>
 
   <!-- CSS FILES -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -102,7 +113,7 @@ Bootstrap 5 HTML CSS Template
           </li>
 
           <li class="nav-item">
-            <a class="nav-link active" href="about.html">About Gotto</a>
+            <a class="nav-link active" href="about.html">About 5ademni</a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="eventButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">Événements</a>
@@ -151,9 +162,41 @@ Bootstrap 5 HTML CSS Template
 
   <!--Blog Card Start-->
 
-  <?php
+  <form action="blog.php" method="get">
+    <select name="auteur">
+    <option value="" class="btn btn-primary">Sélectionnez un auteur </option>
+      <?php
+      foreach ($auteurs as $auteur) {
+        echo "<option value=\"" . $auteur['id_auteur'] . "\">" . $auteur['nom'] . "</option>";
+      }
+      ?>
+    </select>
+    <input type="submit" value="Trouver les articles"  class="btn btn-primary" >
+  </form>
+
+
+
+
+
+</form>
+<form action="blog.php" method="post">
+  <select name="tri">
+    <option value="">Trier par</option>
+    <option value="contenu_croissant">Contenu Croissant</option>
+    <option value="contenu_decroissant">Contenu Décroissant</option>
+    <option value="date_croissant">Date Croissante</option>
+    <option value="date_decroissant">Date Décroissante</option>
+  </select>
+  <input type="submit" value="Trier">
+</form>
+
+
+
+
+
+<?php
   foreach ($articlesBlogC as $ArticlesBlogC) {
-  ?>
+?>
     <div class="blog-card">
       <div class="meta">
         <div class="photo" style="background-image: url(https://storage.googleapis.com/chydlx/codepen/blog-cards/image-1.jpg);"></div>
@@ -174,9 +217,11 @@ Bootstrap 5 HTML CSS Template
         <h1><?php echo $ArticlesBlogC['titre']; ?></h1>
         <p><?php echo $ArticlesBlogC['contenu']; ?></p>
         <p class="read-more">
-          <a href="blog-edit.php?id=<?php echo $ArticlesBlogC['id_article']; ?>">Modifier le blog</a>
+          <a href="blog-edit.php?id=<?php echo $ArticlesBlogC['id_article']; ?>" class="btn btn-primary" style="background-color: blue ; color: white;"> Modifier le blog </a>
           <br>
-          <a href="?delete=<?php echo $ArticlesBlogC['id_article']; ?>">Supprimer le blog</a>
+          <a href="?delete=<?php echo $ArticlesBlogC['id_article']; ?>" class="btn btn-primary" style="background-color: #D46F4D; color: white;">Supprimer le blog</a>
+          <br>
+          <a href="blog-description.php?id=<?php echo $ArticlesBlogC['id_article']; ?>" class="btn btn-primary" style="background-color: #5AD67D ; color: white;">Voir plus</a>
         </p>
       </div>
     </div>
@@ -189,17 +234,9 @@ Bootstrap 5 HTML CSS Template
 
 
 
-<form action="blog.php" method="get">
-    <select name="auteur">
-        <option value="">Sélectionnez un auteur</option>
-        <?php
-        foreach ($auteurs as $auteur) {
-            echo "<option value=\"" . $auteur['id_auteur'] . "\">" . $auteur['nom'] . "</option>";
-        }
-        ?>
-    </select>
-    <input type="submit" value="Trouver les articles">
-</form>
+
+
+
 
 
 
@@ -214,7 +251,7 @@ Bootstrap 5 HTML CSS Template
             <img src="images/logo.png" class="img-fluid logo-image" />
 
             <div class="d-flex flex-column">
-              <strong class="logo-text">Gotto</strong>
+              <strong class="logo-text">5ademni</strong>
               <small class="logo-slogan">Online Job Portal</small>
             </div>
           </div>
@@ -261,7 +298,7 @@ Bootstrap 5 HTML CSS Template
             <li class="footer-menu-item">
               <a href="#" class="footer-menu-link">Contact</a>
             </li>
-            
+
           </ul>
         </div>
 

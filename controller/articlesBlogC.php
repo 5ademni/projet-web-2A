@@ -103,34 +103,77 @@ class ArticlesBlogC
     }
 
 
-public function getArticleById($id)
+public function getArticlesById($id_article)
 {
-    $sql = "SELECT * FROM articlesblog WHERE id_article = ?";
+    $sql = "SELECT * FROM articlesblog WHERE id_article = :id_article";
     $db = config::getConnexion();
     try {
         $stmt = $db->prepare($sql);
-        $stmt->execute([$id]);
-        $article = $stmt->fetch();
-        return $article;
-    } catch (Exception $e) {
-        die('Erreur: ' . $e->getMessage());
-    }
-}
-
-
-public function getArticlesByAuteur($id_auteur)
-{
-    $sql = "SELECT * FROM articlesblog WHERE id_auteur = :id_auteur";
-    $db = config::getConnexion();
-    try {
-        $stmt = $db->prepare($sql);
-        $stmt->bindValue(':id_auteur', $id_auteur);
+        $stmt->bindValue(':id_article', $id_article);
         $stmt->execute();
         return $stmt->fetchAll();
     } catch (Exception $e) {
         die('Erreur: ' . $e->getMessage());
     }
 }
+
+
+
+
+
+
+public function trierArticlesParContenuCroissant()
+{
+    $sql = "SELECT * FROM articlesblog ORDER BY contenu ASC";
+    $db = config::getConnexion();
+    try {
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    } catch (Exception $e) {
+        die('Erreur: ' . $e->getMessage());
+    }
+}
+
+public function trierArticlesParContenuDecroissant()
+{
+    $sql = "SELECT * FROM articlesblog ORDER BY contenu DESC";
+    $db = config::getConnexion();
+    try {
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    } catch (Exception $e) {
+        die('Erreur: ' . $e->getMessage());
+    }
+}
+
+public function trierArticlesParDateCroissante()
+{
+    $sql = "SELECT * FROM articlesblog ORDER BY datePublication ASC";
+    $db = config::getConnexion();
+    try {
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    } catch (Exception $e) {
+        die('Erreur: ' . $e->getMessage());
+    }
+}
+
+public function trierArticlesParDateDecroissante()
+{
+    $sql = "SELECT * FROM articlesblog ORDER BY datePublication DESC";
+    $db = config::getConnexion();
+    try {
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    } catch (Exception $e) {
+        die('Erreur: ' . $e->getMessage());
+    }
+}
+
 
 
 
