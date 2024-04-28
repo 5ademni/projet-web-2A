@@ -588,7 +588,8 @@ $fieldlist = $jobFieldC->listJobFields();
                       <td><?php echo $field['FieldName']; ?></td>
                       <td><?php echo $field['Description']; ?></td>
                       <td>
-                        <a href="edit-field.php?id=<?php echo $field['FieldID']; ?>" class="btn btn-success"><i class="bi bi-pencil"></i></a>
+                        <a href="fields.php?see-more=<?php echo $field['FieldID']; ?>" class="btn btn-primary"><i class="bi bi-eye"></i></a>
+                        <a href="fields.php?edit=<?php echo $field['FieldID']; ?>" class="btn btn-success"><i class="bi bi-pencil"></i></a>
                       </td>
                     </tr>
                   <?php
@@ -609,25 +610,57 @@ $fieldlist = $jobFieldC->listJobFields();
               <!--TODO Default Tabs  -->
               <ul class="nav nav-tabs d-flex" id="myTabjustified" role="tablist">
                 <li class="nav-item flex-fill" role="presentation">
-                  <button class="nav-link w-100 active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-justified" type="button" role="tab" aria-controls="home" aria-selected="true">Home</button>
+                  <button class="nav-link w-100 active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-justified" type="button" role="tab" aria-controls="home" aria-selected="true">See More</button>
                 </li>
                 <li class="nav-item flex-fill" role="presentation">
-                  <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-justified" type="button" role="tab" aria-controls="profile" aria-selected="false">Profile</button>
-                </li>
-                <li class="nav-item flex-fill" role="presentation">
-                  <button class="nav-link w-100" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-justified" type="button" role="tab" aria-controls="contact" aria-selected="false">Contact</button>
+                  <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-justified" type="button" role="tab" aria-controls="profile" aria-selected="false">Edit</button>
                 </li>
               </ul>
+              <!-- SEE MORE TAB -->
               <div class="tab-content pt-2" id="myTabjustifiedContent">
                 <div class="tab-pane fade show active" id="home-justified" role="tabpanel" aria-labelledby="home-tab">
-                  Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.
+                  <!-- Multi Columns Form -->
+                  <form class="row g-3">
+                    <div class="col-md-6">
+                      <label for="inputID" class="form-label">ID</label>
+                      <input type="text" class="form-control" id="inputID" name="see-more-id">
+                    </div>
+                    <div class="col-md-6">
+                      <label for="inputField" class="form-label">Field Name</label>
+                      <input type="text" class="form-control" id="inputField" name="see-more-name">
+                    </div>
+                    <div class="col-12">
+                      <label for="inputDescription" class="form-label">Description</label>
+                      <input type="text" class="form-control" id="inputDescription" name="see-more-description">
+                    </div>
+
+                  </form><!-- End Multi Columns Form -->
                 </div>
+                <!-- End See More Tab -->
+                <!--EDIT TAB-->
                 <div class="tab-pane fade" id="profile-justified" role="tabpanel" aria-labelledby="profile-tab">
-                  Nesciunt totam et. Consequuntur magnam aliquid eos nulla dolor iure eos quia. Accusantium distinctio omnis et atque fugiat. Itaque doloremque aliquid sint quasi quia distinctio similique. Voluptate nihil recusandae mollitia dolores. Ut laboriosam voluptatum dicta.
+                  <!-- Multi Columns Form -->
+                  <form class="row g-3">
+                    <div class="col-md-6">
+                      <label for="inputID" class="form-label">ID</label>
+                      <input type="text" class="form-control" id="inputID" name="edit-id">
+                    </div>
+                    <div class="col-md-6">
+                      <label for="inputField" class="form-label">Field Name</label>
+                      <input type="text" class="form-control" id="inputField" name="edit-name">
+                    </div>
+                    <div class="col-12">
+                      <label for="inputDescription" class="form-label">Description</label>
+                      <input type="text" class="form-control" id="inputDescription" name="description-name">
+                    </div>
+
+                    <div class="text-center">
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                      <button type="reset" class="btn btn-secondary">Reset</button>
+                    </div>
+                  </form><!-- End Multi Columns Form -->
                 </div>
-                <div class="tab-pane fade" id="contact-justified" role="tabpanel" aria-labelledby="contact-tab">
-                  Saepe animi et soluta ad odit soluta sunt. Nihil quos omnis animi debitis cumque. Accusantium quibusdam perspiciatis qui qui omnis magnam. Officiis accusamus impedit molestias nostrum veniam. Qui amet ipsum iure. Dignissimos fuga tempore dolor.
-                </div>
+                <!-- End Edit Tab -->
               </div><!-- End Default Tabs -->
 
 
