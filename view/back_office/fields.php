@@ -2,6 +2,16 @@
 include_once '../../controller/jobFieldC.php';
 $jobFieldC = new jobFieldC();
 $fieldlist = $jobFieldC->listJobFields();
+
+if (isset($_GET['see-more'])) {
+  $fieldId = $_GET['see-more'];
+  $fieldCrud = $jobFieldC->getFieldById($fieldId);
+}
+
+if (isset($_GET['edit'])) {
+  $fieldId = $_GET['edit'];
+  $fieldCrud = $jobFieldC->getFieldById($fieldId);
+}
 ?>
 
 <!DOCTYPE html>
@@ -610,48 +620,48 @@ $fieldlist = $jobFieldC->listJobFields();
               <!--TODO Default Tabs  -->
               <ul class="nav nav-tabs d-flex" id="myTabjustified" role="tablist">
                 <li class="nav-item flex-fill" role="presentation">
-                  <button class="nav-link w-100 active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-justified" type="button" role="tab" aria-controls="home" aria-selected="true">See More</button>
+                  <button class="nav-link w-100 <?php echo isset($_GET['see-more']) ? 'active' : ''; ?>" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-justified" type="button" role="tab" aria-controls="home" aria-selected="<?php echo isset($_GET['see-more']) ? 'true' : 'false'; ?>">See More</button>
                 </li>
                 <li class="nav-item flex-fill" role="presentation">
-                  <button class="nav-link w-100" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-justified" type="button" role="tab" aria-controls="profile" aria-selected="false">Edit</button>
+                  <button class="nav-link w-100 <?php echo isset($_GET['edit']) ? 'active' : ''; ?>" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-justified" type="button" role="tab" aria-controls="profile" aria-selected="<?php echo isset($_GET['edit']) ? 'true' : 'false'; ?>">Edit</button>
                 </li>
               </ul>
               <!-- SEE MORE TAB -->
               <div class="tab-content pt-2" id="myTabjustifiedContent">
-                <div class="tab-pane fade show active" id="home-justified" role="tabpanel" aria-labelledby="home-tab">
+                <div class="tab-pane fade show <?php echo isset($_GET['see-more']) ? 'active' : ''; ?>" id="home-justified" role="tabpanel" aria-labelledby="home-tab">
                   <!-- Multi Columns Form -->
                   <form class="row g-3">
                     <div class="col-md-6">
                       <label for="inputID" class="form-label">ID</label>
-                      <input type="text" class="form-control" id="inputID" name="see-more-id">
+                      <input type="text" class="form-control" id="inputID" name="see-more-id" value="<?php echo $fieldCrud['FieldID']; ?>">
                     </div>
                     <div class="col-md-6">
                       <label for="inputField" class="form-label">Field Name</label>
-                      <input type="text" class="form-control" id="inputField" name="see-more-name">
+                      <input type="text" class="form-control" id="inputField" name="see-more-name" value="<?php echo $fieldCrud['FieldName']; ?>">
                     </div>
                     <div class="col-12">
                       <label for="inputDescription" class="form-label">Description</label>
-                      <input type="text" class="form-control" id="inputDescription" name="see-more-description">
+                      <input type="text" class="form-control" id="inputDescription" name="see-more-description" value="<?php echo $fieldCrud['Description']; ?>">
                     </div>
 
                   </form><!-- End Multi Columns Form -->
                 </div>
                 <!-- End See More Tab -->
                 <!--EDIT TAB-->
-                <div class="tab-pane fade" id="profile-justified" role="tabpanel" aria-labelledby="profile-tab">
+                <div class="tab-pane fade show <?php echo isset($_GET['edit']) ? 'active' : ''; ?>" id="profile-justified" role="tabpanel" aria-labelledby="profile-tab">
                   <!-- Multi Columns Form -->
                   <form class="row g-3">
                     <div class="col-md-6">
                       <label for="inputID" class="form-label">ID</label>
-                      <input type="text" class="form-control" id="inputID" name="edit-id">
+                      <input type="text" class="form-control" id="inputID" name="edit-id" value="<?php echo $fieldCrud['FieldID']; ?>">
                     </div>
                     <div class="col-md-6">
                       <label for="inputField" class="form-label">Field Name</label>
-                      <input type="text" class="form-control" id="inputField" name="edit-name">
+                      <input type="text" class="form-control" id="inputField" name="edit-name" value="<?php echo $fieldCrud['FieldName']; ?>">
                     </div>
                     <div class="col-12">
                       <label for="inputDescription" class="form-label">Description</label>
-                      <input type="text" class="form-control" id="inputDescription" name="description-name">
+                      <input type="text" class="form-control" id="inputDescription" name="description-name" value="<?php echo $fieldCrud['Description']; ?>">
                     </div>
 
                     <div class="text-center">
