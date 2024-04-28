@@ -1,25 +1,13 @@
 <?php
 include_once "../../controller/articlesBlogC.php";
-include_once '../../controller/auteursC.php';
-include_once '../../model/articlesBlog.php';
 
 $articlesBlogC = new ArticlesBlogC();
-$AuteursC = new AuteursC();
 
-if (isset($_GET['id']) && $_GET['id'] != '') {
-  $id_article = $_GET['id'];
-  $articlesBlog = $articlesBlogC->getArticlesById($id_article);
-} else {
-  $articlesBlog = $articlesBlogC->listArticles();
+if (isset($_GET['id'])) {
+    $id_article = $_GET['id'];
+    $articlesBlog = $articlesBlogC->getArticlesById($id_article);
+    var_dump($articlesBlog);
 }
-
-$auteurs = $AuteursC->listAuteurs();
-
-
-$article = $articlesBlogC->getArticlesById($id_article);
-echo $article->id_auteur;
-echo $article->id_article;
-
 ?>
 
 <!doctype html>
@@ -162,50 +150,50 @@ Bootstrap 5 HTML CSS Template
 
 
 
-<section class="job-section section-padding pb-0">
-    <div class="container">
-        <div class="row">
-        <h4 class="mt-4 mb-2">Blog Description</h4>   
-        <p><?php  echo $articlesBlog->getIdAuteur(); ?></p>
-        <div class="d-flex justify-content-center flex-wrap mt-5 border-top pt-4">                        
-            <a href="#" class="custom-btn btn mt-2">Apply now</a>
-            <a href="#" class="custom-btn custom-border-btn btn mt-2 ms-lg-4 ms-3">Save this blog</a>
-            <a href="blog-edit.php?id=<?php echo $articlesBlog->getIdArticle(); ?>" class="custom-btn custom-border-btn btn edit-btn mt-2 ms-lg-4 ms-3">Modifier ce blog</a>
-            <div class="job-detail-share d-flex align-items-center">
-                <p class="mb-0 me-lg-4 me-3">Share:</p>
-                <a href="#" class="bi-facebook"></a>
-                <a href="#" class="bi-twitter mx-3"></a>
-                <a href="#" class="bi-share"></a>
-            </div>
-        </div>
-    </div>
- </section>
-
-
-
-
-
-<section class="cta-section">
-    <div class="section-overlay"></div>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 col-10">
-                    <h2 class="text-white mb-2">Over 10k opening jobs</h2>
-                </div>
-
-                <div class="col-lg-4 col-12 ms-auto">
-                    <div class="custom-border-btn-wrap d-flex align-items-center mt-lg-4 mt-2">
-                        <a href="#" class="custom-btn custom-border-btn btn me-4">Create an account</a>
-
-                        <a href="#" class="custom-link">Post a job</a>
+        <section class="job-section section-padding pb-0">
+            <div class="container">
+                <div class="row">
+                    <h4 class="mt-4 mb-2"><?php echo $articlesBlog[0]['titre']; ?></h4>
+                    <p><?php echo $articlesBlog[0]['contenu']; ?></p>
+                    <div class="d-flex justify-content-center flex-wrap mt-5 border-top pt-4">
+                        <a href="#" class="custom-btn btn mt-2">Apply now</a>
+                        <a href="#" class="custom-btn custom-border-btn btn mt-2 ms-lg-4 ms-3">Save this blog</a>
+                        <a href="blog-edit.php?id=<?php echo $articlesBlog->getIdArticle(); ?>" class="custom-btn custom-border-btn btn edit-btn mt-2 ms-lg-4 ms-3">Modifier ce blog</a>
+                        <div class="job-detail-share d-flex align-items-center">
+                            <p class="mb-0 me-lg-4 me-3">Share:</p>
+                            <a href="#" class="bi-facebook"></a>
+                            <a href="#" class="bi-twitter mx-3"></a>
+                            <a href="#" class="bi-share"></a>
+                        </div>
                     </div>
                 </div>
+        </section>
 
+
+
+
+
+        <section class="cta-section">
+            <div class="section-overlay"></div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-10">
+                        <h2 class="text-white mb-2">Over 10k opening jobs</h2>
+                    </div>
+
+                    <div class="col-lg-4 col-12 ms-auto">
+                        <div class="custom-border-btn-wrap d-flex align-items-center mt-lg-4 mt-2">
+                            <a href="#" class="custom-btn custom-border-btn btn me-4">Create an account</a>
+
+                            <a href="#" class="custom-link">Post a job</a>
+                        </div>
+                    </div>
+
+                </div>
             </div>
-        </div>
-    </div>
-</section>
-</main>
+            </div>
+        </section>
+    </main>
 
     <footer class="site-footer">
         <div class="container">
