@@ -1,26 +1,36 @@
 <?php
 include_once '../../controller/event2.php';
 include_once '../../model/event.php';
+include_once '../../controller/Categorie_Evenement2.php';
+include_once '../../controller/auteurE.php';
+
 
 // Créer une instance du contrôleur
 $controller = new EvenementC();
+$controller2 = new auteurEC();
+
 
 // Initialiser les messages d'erreur
-$id_evenement_err = $id_auteur_err = $titre_err = $contenu_err = $dateEvenement_err = $lieu_err = $prix_err = $nbPlaces_err = $image_err = $heureEvenement_err = "";
+$id_auteur_err = $titre_err = $contenu_err = $dateEvenement_err = $lieu_err = $prix_err = $nbPlaces_err = $image_err = $heureEvenement_err = "";
+
+// Initialiser l'ID de l'événement
+$id_evenement = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Gérer l'upload de l'image
-    $target_dir = "../../sql/";
+    $target_dir = "../../upload/";
     $target_file = $target_dir . basename($_FILES["image"]["name"]);
     move_uploaded_file($_FILES["image"]["tmp_name"], $target_file);
 
+    // Créer une instance de la classe Evenement
+
     // Valider les entrées
-    if (empty($_POST['id_evenement']) || !is_numeric($_POST['id_evenement'])) {
-        $id_evenement_err = "Veuillez entrer un ID d'événement valide.";
-    }
     if (empty($_POST['id_auteur']) || !is_numeric($_POST['id_auteur'])) {
         $id_auteur_err = "Veuillez entrer un ID d'auteur valide.";
     }
+    if(($controller2->existeAuteur($_POST['id_auteur']))==false){
+      $id_auteur_err = "Cet auteur n'existe pas.";
+     }
     if (empty($_POST['titre'])) {
       $titre_err = "Veuillez entrer un titre.";
   } else {
@@ -64,25 +74,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $heureEvenement_err = "Veuillez entrer une heure d'événement.";
     }
 
-    if (empty($id_evenement_err) && empty($id_auteur_err) && empty($titre_err) && empty($contenu_err) && empty($dateEvenement_err) && empty($lieu_err) && empty($prix_err) && empty($nbPlaces_err) && empty($image_err) && empty($heureEvenement_err)) {
+    if (empty($id_auteur_err) && empty($titre_err) && empty($contenu_err) && empty($dateEvenement_err) && empty($lieu_err) && empty($prix_err) && empty($nbPlaces_err) && empty($image_err) && empty($heureEvenement_err) ) {
         // Créer une instance de la classe Evenement
         $evenement = new Evenement(
-            $_POST['id_evenement'],
-            $_POST['id_auteur'],
-            $_POST['titre'],
-            $_POST['contenu'],
-            $_POST['dateEvenement'],
-            $_POST['lieu'],
-            $_POST['prix'],
-            $_POST['nbPlaces'],
-            $target_file,
-            $_POST['heureEvenement'],
-        );
-
+          $id_evenement,
+          $_POST['id_auteur'],
+          $_POST['titre'],
+          $_POST['contenu'],
+          $_POST['dateEvenement'],
+          $_POST['lieu'],
+          $_POST['prix'],
+          $_POST['nbPlaces'],
+          $target_file,
+          $_POST['heureEvenement'],
+          $_POST['id_categorie']
+      );
         // Appeler la méthode addEvenement
         try {
             $controller->addEvenement($evenement);
             echo "L'événement a été ajouté avec succès.";
+            $id_evenement = $evenement->getId_evenement();
         } catch (Exception $e) {
             echo 'Erreur: ' . $e->getMessage();
         }
@@ -667,15 +678,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <!-- Formulaire pour ajouter un événement -->
                         <form method="POST" enctype="multipart/form-data">
                         <div class="form-group">
-                            <label for="id_evenement">ID de l'événement</label>
-                            <input type="text" class="form-control" id="id_evenement" name="id_evenement" placeholder="Entrez l'ID de l'événement">
-                            <span class="error"><?php echo $id_evenement_err;?></span>
-                        </div>
-                        <div class="form-group
                             <label for="id_auteur">ID de l'auteur</label>
                             <input type="text" class="form-control" id="id_auteur" name="id_auteur" placeholder="Entrez l'ID de l'auteur">
                             <span class="error"><?php echo $id_auteur_err;?></span>
                         </div>
+                        <div class="form-group">
+                            <label for="id_categorie">Catégorie</label>
+                            <select class="form-control select-css" id="id_categorie" name="id_categorie">
+                            <?php
+                            ini_set('display_errors', 1);
+                            ini_set('display_startup_errors', 1);
+                            error_reporting(E_ALL);
+                            $categorieController = new CategorieEvenementC(); 
+                          $categories = $categorieController->listCategories();
+                          foreach ($categories as $categorie) {
+                          echo "<option value=\"" . $categorie['id_categorie'] . "\">" . $categorie['nom_categorie']. "</option>";
+                           }
+                          ?>
+                          </select>   
+                           </div>
                         <div class="form-group
                             <label for="titre">Titre</label>
                             <input type="text" class="form-control" id="titre" name="titre" placeholder="Entrez le titre">

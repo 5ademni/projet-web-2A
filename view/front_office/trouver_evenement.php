@@ -1,9 +1,10 @@
-
 <?php
 session_start();
 var_dump($_SESSION['id']);
 include_once '../../controller/event2.php';
-include_once '../../controller/Categorie_Evenement2.php'; // Inclure le fichier correct
+include_once '../../controller/Categorie_Evenement2.php';
+include_once '../../controller/inscriptionEvenement.php';
+// Inclure le fichier correct
 $Eventc = new EvenementC();
 $CategorieEvenementC = new CategorieEvenementC(); // Utiliser la classe correcte
 
@@ -12,6 +13,46 @@ if (isset($_GET['categorie']) && $_GET['categorie'] != '') {
     $events = $Eventc->getEventsByCategory($categorie_id);
 } else {
     $events = $Eventc->getEvents();
+}
+$inscription = new inscriptionEC();
+
+if (isset($_POST['inscription']) && isset($_POST['event_id'])) {
+    $event_id = $_POST['event_id'];
+    // Récupérez les détails de l'événement spécifique
+    $db = config::getConnexion();
+    $event = $Eventc->getEvenement($event_id);
+    if (isset($event['nbPlaces']) && $event['nbPlaces'] > 0) {
+        // Vérifiez si l'id_auteur existe dans la table auteur
+        $sql = "SELECT * FROM auteur WHERE id_auteur = :id_auteur";
+        $stmt = $db->prepare($sql);
+        $stmt->execute([':id_auteur' => $_SESSION['id']]);
+        $auteur = $stmt->fetch();
+
+        if ($auteur) {
+            // L'id_auteur existe, vous pouvez procéder à l'inscription
+            if (!$inscription->estInscrit($event['id_evenement'], $_SESSION['id'])) {
+                $inscription->addInscription($event['id_evenement'], $_SESSION['id']);
+                header('Location: trouver_evenement.php');
+                exit();
+            }
+        } else {
+            // L'id_auteur n'existe pas, affichez un message d'erreur
+            echo "<script>alert('Erreur : cet utilisateur n\'existe pas.');</script>";
+        }
+    }
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["tri"])) {
+    $tri = $_POST["tri"];
+    if ($tri == "prix_croissant") {
+        $events = $Eventc->trierEventsParPrixCroissant();
+    } else if ($tri == "prix_decroissant") {
+        $events = $Eventc->trierEventsParPrixDecroissant();
+    } else if ($tri == "date_croissant") {
+        $events = $Eventc->trierEventsParDateCroissante();
+    } else if ($tri == "date_decroissant") {
+        $events = $Eventc->trierEventsParDateDecroissante();
+    }
 }
 
 $categories = $CategorieEvenementC->listCategories();
@@ -90,7 +131,46 @@ $categories = $CategorieEvenementC->listCategories();
     <nav class="navbar navbar-expand-lg">
         <!-- Votre code de navigation ici -->
     </nav>
-    <form action="trouver_evenement.php" method="get">
+    <main>
+        <header class="site-header">
+            <!-- En-tête de la page -->
+        </header>
+
+    <link href="https://fonts.googleapis.com/css?family=Cabin|Indie+Flower|Inknut+Antiqua|Lora|Ravi+Prakash" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"  />
+        <main>
+        <style>
+    form {
+    text-align: center; /* Centre le formulaire */
+    display: flex; /* Affiche les combo box et les boutons sur la même ligne */
+    justify-content: center; /* Centre les combo box et les boutons horizontalement */
+    gap: 10px; /* Ajoute un espace entre les combo box et les boutons */
+}
+select[name="categorie"], select[name="tri"], input[type="submit"] {
+    width: 400px; /* Rend les combo box et les boutons presque deux fois plus grands */
+    height: 60px;
+    border: none;
+    border-radius: 12px; /* Rend les combo box et les boutons bombés */
+    padding: 5px;
+    font-weight: bold; /* Rend le texte des combo box et des boutons en gras */
+}
+select[name="categorie"], select[name="tri"] {
+    background: #f2f2f2;
+    box-shadow: inset 0 0 10px #000000;
+    outline: 1px solid #d1d1d1;
+}
+input[type="submit"] {
+    background-color: #0000A0; /* Rend les boutons bleu foncé */
+    color: white; /* Rend le texte des boutons blanc */
+    font-size: 32px; /* Rend le texte des boutons presque deux fois plus grand */
+}
+
+</style>
+
+
+
+
+<form action="trouver_evenement.php" method="get">
   <select name="categorie">
     <option value="">Sélectionnez une catégorie</option>
     <?php
@@ -101,14 +181,20 @@ $categories = $CategorieEvenementC->listCategories();
   </select>
   <input type="submit" value="Rechercher">
 </form>
-    <main>
-        <header class="site-header">
-            <!-- En-tête de la page -->
-        </header>
+<form action="trouver_evenement.php" method="post">
+  <select name="tri">
+    <option value="">Trier par</option>
+    <option value="prix_croissant">Prix Croissant</option>
+    <option value="prix_decroissant">Prix Décroissant</option>
+    <option value="date_croissant">Date Croissante</option>
+    <option value="date_decroissant">Date Décroissante</option>
+  </select>
+  <input type="submit" value="Trier">
+</form>
 
-    <link href="https://fonts.googleapis.com/css?family=Cabin|Indie+Flower|Inknut+Antiqua|Lora|Ravi+Prakash" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"  />
-        <main>
+
+
+
       <section class="about-section">
       <div class="container">
   <h1 class="upcomming">Événements à venir</h1>
@@ -130,7 +216,7 @@ $categories = $CategorieEvenementC->listCategories();
             <i class="fa fa-table"></i>
           </div>
           <p><?= date('l jS F Y', strtotime($event['dateEvenement'])) ?> <br/> <?= date('H:i', strtotime($event['heureEvenement'])) ?></p>
-          <img class="event-image" src="<?= $event['image'] ?>" alt="Image de l'événement" />
+          <img class="event-image" src="<?= $event['image'] ?>" alt="Image de l'événement" style="width:100px;height:100px;border-radius:50%;" />
         </div>
         <div class="fix"></div>
         <div class="loc">
@@ -153,7 +239,27 @@ $categories = $CategorieEvenementC->listCategories();
         <a href="Modifier_evenement.php?id=<?php echo $event['id_evenement'] ?>"class="modify" style="background-color: blue; color: white;">Modifier</a>
         <a href="supprimer_evenement.php?id=<?php echo $event['id_evenement'] ?>" class="delete" style="background-color: red; color: white; margin-left: 10px;">Supprimer</a>
         <?php endif; ?>
-        <button class="tickets"><?= $event['prix'] ?> TND </button>
+        <form method="post" action="">
+    <input type="hidden" name="event_id" value="<?php echo $event['id_evenement']; ?>">
+    <?php
+    $isRegistered = $inscription->estInscrit($event['id_evenement'], $_SESSION['id']);
+    var_dump($isRegistered);
+    var_dump($event['id_evenement']);
+    var_dump($_SESSION['id']);
+    if ($event['nbPlaces'] > 0 && !$isRegistered) : ?>
+        <button class="tickets" type="submit" name="inscription"><?= $event['prix'] ?> TND </button>
+    <?php elseif ($isRegistered) : ?>
+        <button class="tickets inscrit" >Déjà inscrit</button>
+    <?php else : ?>
+        <button class="tickets cancel" >Complet</button>
+    <?php endif; ?> 
+
+</form>
+
+         <!-- end item-left -->
+
+
+
       </div> <!-- end item-right -->
     </div> <!-- end item -->
   <?php endforeach; ?>
@@ -161,8 +267,7 @@ $categories = $CategorieEvenementC->listCategories();
 
 
     </main>
-
-    <footer class="site-footer">
+<footer class="site-footer">
         <div class="container">
             <div class="row">
 

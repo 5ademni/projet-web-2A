@@ -137,10 +137,50 @@ body {
   }
 }
 .event-image {
-  width: 50%; /* Réduisez la largeur à 50% */
-  height: auto; /* Ajustez la hauteur automatiquement pour maintenir les proportions de l'image */
+  width: 100px; /* Définissez la largeur à 100px */
+  height: 100px; /* Définissez la hauteur à 100px */
   display: block; /* Centre l'image */
-  margin: 0 auto;
-  max-width: 100%; /* Assurez-vous que l'image ne dépasse pas son conteneur */
-  object-fit: cover; /* Redimensionnez l'image pour remplir le conteneur tout en conservant son aspect */
+  margin-left: 20px; /* Déplace l'image un peu vers la gauche */
+  object-fit: scale-down; /* Redimensionne l'image pour s'adapter au conteneur */
+  border-radius: 50%; /* Rend l'image circulaire */
 }
+.site-footer {
+  margin-top: 50px !important; /* Ajoutez l'espace que vous voulez ici */
+}
+.container .item .tickets {
+  background: #008000; /* Vert pour les tickets disponibles */
+}
+
+.container .item .cancel {
+  background: #ff0000; /* Rouge pour les tickets complets */
+}
+.container .item .inscrit {
+  background: #800080; /* Mauve pour les tickets inscrits */
+}
+.site-footer {
+  color: #fff; /* change text color to white */
+  padding: 20px 0; /* add some padding */
+}
+
+.site-footer .container {
+  display: flex; /* align items in a row */
+  justify-content: space-between; /* distribute items evenly */
+}
+
+.site-footer .copyright-text,
+.site-footer .footer-menu {
+  margin: 0; /* remove default margins */
+}
+
+.site-footer .footer-menu-item {
+  margin-left: 10px; /* add some space between menu items */
+}
+
+.site-footer .back-top-icon {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+}
+
+
+

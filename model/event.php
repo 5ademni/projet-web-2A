@@ -20,11 +20,11 @@ class Evenement
         $this->titre = $titre;
         $this->contenu = $contenu;
         $this->dateEvenement = $dateEvenement;
-        $this->heureEvenement = $heureEvenement;
         $this->lieu = $lieu;
         $this->prix = $prix;
         $this->nbPlaces = $nbPlaces;
         $this->image = $image;
+        $this->heureEvenement = $heureEvenement;
         $this->id_categorie = $id_categorie;
     }
 

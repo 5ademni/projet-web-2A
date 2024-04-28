@@ -1,6 +1,8 @@
 <?php
 include_once '../../controller/event2.php';
 include_once '../../model/event.php';
+include_once '../../controller/Categorie_Evenement2.php';
+
 
 // Créer une instance du contrôleur
 $controller = new EvenementC();
@@ -25,6 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
         $_POST['nbPlaces'],
         $target_file,
         $_POST['heureEvenement'],
+        $_POST['id_categorie']
     );
 
     // Appeler la méthode updateEvenement
@@ -615,6 +618,18 @@ exit;
             <div class="form-group">
               <label for="id_auteur">ID de l'auteur</label>
               <input type="text" class="form-control" id="id_auteur" name="id_auteur" value="<?php echo $evenement['id_auteur']; ?> "readonly>
+            </div>
+            <div class="form-group">
+            <label for="id_categorie">Catégorie</label>
+            <select class="form-control select-css" id="id_categorie" name="id_categorie">
+            <?php
+             $categorieController = new CategorieEvenementC(); 
+            $categories = $categorieController->listCategories();
+            foreach ($categories as $categorie) {
+            echo "<option value=\"" . $categorie['id_categorie'] . "\">" . $categorie['nom_categorie']. "</option>"; }
+            ?>
+            </select>
+            </div> 
             <!-- ... -->
             <div class="form-group">
               <label for="titre">Titre de l'événement</label>
@@ -648,6 +663,7 @@ exit;
 <div class="form-group">
   <label for="image">Image</label>
   <input type="file" class="form-control" id="image" name="image" value="<?php echo $evenement['image']; ?>">
+</div>  
 <!-- ... -->
 
             <button type="submit" class="btn btn-primary">Modifier l'événement</button>

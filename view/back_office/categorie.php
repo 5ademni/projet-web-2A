@@ -1,6 +1,9 @@
 <?php
 include "../../controller/event2.php";
+include "../../controller/Categorie_Evenement.php";
 $evenementC = new EvenementC();
+$categorieC = new CategorieC();
+
 
 if (isset($_GET['delete'])) {
   $evenementC->deleteEvenement($_GET['delete']);
@@ -8,8 +11,6 @@ if (isset($_GET['delete'])) {
 
 $evenementC = $evenementC->listEvenements();
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
