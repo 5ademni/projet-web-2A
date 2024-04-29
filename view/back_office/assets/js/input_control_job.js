@@ -57,47 +57,6 @@ document.querySelector("#jobform").addEventListener("submit", function (event) {
     );
   }
 });
-//TODO fix this php instead of js
-document
-  .querySelector("#fieldform")
-  .addEventListener("submit", function (event) {
-    const idPattern = /^[0-9]{1,3}$/;
-    const fieldNamePattern = /^[a-zA-Z]{1,20}$/;
-    const descriptionPattern = /^.{1,60}$/;
-
-    var idInput = document.querySelector("#inputID");
-    var fieldNameInput = document.querySelector("#inputField");
-    var descriptionInput = document.querySelector("#inputDescription");
-
-    // Remove any existing error messages
-    document.querySelectorAll(".error-message").forEach(function (item) {
-      item.remove();
-    });
-
-    if (!idPattern.test(idInput.value)) {
-      event.preventDefault();
-      displayError(
-        "Invalid ID. Please make sure your ID is 1-3 digits long.",
-        idInput
-      );
-    }
-
-    if (!fieldNamePattern.test(fieldNameInput.value)) {
-      event.preventDefault();
-      displayError(
-        "Invalid field name. Please make sure your field name is 1-20 characters long and does not contain any special characters or numbers.",
-        fieldNameInput
-      );
-    }
-
-    if (!descriptionPattern.test(descriptionInput.value)) {
-      event.preventDefault();
-      displayError(
-        "Invalid description. Please make sure your description is 1-60 characters long.",
-        descriptionInput
-      );
-    }
-  });
 
 function displayError(message, inputElement) {
   var errorMessage = document.createElement("div");

@@ -1,4 +1,5 @@
 <?php
+session_start();
 include_once '../../controller/jobFieldC.php';
 include_once '../../model/jobField.php';
 
@@ -14,29 +15,53 @@ if (isset($_GET['edit'])) {
   $fieldId = $_GET['edit'];
   $fieldCrud = $jobFieldC->getFieldById($fieldId);
 }
+
+$idPattern = "/^[0-9]{1,3}$/";
+$fieldNamePattern = "/^[a-zA-Z]{1,20}$/";
+$descriptionPattern = "/^.{1,60}$/";
+
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit'])) {
   $id = $_POST['edit']; // Get the id from the POST data
 
-  $editedField = new jobField(
-    $_POST['edit-id'],
-    $_POST['edit-name'],
-    $_POST['description-name'],
-  );
+  $editId = $_POST['edit-id'];
+  $editName = $_POST['edit-name'];
+  $descriptionName = $_POST['description-name'];
+
+  $_SESSION['edit-id'] = $editId;
+  $_SESSION['edit-name'] = $editName;
+  $_SESSION['description-name'] = $descriptionName;
+
+  if (!preg_match($idPattern, $editId) || !preg_match($fieldNamePattern, $editName) || !preg_match($descriptionPattern, $descriptionName)) {
+    $_SESSION['error'] = "Invalid input";
+    header('Location: fields.php');
+    exit;
+  }
+
+  $editedField = new jobField($editId, $editName, $descriptionName);
   $jobFieldC->updateField($id, $editedField);
   header('Location: fields.php');
   exit;
 } elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $newField = new jobField(
-    $_POST['create-id'],
-    $_POST['create-name'],
-    $_POST['create-description'],
-  );
+  $createId = $_POST['create-id'];
+  $createName = $_POST['create-name'];
+  $createDescription = $_POST['create-description'];
+
+  $_SESSION['create-id'] = $createId;
+  $_SESSION['create-name'] = $createName;
+  $_SESSION['create-description'] = $createDescription;
+
+  if (!preg_match($idPattern, $createId) || !preg_match($fieldNamePattern, $createName) || !preg_match($descriptionPattern, $createDescription)) {
+    $_SESSION['error'] = "Invalid input";
+    header('Location: fields.php');
+    exit;
+  }
+
+  $newField = new jobField($createId, $createName, $createDescription);
   $jobFieldC->addField($newField);
   header('Location: fields.php');
   exit;
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -684,17 +709,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit'])) {
                 <div class="tab-pane fade show <?php echo isset($_GET['create']) ? 'active' : ''; ?>" id="create-justified" role="tabpanel" aria-labelledby="create-tab">
                   <!-- Multi Columns Form -->
                   <form class="row g-3" method="POST" id="fieldform">
+                    <?php if (isset($_SESSION['error'])) : ?>
+                      <div class="alert alert-danger" role="alert">
+                        <?php echo $_SESSION['error'];
+                        unset($_SESSION['error']); ?>
+                      </div>
+                    <?php endif; ?>
                     <div class="col-md-6">
                       <label for="inputID" class="form-label">ID</label>
-                      <input type="text" class="form-control" id="inputID" name="create-id">
+                      <input type="text" class="form-control" id="inputID" name="create-id" value="<?php echo isset($_SESSION['create-id']) ? $_SESSION['create-id'] : '';
+                                                                                                    unset($_SESSION['create-id']); ?>">
                     </div>
                     <div class="col-md-6">
                       <label for="inputField" class="form-label">Field Name</label>
-                      <input type="text" class="form-control" id="inputField" name="create-name">
+                      <input type="text" class="form-control" id="inputField" name="create-name" value="<?php echo isset($_SESSION['create-name']) ? $_SESSION['create-name'] : '';
+                                                                                                        unset($_SESSION['create-name']); ?>">
                     </div>
                     <div class="col-12">
                       <label for="inputDescription" class="form-label">Description</label>
-                      <input type="text" class="form-control" id="inputDescription" name="create-description">
+                      <input type="text" class="form-control" id="inputDescription" name="create-description" value="<?php echo isset($_SESSION['create-description']) ? $_SESSION['create-description'] : '';
+                                                                                                                      unset($_SESSION['create-description']); ?>">
                     </div>
                     <div class="text-center">
                       <button type="submit" class="btn btn-primary">Submit</button>
@@ -711,17 +745,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit'])) {
                     </div>
                   <?php else : ?>
                     <form class="row g-3" method="POST" id="editFieldForm">
+                      <?php if (isset($_SESSION['error'])) : ?>
+                        <div class="alert alert-danger" role="alert">
+                          <?php echo $_SESSION['error'];
+                          unset($_SESSION['error']); ?>
+                        </div>
+                      <?php endif; ?>
                       <div class="col-md-6">
                         <label for="editInputID" class="form-label">ID</label>
-                        <input type="text" class="form-control" id="editInputID" name="edit-id" value="<?php echo $fieldCrud['FieldID']; ?>">
+                        <input type="text" class="form-control" id="editInputID" name="edit-id" value="<?php echo isset($_SESSION['edit-id']) ? $_SESSION['edit-id'] : $fieldCrud['FieldID'];
+                                                                                                        unset($_SESSION['edit-id']); ?>">
                       </div>
                       <div class="col-md-6">
                         <label for="editInputField" class="form-label">Field Name</label>
-                        <input type="text" class="form-control" id="editInputField" name="edit-name" value="<?php echo $fieldCrud['FieldName']; ?>">
+                        <input type="text" class="form-control" id="editInputField" name="edit-name" value="<?php echo isset($_SESSION['edit-name']) ? $_SESSION['edit-name'] : $fieldCrud['FieldName'];
+                                                                                                            unset($_SESSION['edit-name']); ?>">
                       </div>
                       <div class="col-12">
                         <label for="editInputDescription" class="form-label">Description</label>
-                        <input type="text" class="form-control" id="editInputDescription" name="description-name" value="<?php echo $fieldCrud['Description']; ?>">
+                        <input type="text" class="form-control" id="editInputDescription" name="description-name" value="<?php echo isset($_SESSION['description-name']) ? $_SESSION['description-name'] : $fieldCrud['Description'];
+                                                                                                                          unset($_SESSION['description-name']); ?>">
                       </div>
                       <div class="text-center">
                         <button type="submit" class="btn btn-primary">Submit</button>
@@ -769,7 +812,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit'])) {
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
-  <script src="assets/js/input_control_job.js"></script>
 </body>
 
 </html>
