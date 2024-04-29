@@ -5,6 +5,7 @@ include_once '../../controller/jobFieldC.php';
 $jobPostC = new JobPostC();
 $jobFieldC = new jobFieldC();
 
+$sort = isset($_GET['sort']) ? $_GET['sort'] : null;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $titlePattern = "/^[a-zA-Z0-9\s]{1,30}$/";
@@ -79,6 +80,20 @@ if (isset($_GET['search'])) {
         $list = $list->fetchAll(PDO::FETCH_ASSOC);
     }
 }
+// Sorting
+switch ($sort) {
+    case 'latest':
+        usort($list, function ($a, $b) {
+            return strtotime($b['PostingDate']) - strtotime($a['PostingDate']);
+        });
+        break;
+    case 'salary':
+        usort($list, function ($a, $b) {
+            return (int)$b['Salary'] - (int)$a['Salary'];
+        });
+        break;
+}
+
 $totalJobs = count($list);
 ?>
 <!doctype html>
@@ -415,19 +430,11 @@ Bootstrap 5 HTML CSS Template
                             </button>
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownSortingButton">
-                                <li><a class="dropdown-item" href="#">Lastest Jobs</a></li>
-
-                                <li><a class="dropdown-item" href="#">Highed Salary Jobs</a></li>
-
-                                <li><a class="dropdown-item" href="#">Internship Jobs</a></li>
+                                <li><a class="dropdown-item" href="?sort=latest">Latest Jobs</a></li>
+                                <li><a class="dropdown-item" href="?sort=salary">Highest Salary Jobs</a></li>
                             </ul>
                         </div>
 
-                        <div class="d-flex">
-                            <a href="#" class="sorting-icon active bi-list me-2"></a>
-
-                            <a href="#" class="sorting-icon bi-grid"></a>
-                        </div>
                     </div>
 
                     <?php
