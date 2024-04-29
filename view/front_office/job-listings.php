@@ -5,11 +5,14 @@ include_once '../../controller/jobFieldC.php';
 $jobPostC = new JobPostC();
 $jobFieldC = new jobFieldC();
 
+session_start();
+
+$sort = isset($_GET['sort']) ? $_GET['sort'] : null;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $titlePattern = "/^[a-zA-Z0-9\s]{1,30}$/";
     $locationPattern = "/^[a-zA-Z0-9\s]{1,30}$/";
-    $salaryPattern = "/^[0-9,]+(\$|TND)$/";
+    $salaryPattern = "/^[0-9,]+(\$|TND)$/"; //TODO: make it only numbers
     $descriptionPattern = "/^[a-zA-Z0-9\s,;:!?@#$%&*()-+=\[\]{}|<>.\'\"]{1,1000}$/";
 
     $title = $_POST['job-titleT'];
@@ -73,13 +76,36 @@ if (isset($_GET['search'])) {
         $list = array_merge($list, $jobPostC->searchJobPostByFieldId($fieldsS));
     }
     $list = array_unique($list, SORT_REGULAR);
+    $_SESSION['searchQuery'] = $list;
+} else if (isset($_SESSION['searchQuery'])) {
+    // If there's no new search query but there's a saved one in the session, use that
+    $list = $_SESSION['searchQuery'];
 } else {
     $list = $jobPostC->listJobPosts();
     if ($list instanceof PDOStatement) {
         $list = $list->fetchAll(PDO::FETCH_ASSOC);
     }
 }
+if (isset($_POST['reset'])) {
+    unset($_SESSION['searchQuery']);
+}
+// Sorting
+switch ($sort) {
+    case 'latest':
+        usort($list, function ($a, $b) {
+            return strtotime($b['PostingDate']) - strtotime($a['PostingDate']);
+        });
+        break;
+    case 'salary':
+        usort($list, function ($a, $b) {
+            return (int)$b['Salary'] - (int)$a['Salary'];
+        });
+        break;
+}
+
 $totalJobs = count($list);
+$topFields = $jobFieldC->getTopFields();
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -267,18 +293,21 @@ Bootstrap 5 HTML CSS Template
                                     <button type="submit" class="form-control" name="search">
                                         Search job
                                     </button>
+                                    <button type="submit" class="form-control" name="reset">
+                                        Reset Filter
+                                    </button>
                                 </div>
 
                                 <div class="col-12">
                                     <div class="d-flex flex-wrap align-items-center mt-4 mt-lg-0">
-                                        <span class="text-white mb-lg-0 mb-md-0 me-2">Popular keywords:</span>
+                                        <span class="text-white mb-lg-0 mb-md-0 me-2">Popular fields:</span>
 
                                         <div>
-                                            <a href="job-listings.html" class="badge">Web design</a>
-
-                                            <a href="job-listings.html" class="badge">Marketing</a>
-
-                                            <a href="job-listings.html" class="badge">Customer support</a>
+                                            <?php
+                                            for ($i = 0; $i < min(3, count($topFields)); $i++) {
+                                                echo '<a href="job-listings.html" class="badge">' . $topFields[$i]['FieldName'] . '</a>';
+                                            }
+                                            ?>
                                         </div>
                                     </div>
                                 </div>
@@ -408,26 +437,30 @@ Bootstrap 5 HTML CSS Template
 
                     <div class="col-lg-4 col-12 d-flex align-items-center ms-auto mb-5 mb-lg-4">
                         <p class="mb-0 ms-lg-auto">Sort by:</p>
+                        <?php
+                        //TODO:fix each sort to render when pressing it despite the redirection
+                        ?>
 
                         <div class="dropdown dropdown-sorting ms-3 me-4">
+                            <?php
+                            $sort = $_GET['sort'] ?? '';
+                            $buttonText = 'Select Filter';
+                            if ($sort === 'latest') {
+                                $buttonText = 'Latest Jobs';
+                            } elseif ($sort === 'salary') {
+                                $buttonText = 'Highest Salary Jobs';
+                            }
+                            ?>
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownSortingButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                Newest Jobs
+                                <?php echo $buttonText; ?>
                             </button>
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownSortingButton">
-                                <li><a class="dropdown-item" href="#">Lastest Jobs</a></li>
-
-                                <li><a class="dropdown-item" href="#">Highed Salary Jobs</a></li>
-
-                                <li><a class="dropdown-item" href="#">Internship Jobs</a></li>
+                                <li><a class="dropdown-item" href="?sort=latest">Latest Jobs</a></li>
+                                <li><a class="dropdown-item" href="?sort=salary">Highest Salary Jobs</a></li>
                             </ul>
                         </div>
 
-                        <div class="d-flex">
-                            <a href="#" class="sorting-icon active bi-list me-2"></a>
-
-                            <a href="#" class="sorting-icon bi-grid"></a>
-                        </div>
                     </div>
 
                     <?php
