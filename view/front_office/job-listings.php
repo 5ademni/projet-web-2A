@@ -86,6 +86,9 @@ if (isset($_GET['search'])) {
         $list = $list->fetchAll(PDO::FETCH_ASSOC);
     }
 }
+if (isset($_POST['reset'])) {
+    unset($_SESSION['searchQuery']);
+}
 // Sorting
 switch ($sort) {
     case 'latest':
@@ -101,6 +104,8 @@ switch ($sort) {
 }
 
 $totalJobs = count($list);
+$topFields = $jobFieldC->getTopFields();
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -288,18 +293,21 @@ Bootstrap 5 HTML CSS Template
                                     <button type="submit" class="form-control" name="search">
                                         Search job
                                     </button>
+                                    <button type="submit" class="form-control" name="reset">
+                                        Reset Filter
+                                    </button>
                                 </div>
 
                                 <div class="col-12">
                                     <div class="d-flex flex-wrap align-items-center mt-4 mt-lg-0">
-                                        <span class="text-white mb-lg-0 mb-md-0 me-2">Popular keywords:</span>
+                                        <span class="text-white mb-lg-0 mb-md-0 me-2">Popular fields:</span>
 
                                         <div>
-                                            <a href="job-listings.html" class="badge">Web design</a>
-
-                                            <a href="job-listings.html" class="badge">Marketing</a>
-
-                                            <a href="job-listings.html" class="badge">Customer support</a>
+                                            <?php
+                                            for ($i = 0; $i < min(3, count($topFields)); $i++) {
+                                                echo '<a href="job-listings.html" class="badge">' . $topFields[$i]['FieldName'] . '</a>';
+                                            }
+                                            ?>
                                         </div>
                                     </div>
                                 </div>
@@ -429,6 +437,9 @@ Bootstrap 5 HTML CSS Template
 
                     <div class="col-lg-4 col-12 d-flex align-items-center ms-auto mb-5 mb-lg-4">
                         <p class="mb-0 ms-lg-auto">Sort by:</p>
+                        <?php
+                        //TODO:fix each sort to render when pressing it despite the redirection
+                        ?>
 
                         <div class="dropdown dropdown-sorting ms-3 me-4">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownSortingButton" data-bs-toggle="dropdown" aria-expanded="false">

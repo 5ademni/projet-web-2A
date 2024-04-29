@@ -89,4 +89,21 @@ class JobFieldC
       die('Erreur: ' . $e->getMessage());
     }
   }
+
+  public function getTopFields()
+  {
+    $sql = "SELECT fields.FieldName, COUNT(jobpostings.JobID) as JobCount 
+        FROM jobpostings 
+        JOIN fields ON jobpostings.FieldID = fields.FieldID 
+        GROUP BY fields.FieldName 
+        ORDER BY JobCount DESC";
+    $db = config::getConnexion();
+    try {
+      $stmt = $db->prepare($sql);
+      $stmt->execute();
+      return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Exception $e) {
+      die('Erreur: ' . $e->getMessage());
+    }
+  }
 }
