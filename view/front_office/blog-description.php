@@ -158,7 +158,7 @@ Bootstrap 5 HTML CSS Template
                     <div class="d-flex justify-content-center flex-wrap mt-5 border-top pt-4">
                         <a href="#" class="custom-btn btn mt-2">Apply now</a>
                         <a href="#" class="custom-btn custom-border-btn btn mt-2 ms-lg-4 ms-3">Save this blog</a>
-                        <a href="blog-edit.php?id=<?php echo $articlesBlog->getIdArticle(); ?>" class="custom-btn custom-border-btn btn edit-btn mt-2 ms-lg-4 ms-3">Modifier ce blog</a>
+                        <a href="blog-edit.php?id=" class="custom-btn custom-border-btn btn edit-btn mt-2 ms-lg-4 ms-3">Modifier ce blog</a>
                         <div class="job-detail-share d-flex align-items-center">
                             <p class="mb-0 me-lg-4 me-3">Share:</p>
                             <a href="#" class="bi-facebook"></a>
@@ -167,32 +167,56 @@ Bootstrap 5 HTML CSS Template
                         </div>
                     </div>
                 </div>
-        </section>
 
+                <br>
 
+                <div>
+                    <div class="row">
+                        <div class="col-2">
+                            <img src="https://i.imgur.com/xELPaag.jpg" width="70" class="rounded-circle mt-2" />
+                        </div>
 
+                        <div class="col-10">
+                            <div class="comment-box ml-2">
+                                <h4>Add a comment</h4>
 
+                                <div class="rating">
+                                    <input type="radio" name="rating" value="5" id="5" /><label for="5">☆</label>
+                                    <input type="radio" name="rating" value="4" id="4" /><label for="4">☆</label>
+                                    <input type="radio" name="rating" value="3" id="3" /><label for="3">☆</label>
+                                    <input type="radio" name="rating" value="2" id="2" /><label for="2">☆</label>
+                                    <input type="radio" name="rating" value="1" id="1" /><label for="1">☆</label>
+                                </div>
 
-        <section class="cta-section">
-            <div class="section-overlay"></div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6 col-10">
-                        <h2 class="text-white mb-2">Over 10k opening jobs</h2>
-                    </div>
+                                <div class="comment-area">
+                                    <textarea class="form-control" placeholder="what is your view?" rows="4"></textarea>
+                                </div>
 
-                    <div class="col-lg-4 col-12 ms-auto">
-                        <div class="custom-border-btn-wrap d-flex align-items-center mt-lg-4 mt-2">
-                            <a href="#" class="custom-btn custom-border-btn btn me-4">Create an account</a>
+                                <div class="comment-btns mt-2">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="pull-left">
+                                                <button class="btn btn-success btn-sm">Cancel</button>
+                                            </div>
+                                        </div>
 
-                            <a href="#" class="custom-link">Post a job</a>
+                                        <div class="col-6">
+                                            <div class="pull-right">
+                                                <button class="btn btn-success send btn-sm">
+                                                    Send <i class="fa fa-long-arrow-right ml-1"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
                 </div>
-            </div>
-            </div>
         </section>
+
+
+
     </main>
 
     <footer class="site-footer">
