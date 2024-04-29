@@ -15,18 +15,14 @@ if (isset($_GET['delete'])) {
   $articlesBlogC->deleteArticle($_GET['delete']);
 }
 
-
-
 $AuteursC = new AuteursC();
 
 
-$articlesBlogInstance = new ArticlesBlogC();
-
-if (isset($_GET['auteur']) && $_GET['auteur'] != '') {
-    $id_auteur = $_GET['auteur']; 
-    $articlesBlogC = $articlesBlogInstance->getArticlesById($id_auteur);
+if (isset($_GET['auteur'])) {
+  $id_auteur = $_GET['auteur'];
+  $articlesBlogC = $articlesBlogC->getArticlesByAuteurId($id_auteur);
 } else {
-    $articlesBlogC = $articlesBlogInstance->listArticles();
+  $articlesBlogC = $articlesBlogC->listArticles();
 }
 
 $auteurs = $AuteursC->listAuteurs();
@@ -34,13 +30,13 @@ $auteurs = $AuteursC->listAuteurs();
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["tri"])) {
   $tri = $_POST["tri"];
   if ($tri == "contenu_croissant") {
-      $articlesBlogC = $articlesBlogInstance->trierArticlesParContenuCroissant();
+    $articlesBlogC = $articlesBlogInstance->trierArticlesParContenuCroissant();
   } else if ($tri == "contenu_decroissant") {
-      $articlesBlogC = $articlesBlogInstance->trierArticlesParContenuDecroissant();
+    $articlesBlogC = $articlesBlogInstance->trierArticlesParContenuDecroissant();
   } else if ($tri == "date_croissant") {
-      $articlesBlogC = $articlesBlogInstance->trierArticlesParDateCroissante();
+    $articlesBlogC = $articlesBlogInstance->trierArticlesParDateCroissante();
   } else if ($tri == "date_decroissant") {
-      $articlesBlogC = $articlesBlogInstance->trierArticlesParDateDecroissante();
+    $articlesBlogC = $articlesBlogInstance->trierArticlesParDateDecroissante();
   }
 }
 ?>
@@ -164,39 +160,39 @@ Bootstrap 5 HTML CSS Template
 
   <form action="blog.php" method="get">
     <select name="auteur">
-    <option value="" class="btn btn-primary">Sélectionnez un auteur </option>
+      <option value="" class="btn btn-primary">Sélectionnez un auteur </option>
       <?php
       foreach ($auteurs as $auteur) {
         echo "<option value=\"" . $auteur['id_auteur'] . "\">" . $auteur['nom'] . "</option>";
       }
       ?>
     </select>
-    <input type="submit" value="Trouver les articles"  class="btn btn-primary" >
+    <input type="submit" value="Trouver les articles" class="btn btn-primary">
   </form>
 
 
 
 
 
-</form>
-<form action="blog.php" method="post">
-  <select name="tri">
-    <option value="">Trier par</option>
-    <option value="contenu_croissant">Contenu Croissant</option>
-    <option value="contenu_decroissant">Contenu Décroissant</option>
-    <option value="date_croissant">Date Croissante</option>
-    <option value="date_decroissant">Date Décroissante</option>
-  </select>
-  <input type="submit" value="Trier">
-</form>
+  </form>
+  <form action="blog.php" method="post">
+    <select name="tri">
+      <option value="">Trier par</option>
+      <option value="contenu_croissant">Contenu Croissant</option>
+      <option value="contenu_decroissant">Contenu Décroissant</option>
+      <option value="date_croissant">Date Croissante</option>
+      <option value="date_decroissant">Date Décroissante</option>
+    </select>
+    <input type="submit" value="Trier">
+  </form>
 
 
 
 
 
-<?php
+  <?php
   foreach ($articlesBlogC as $ArticlesBlogC) {
-?>
+  ?>
     <div class="blog-card">
       <div class="meta">
         <div class="photo" style="background-image: url(https://storage.googleapis.com/chydlx/codepen/blog-cards/image-1.jpg);"></div>
