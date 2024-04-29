@@ -442,8 +442,17 @@ Bootstrap 5 HTML CSS Template
                         ?>
 
                         <div class="dropdown dropdown-sorting ms-3 me-4">
+                            <?php
+                            $sort = $_GET['sort'] ?? '';
+                            $buttonText = 'Select Filter';
+                            if ($sort === 'latest') {
+                                $buttonText = 'Latest Jobs';
+                            } elseif ($sort === 'salary') {
+                                $buttonText = 'Highest Salary Jobs';
+                            }
+                            ?>
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownSortingButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                Newest Jobs
+                                <?php echo $buttonText; ?>
                             </button>
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownSortingButton">
