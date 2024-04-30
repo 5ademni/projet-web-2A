@@ -802,10 +802,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit'])) {
                         <label for="editInputDescription" class="form-label">Description</label>
                         <input type="text" class="form-control" id="editInputDescription" name="description-name" value="<?php echo isset($_SESSION['description-name']) ? $_SESSION['description-name'] : $fieldCrud['Description'];
                                                                                                                           unset($_SESSION['description-name']); ?>">
-                        <?php if (isset($_SESSION['error-description'])) : ?>
+                        <?php if (isset($_SESSION['error-description-name'])) : ?>
                           <div class="alert alert-danger" role="alert">
-                            <?php echo $_SESSION['error-description'];
-                            unset($_SESSION['error-description']); ?>
+                            <?php echo $_SESSION['error-description-name'];
+                            unset($_SESSION['error-description-name']); ?>
                           </div>
                         <?php endif; ?>
                       </div>
