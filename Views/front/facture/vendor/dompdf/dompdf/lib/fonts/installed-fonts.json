@@ -1,0 +1,22 @@
+{
+    "heebo": {
+        "normal": "C:\\xampp\\htdocs\\system\\Views\\front\\facture\\vendor\\dompdf\\dompdf\/lib\/fonts\/heebo_normal_0ed87c53870f348cb4247fdad96e86a9",
+        "500": "C:\\xampp\\htdocs\\system\\Views\\front\\facture\\vendor\\dompdf\\dompdf\/lib\/fonts\/heebo_500_cc1508a764fab0a7d7d5ef40a9798122",
+        "600": "heebo_600_dc631f8f3fd3d823b0cf9a0cece18027"
+    },
+    "nunito": {
+        "600": "C:\\xampp\\htdocs\\system\\Views\\front\\facture\\vendor\\dompdf\\dompdf\/lib\/fonts\/nunito_600_0275befc5ca0fc822c590fc63a6c14d5",
+        "bold": "C:\\xampp\\htdocs\\system\\Views\\front\\facture\\vendor\\dompdf\\dompdf\/lib\/fonts\/nunito_bold_8dc3583b65bede23262ac4c563179f23",
+        "800": "nunito_800_924d67a3f4e0c85d5e5695ded0fa98ec"
+    },
+    "pacifico": {
+        "normal": "pacifico_normal_fdc22bcc936095541e9d9b0e02dbdac0"
+    },
+    "font awesome 5 brands": {
+        "normal": "font_awesome_5_brands_normal_9166bcb40dea5ba374b655439357cc5e"
+    },
+    "font awesome 5 free": {
+        "normal": "C:\\xampp\\htdocs\\system\\Views\\front\\facture\\vendor\\dompdf\\dompdf\/lib\/fonts\/font_awesome_5_free_normal_ed4e4da87937dc9d793611fdb1abbce8",
+        "900": "font_awesome_5_free_900_31ca5fb3f9009ed2d5b8cf264a9d6ed4"
+    }
+}

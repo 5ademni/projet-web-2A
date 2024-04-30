@@ -1,0 +1,13 @@
+/* Thème clair */
+body.clair {
+    background-image: url('../image/clair.avif');
+    background-color: #f8f9fa; /* Couleur de fond */
+    color: #333; /* Couleur du texte principal */
+}
+
+/* Thème sombre */
+body.sombre {
+    background-image: url('../image/sombre.avif');
+    background-color: #333; /* Couleur de fond */
+    color: #fff; /* Couleur du texte principal */
+}
