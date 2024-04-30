@@ -5,14 +5,12 @@ include_once '../../controller/jobFieldC.php';
 $jobPostC = new JobPostC();
 $jobFieldC = new jobFieldC();
 
-session_start();
-
 $sort = isset($_GET['sort']) ? $_GET['sort'] : null;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $titlePattern = "/^[a-zA-Z0-9\s]{1,30}$/";
     $locationPattern = "/^[a-zA-Z0-9\s]{1,30}$/";
-    $salaryPattern = "/^[0-9,]+(\$|TND)$/"; //TODO: make it only numbers
+    $salaryPattern = "/^[0-9,]+(\$|TND)$/";
     $descriptionPattern = "/^[a-zA-Z0-9\s,;:!?@#$%&*()-+=\[\]{}|<>.\'\"]{1,1000}$/";
 
     $title = $_POST['job-titleT'];
@@ -76,10 +74,6 @@ if (isset($_GET['search'])) {
         $list = array_merge($list, $jobPostC->searchJobPostByFieldId($fieldsS));
     }
     $list = array_unique($list, SORT_REGULAR);
-    $_SESSION['searchQuery'] = $list;
-} else if (isset($_SESSION['searchQuery'])) {
-    // If there's no new search query but there's a saved one in the session, use that
-    $list = $_SESSION['searchQuery'];
 } else {
     $list = $jobPostC->listJobPosts();
     if ($list instanceof PDOStatement) {
