@@ -6,7 +6,7 @@ class CommentaireC
 {
     public function listCommentaires()
     {
-        $sql = "SELECT * FROM commentaire";
+        $sql = "SELECT * FROM commentaires";
         $db = config::getConnexion();
         try {
             $list = $db->query($sql);
@@ -18,7 +18,7 @@ class CommentaireC
 
     public function addDummyCommentaire()
     {
-        $sql = "INSERT INTO commentaire (id_commentaire, id_article, id_auteur, contenu, datePublication) VALUES (NULL, '1', '1', 'Dummy Commentaire', '2021-06-01')";
+        $sql = "INSERT INTO commentaires (id_commentaire, id_article, id_auteur, contenu, datePublication) VALUES (NULL, '1', '1', 'Dummy Commentaire', '2021-06-01')";
         $db = config::getConnexion();
         try {
             $stmt = $db->prepare($sql);
@@ -38,7 +38,7 @@ class CommentaireC
 
     public function deleteCommentaire($id_commentaire)
     {
-        $sql = "DELETE FROM commentaire WHERE id_commentaire = :id_commentaire";
+        $sql = "DELETE FROM commentaires WHERE id_commentaire = :id_commentaire";
         $db = config::getConnexion();
         try {
             $stmt = $db->prepare($sql);
@@ -49,18 +49,18 @@ class CommentaireC
         }
     }
 
-    public function addCommentaire(Commentaire $Commentaire)
+    public function addCommentaire(Commentaires $Commentaire)
     {
-        $sql = "INSERT INTO commentaire (id_commentaire, id_article, id_auteur, contenu, datePublication) VALUES (:id_commentaire, :id_article, :id_auteur, :contenu, :datePublication)";
+        $sql = "INSERT INTO commentaires (id_commentaire, id_article, nom, commentaire, dateCommentaire) VALUES (:id_commentaire, :id_article, :nom, :commentaire, :dateCommentaire)";
         $db = config::getConnexion();
         try {
             $stmt = $db->prepare($sql);
 
-            $stmt->bindvalue(':id_commentaire', $Commentaire->getIdCommentaire());
-            $stmt->binvalue(':id_article', $Commentaire->getIdArticle());
-            $stmt->binvalue(':id_auteur', $Commentaire->getIdCommentaire());
-            $stmt->binvalue(':contenu', $Commentaire->getNom());
-            $stmt->binvalue(':datePublication', $Commentaire->getDateCommentaire());
+            $stmt->bindValue(':id_commentaire', $Commentaire->getIdCommentaire());
+            $stmt->bindValue(':id_article', $Commentaire->getIdArticle());
+            $stmt->bindValue(':nom', $Commentaire->getNom());
+            $stmt->bindValue(':commentaire', $Commentaire->getCommentaire());
+            $stmt->bindValue(':commentaire', $Commentaire->getDateCommentaire());
 
             $stmt->execute();
         } catch (Exception $e) {
@@ -68,18 +68,18 @@ class CommentaireC
         }
     }
 
-    public function updateCommentaire(Commentaire $Commentaire)
+    public function updateCommentaire(Commentaires $Commentaire)
     {
-        $sql = "UPDATE commentaire SET id_article = :id_article, id_auteur = :id_auteur, contenu = :contenu, datePublication = :datePublication WHERE id_commentaire = :id_commentaire";
+        $sql = "UPDATE commentaires SET id_commentaire = :id_commentaire, id_article = :id_article, nom = :nom, commentaire = :commentaire, dateCommentaire= :dateCommentaire WHERE id_commentaire = :id_commentaire";
         $db = config::getConnexion();
         try {
             $stmt = $db->prepare($sql);
 
-            $stmt->bindvalue(':id_commentaire', $Commentaire->getIdCommentaire());
-            $stmt->binvalue(':id_article', $Commentaire->getIdArticle());
-            $stmt->binvalue(':id_auteur', $Commentaire->getNom());
-            $stmt->binvalue(':contenu', $Commentaire->getCommentaire());
-            $stmt->binvalue(':datePublication', $Commentaire->getDateCommentaire());
+            $stmt->bindValue(':id_commentaire', $Commentaire->getIdCommentaire());
+            $stmt->bindValue(':id_article', $Commentaire->getIdArticle());
+            $stmt->bindValue(':nom', $Commentaire->getNom());
+            $stmt->bindValue(':commentaire', $Commentaire->getCommentaire());
+            $stmt->bindValue(':commentaire', $Commentaire->getDateCommentaire());
 
             $stmt->execute();
         } catch (Exception $e) {
@@ -89,7 +89,7 @@ class CommentaireC
 
     public function getCommentaire($id_commentaire)
     {
-        $sql = "SELECT * FROM commentaire WHERE id_commentaire = :id_commentaire";
+        $sql = "SELECT * FROM commentaires WHERE id_commentaire = :id_commentaire";
         $db = config::getConnexion();
         try {
             $stmt = $db->prepare($sql);

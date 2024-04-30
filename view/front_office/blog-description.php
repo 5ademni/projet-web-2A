@@ -1,5 +1,6 @@
 <?php
 include_once "../../controller/articlesBlogC.php";
+include_once "../../controller/commentaireC.php";
 
 $articlesBlogC = new ArticlesBlogC();
 
@@ -8,6 +9,8 @@ if (isset($_GET['id'])) {
     $articlesBlog = $articlesBlogC->getArticlesById($id_article);
     var_dump($articlesBlog);
 }
+$commentaireC = new CommentaireC();
+$commentaires = $commentaireC->listCommentaires();
 ?>
 
 <!doctype html>
@@ -134,86 +137,90 @@ Bootstrap 5 HTML CSS Template
 
 
 
+<section class="job-section section-padding pb-0">
+    <div class="container">
+        <div class="row">
+            <h4 class="mt-4 mb-2"><?php echo $articlesBlog[0]['titre']; ?></h4>
+            <p><?php echo $articlesBlog[0]['contenu']; ?></p>
+            <div class="d-flex justify-content-center flex-wrap mt-5 border-top pt-4">
+                <a href="#" class="custom-btn btn mt-2">Apply now</a>
+                <a href="#" class="custom-btn custom-border-btn btn mt-2 ms-lg-4 ms-3">Save this blog</a>
+                <a href="blog-edit.php?id=" class="custom-btn custom-border-btn btn edit-btn mt-2 ms-lg-4 ms-3">Modifier ce blog</a>
+                <div class="job-detail-share d-flex align-items-center">
+                    <p class="mb-0 me-lg-4 me-3">Share:</p>
+                    <a href="#" class="bi-facebook"></a>
+                    <a href="#" class="bi-twitter mx-3"></a>
+                    <a href="#" class="bi-share"></a>
+                </div>
+            </div>
+        </div>
 
+        <br>
 
+        <div>
+            <div class="row">
+                <div class="col-2">
+                    <img src="https://i.imgur.com/xELPaag.jpg" width="70" class="rounded-circle mt-2" />
+                </div>
 
+                <div class="col-10">
+    <div class="comment-box ml-2">
+        <h4>Ajouter un commentaire</h4>
 
+        <form action="blog.php" method="post">
+            <div class="rating">
+                <input type="radio" name="rating" value="5" id="5" /><label for="5">☆</label>
+                <input type="radio" name="rating" value="4" id="4" /><label for="4">☆</label>
+                <input type="radio" name="rating" value="3" id="3" /><label for="3">☆</label>
+                <input type="radio" name="rating" value="2" id="2" /><label for="2">☆</label>
+                <input type="radio" name="rating" value="1" id="1" /><label for="1">☆</label>
+            </div>
 
+            <div class="comment-area">
+                <textarea class="form-control" name="commentaire" placeholder="ecrire votre commentaire ici" rows="4"></textarea>
+            </div>
 
-
-
-
-
-
-
-
-
-
-
-        <section class="job-section section-padding pb-0">
-            <div class="container">
+            <div class="comment-btns mt-2">
                 <div class="row">
-                    <h4 class="mt-4 mb-2"><?php echo $articlesBlog[0]['titre']; ?></h4>
-                    <p><?php echo $articlesBlog[0]['contenu']; ?></p>
-                    <div class="d-flex justify-content-center flex-wrap mt-5 border-top pt-4">
-                        <a href="#" class="custom-btn btn mt-2">Apply now</a>
-                        <a href="#" class="custom-btn custom-border-btn btn mt-2 ms-lg-4 ms-3">Save this blog</a>
-                        <a href="blog-edit.php?id=" class="custom-btn custom-border-btn btn edit-btn mt-2 ms-lg-4 ms-3">Modifier ce blog</a>
-                        <div class="job-detail-share d-flex align-items-center">
-                            <p class="mb-0 me-lg-4 me-3">Share:</p>
-                            <a href="#" class="bi-facebook"></a>
-                            <a href="#" class="bi-twitter mx-3"></a>
-                            <a href="#" class="bi-share"></a>
+                    <div class="col-6">
+                        <div class="pull-left">
+                            <button type="reset" class="btn btn-success btn-sm">Annuler</button>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="pull-right">
+                            <button type="submit" class="btn btn-success send btn-sm">
+                                Envoyer <i class="fa fa-long-arrow-right ml-1"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
+            </div>
+        </form>
+    </div>
+</div>
 
-                <br>
-
-                <div>
-                    <div class="row">
-                        <div class="col-2">
-                            <img src="https://i.imgur.com/xELPaag.jpg" width="70" class="rounded-circle mt-2" />
-                        </div>
-
-                        <div class="col-10">
-                            <div class="comment-box ml-2">
-                                <h4>Add a comment</h4>
-
-                                <div class="rating">
-                                    <input type="radio" name="rating" value="5" id="5" /><label for="5">☆</label>
-                                    <input type="radio" name="rating" value="4" id="4" /><label for="4">☆</label>
-                                    <input type="radio" name="rating" value="3" id="3" /><label for="3">☆</label>
-                                    <input type="radio" name="rating" value="2" id="2" /><label for="2">☆</label>
-                                    <input type="radio" name="rating" value="1" id="1" /><label for="1">☆</label>
-                                </div>
-
-                                <div class="comment-area">
-                                    <textarea class="form-control" placeholder="what is your view?" rows="4"></textarea>
-                                </div>
-
-                                <div class="comment-btns mt-2">
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <div class="pull-left">
-                                                <button class="btn btn-success btn-sm">Cancel</button>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-6">
-                                            <div class="pull-right">
-                                                <button class="btn btn-success send btn-sm">
-                                                    Send <i class="fa fa-long-arrow-right ml-1"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- Afficher les commentaires existants -->
+                    <?php
+                    foreach ($commentaires as $commentaire) {
+                        echo "<div class='comment-box ml-2 mt-2'>";
+                        echo "<h4>" . $commentaire['id_commentaire'] . "</h4>";
+                        echo "<p>" . $commentaire['commentaire'] . "</p>";
+                        echo "</div>";
+                    }
+                    ?>
                 </div>
-        </section>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+
 
 
 
@@ -361,6 +368,9 @@ Bootstrap 5 HTML CSS Template
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/counter.js"></script>
     <script src="js/custom.js"></script>
+
+
+    <script src="js/controle-saisie-comment.js"></script>
 
 </body>
 
