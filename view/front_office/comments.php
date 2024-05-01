@@ -1,34 +1,38 @@
 <?php
 include_once "../../controller/articlesBlogC.php";
 include_once "../../controller/commentaireC.php";
-include_once "../../controller/auteursC.php";
 
+// Check if form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Get form data
+    $id_commentaire = $_POST["id_commentaire"];
+    $id_article = $_POST["id_article"];
+    $nom = $_POST["nom"];
+    $commentaire = $_POST["commentaire"];
+    $dateCommentaire = $_POST["dateCommentaire"];
 
+    // Validate and sanitize input (you can add more validation as needed)
 
-$articlesBlogC = new ArticlesBlogC();
+    // Insert comment into database
+    $commentaireC = new CommentaireC();
+    $commentaireObj = new Commentaires($id_commentaire, $id_article, $nom, $commentaire, $dateCommentaire); // Create an instance of Commentaires
+    $commentaireObj->setIdCommentaire($id_commentaire);
+    $commentaireObj->setIdArticle($id_article);
+    $commentaireObj->setNom($nom);
+    $commentaireObj->setCommentaire($commentaire);
+    $commentaireObj->setDateCommentaire($dateCommentaire);
+    $success = $commentaireC->addCommentaire($commentaireObj); // Pass the Commentaires object as an argument
 
-if (isset($_GET['id'])) {
-    $id_article = $_GET['id'];
-    $articlesBlog = $articlesBlogC->getArticlesById($id_article);
-
+    // Check if insertion was successful
+    if ($success) {
+        echo "Commentaire ajouté avec succès.";
+    } else {
+        echo "Erreur lors de l'ajout du commentaire.";
+    }
 }
 
-$commentaireC = new CommentaireC();
-$commentaires = $commentaireC->listCommentaires();
-
-// Function to get the author's name based on ID
-function getAuteur($nom)
-{
-    $auteurC = new AuteursC(); // Assuming AuteursC is the class for managing authors
-    $auteur = $auteurC->getAuteur($nom); // Assuming getAuteur is a method to fetch author info by name
-    return $auteur; // Return the fetched author information
-}
-
-// Call the getAuteur function to get author information
-$auteur = getAuteur($articlesBlog[0]['id_auteur']); // Assuming 'id_auteur' is the author's ID in the articlesBlog array
-
+// Remaining code for displaying comments and blog details...
 ?>
-
 <!doctype html>
 <html lang="en">
 

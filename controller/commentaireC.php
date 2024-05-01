@@ -1,9 +1,11 @@
 <?php
-include "../auth/config.php";
-include "../model/commentaire.php";
+include "../../model/commentaire.php";
 
 class CommentaireC
 {
+    private $db;
+
+   
     public function listCommentaires()
     {
         $sql = "SELECT * FROM commentaires";
@@ -15,7 +17,13 @@ class CommentaireC
             die('Erreur: ' . $e->getMessage());
         }
     }
-
+    public function listCommentairesByArticleId($articleId) {
+        $query = "SELECT * FROM commentaires WHERE id_article = :articleId";
+        $statement = $this->db->prepare($query);
+        $statement->bindParam(':articleId', $articleId);
+        $statement->execute();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
+    }
     public function addDummyCommentaire()
     {
         $sql = "INSERT INTO commentaires (id_commentaire, id_article, id_auteur, contenu, datePublication) VALUES (NULL, '1', '1', 'Dummy Commentaire', '2021-06-01')";
@@ -60,7 +68,7 @@ class CommentaireC
             $stmt->bindValue(':id_article', $Commentaire->getIdArticle());
             $stmt->bindValue(':nom', $Commentaire->getNom());
             $stmt->bindValue(':commentaire', $Commentaire->getCommentaire());
-            $stmt->bindValue(':commentaire', $Commentaire->getDateCommentaire());
+            $stmt->bindValue(':dateCommentaire', $Commentaire->getDateCommentaire());
 
             $stmt->execute();
         } catch (Exception $e) {
@@ -99,5 +107,14 @@ class CommentaireC
         } catch (Exception $e) {
             die('Erreur: ' . $e->getMessage());
         }
+    }
+
+    public function rechercherCommentairesParIDBlog($idArticle) {
+        $sql = "SELECT * FROM Commentaires WHERE id_article = :idArticle";
+        $db = config::getConnexion();
+        $stmt = $db->prepare($sql);
+        $stmt->execute([':idArticle' => $idArticle]);
+        $result = $stmt->fetchAll(PDO::FETCH_CLASS, 'Commentaires');
+        return $result;
     }
 }

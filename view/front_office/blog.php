@@ -16,7 +16,7 @@ if (isset($_GET['delete'])) {
 }
 
 $AuteursC = new AuteursC();
-
+$articlesBlogInstance = new ArticlesBlogC();
 
 if (isset($_GET['auteur'])) {
   $id_auteur = $_GET['auteur'];
@@ -171,7 +171,8 @@ Bootstrap 5 HTML CSS Template
   </form>
 
 
-
+<br>
+<br>
 
 
   </form>
@@ -183,7 +184,7 @@ Bootstrap 5 HTML CSS Template
       <option value="date_croissant">Date Croissante</option>
       <option value="date_decroissant">Date Décroissante</option>
     </select>
-    <input type="submit" value="Trier">
+    <input type="submit" value="Trier" class="btn btn mi">
   </form>
 
 

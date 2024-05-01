@@ -86,13 +86,28 @@ class AuteursC
         try {
             $stmt = $db->prepare($sql);
             $stmt->bindValue(':id_auteur', $id_auteur);
+           
             $stmt->execute();
             return $stmt->fetch();
         } catch (Exception $e) {
             die('Erreur: ' . $e->getMessage());
         }
     }
-
+    public function getAuteurNom($id_auteur)
+    {
+        $sql = "SELECT nom FROM auteurs WHERE id_auteur = :id_auteur";
+        $db = config::getConnexion();
+        try {
+            $stmt = $db->prepare($sql);
+            $stmt->bindValue(':id_auteur', $id_auteur);
+            $stmt->execute();
+            $result = $stmt->fetch();
+            return $result['nom']; // Return only the 'nom' column
+        } catch (Exception $e) {
+            die('Erreur: ' . $e->getMessage());
+        }
+    }
+    
 
 public function afficheArticle($id_article) {
     try {
