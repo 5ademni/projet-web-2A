@@ -76,24 +76,28 @@ class CommentaireC
         }
     }
 
-    public function updateCommentaire(Commentaires $Commentaire)
+    public function updateCommentaire($id_commentaire, $new_comment)
     {
-        $sql = "UPDATE commentaires SET id_commentaire = :id_commentaire, id_article = :id_article, nom = :nom, commentaire = :commentaire, dateCommentaire= :dateCommentaire WHERE id_commentaire = :id_commentaire";
+        $sql = "UPDATE commentaires SET commentaire = :new_comment WHERE id_commentaire = :id_commentaire";
         $db = config::getConnexion();
         try {
             $stmt = $db->prepare($sql);
-
-            $stmt->bindValue(':id_commentaire', $Commentaire->getIdCommentaire());
-            $stmt->bindValue(':id_article', $Commentaire->getIdArticle());
-            $stmt->bindValue(':nom', $Commentaire->getNom());
-            $stmt->bindValue(':commentaire', $Commentaire->getCommentaire());
-            $stmt->bindValue(':commentaire', $Commentaire->getDateCommentaire());
-
+    
+            // Assuming $new_comment is an object of class Commentaires
+            // If the updated content is stored in the 'commentaire' property of the Commentaires object
+            // Retrieve that property and bind it to the PDOStatement
+            $commentaireContent = $new_comment->getCommentaire();
+            $stmt->bindValue(':new_comment', $commentaireContent);
+            $stmt->bindValue(':id_commentaire', $id_commentaire);
+    
             $stmt->execute();
         } catch (Exception $e) {
             die('Erreur: ' . $e->getMessage());
         }
     }
+    
+    
+    
 
     public function getCommentaire($id_commentaire)
     {

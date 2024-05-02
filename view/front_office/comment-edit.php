@@ -2,36 +2,49 @@
 include_once "../../controller/articlesBlogC.php";
 include_once "../../controller/commentaireC.php";
 include_once "../../controller/auteursC.php";
-
-
-
-$articlesBlogC = new ArticlesBlogC();
-
-if (isset($_GET['id'])) {
-    $id_article = $_GET['id'];
-    $articlesBlog = $articlesBlogC->getArticlesById($id_article);
-
-}
+include_once "../../model/commentaire.php";
 
 $commentaireC = new CommentaireC();
-if (isset($_GET['delete'])) {
-    $commentaireC->deleteCommentaire($_GET['delete']);
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Récupérer et valider le champ commentaire
+    $commentaireContent = $_POST['commentaire'];
+
+    // Vérifier si le commentaire contient au moins 3 caractères
+    if (strlen($commentaireContent) < 3) {
+        echo "Veuillez écrire au minimum 3 caractères pour le commentaire.";
+    } else {
+        // Si le champ commentaire est valide, ajouter le commentaire
+        $current_date = date('Y-m-d H:i:s');
+
+        // Créer un nouvel objet Commentaires avec le commentaire saisi
+        $newComment = new Commentaires(
+            null, // Laisser le champ id_commentaire vide, car il sera généré automatiquement
+            $id_article, // Remplacer $id_article par la valeur appropriée
+            $nom, // Remplacer $nom par la valeur appropriée
+            $commentaireContent, // Utiliser le commentaire saisi
+            $current_date
+        );
+
+        // Appeler la méthode addCommentaire pour ajouter le nouveau commentaire
+        $commentaireC->addCommentaire($newComment);
+
+        // Rediriger vers la page appropriée après l'ajout du commentaire
+        // Remplacer 'Location: page-appropriee.php' par la valeur appropriée
+        $location = 'Location: blog-description.php?id=' . $id;
+        header($location);
+        exit;
+    }
+} else {
+    echo "Méthode non autorisée pour l'ajout de commentaire.";
 }
-
-$commentaireC = new CommentaireC();
-$commentaires = $commentaireC->listCommentaires();
-
-// Function to get the author's name based on ID
-function getAuteur($nom)
-{
-    $auteurC = new AuteursC(); // Assuming AuteursC is the class for managing authors
-    $auteur = $auteurC->getAuteur($nom); // Assuming getAuteur is a method to fetch author info by name
-    return $auteur; // Return the fetched author information
-}
-
-$auteur = getAuteur($articlesBlog[0]['id_auteur']); 
-
 ?>
+
+
+
+
+
+
 
 <!doctype html>
 <html lang="en">
@@ -97,7 +110,7 @@ Bootstrap 5 HTML CSS Template
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="about.html">About Gotto</a>
+                        <a class="nav-link" href="about.html">About 5ademni</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="eventButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">Événements</a>
@@ -109,7 +122,7 @@ Bootstrap 5 HTML CSS Template
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="job-listings.php">Jobs</a>
+                        <a class="nav-link" href="job-listings.php">Commentaires</a>
                     </li>
 
                     <li class="nav-item">
@@ -137,13 +150,13 @@ Bootstrap 5 HTML CSS Template
                 <div class="row">
 
                     <div class="col-lg-12 col-12 text-center">
-                        <h1 class="text-white">Details du blog</h1>
+                        <h1 class="text-white">Détails du commentaires</h1>
 
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb justify-content-center">
                                 <li class="breadcrumb-item"><a href="index.php">Home</a></li>
 
-                                <li class="breadcrumb-item active" aria-current="page">Details du blog</li>
+                                <li class="breadcrumb-item active" aria-current="page">Détails du commentaires</li>
                             </ol>
                         </nav>
                     </div>
@@ -153,121 +166,60 @@ Bootstrap 5 HTML CSS Template
         </header>
 
 
-
-
-
-
-<section class="job-section section-padding pb-0">
-    <div class="container">
-        <div class="row">           
-        <h4 class="mt-4 mb-2" hidden><?php echo $articlesBlog[0]['id_article']; ?></h4>
-            <h4 class="mt-4 mb-2"><?php echo $articlesBlog[0]['titre']; ?></h4>
-            <p><?php echo $articlesBlog[0]['contenu']; ?></p>
-            <div class="d-flex justify-content-center flex-wrap mt-5 border-top pt-4">
-                <a href="#" class="custom-btn btn mt-2">Apply now</a>
-                <a href="#" class="custom-btn custom-border-btn btn mt-2 ms-lg-4 ms-3">Save this blog</a>
-                <a href="blog-edit.php?id=" class="custom-btn custom-border-btn btn edit-btn mt-2 ms-lg-4 ms-3">Modifier ce blog</a>
-                <div class="job-detail-share d-flex align-items-center">
-                    <p class="mb-0 me-lg-4 me-3">Share:</p>
-                    <a href="#" class="bi-facebook"></a>
-                    <a href="#" class="bi-twitter mx-3"></a>
-                    <a href="#" class="bi-share"></a>
-                </div>
-            </div>
-        </div>
-
-        <br>
-
-        <div>
+<form method="post" id="commentForm">
+    <section class="job-section section-padding pb-0">
+        <div class="container">
             <div class="row">
-                <div class="col-2">
-                    <img src="https://i.imgur.com/xELPaag.jpg" width="70" class="rounded-circle mt-2" />
-                </div>
-
-                <div class="col-md-10">
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <h4 class="card-title">Ajouter un commentaire</h4>
-
-            <form action="comments.php" method="post">
-                <!-- Add fields for id_article, id_auteur, and datePublication -->
-                <input type="hidden" name="id_article" value="<?php echo $articlesBlog[0]['id_article']; ?>">
-                <input type="hidden" name="id_commentaire"> <!-- Assuming you have a default author ID -->
-                <input type="hidden" name="nom" value="<?php echo $auteur['id_auteur']; ?>">
-                <input name="dateCommentaire" value="<?php echo date('Y-m-d H:i:s'); ?>"> <!-- Current timestamp -->
-
-                <div class="mb-3">
-                    <label for="rating" class="form-label">Rating</label>
-                    <div class="rating">
-                        <input type="radio" name="rating" value="5" id="5" class="visually-hidden" />
-                        <label for="5" class="star">&#9733;</label>
-                        <!-- More rating options -->
+                <!-- Input fields for comment details -->
+                <div class="col-lg-8 col-12">
+                    <h2 class="job-title mb-0">#<?php echo $commentaire['nom']; ?></h2>
+                    <div class="job-thumb job-thumb-detail">
+                        <div class="d-flex flex-wrap align-items-center border-bottom pt-lg-3 pt-2 pb-3 mb-4">
+                            <!-- Display comment details -->
+                            <p class="job-date mb-0">
+                                <i class="custom-icon bi-clock me-1"></i>
+                                <?php echo $commentaire['dateCommentaire']; ?>
+                            </p>
+                        </div>
+                        <!-- Text area for updating comment -->
+                        <textarea name="commentaire" id="commentaire"><?php echo $commentaire['commentaire']; ?></textarea>
+                        <!-- Error message section -->
+                        <span id="commentaireError" style="color: red; display: none;">Veuillez écrire au moins 3 caractères pour le commentaire.</span>
                     </div>
                 </div>
-
-                <div class="mb-3">
-                    <label for="commentaire" class="form-label">Commentaire</label>
-                    <textarea class="form-control" name="commentaire" placeholder="Écrire votre commentaire ici" rows="4"></textarea>
-                </div>
-
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <button type="reset" class="btn btn-secondary btn-sm">Annuler</button>
-                    <button type="submit" class="btn btn-primary btn-sm ms-md-2">Envoyer <i class="fa fa-long-arrow-right ms-1"></i></button>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <div class="card mb-4">
-                <div class="card-header bg-primary text-white">
-                    <h4 class="card-title mb-0">Commentaires existants</h4>
-                </div>
-                <div class="card-body">
-    <?php foreach ($commentaires as $commentaire): ?>
-        <?php if ($commentaire['id_article'] == $articlesBlog[0]['id_article']): ?>
-            <div class="card border-primary mb-3">
-    <div class="card-header">
-        <div class="d-flex justify-content-between align-items-center">
-            <div>
-                <h5 class="card-title mb-0">#<?php echo $commentaire['nom']; ?></h5>
-            </div>
-            <div>
-                <small class="text-muted"><?php echo $commentaire['dateCommentaire']; ?></small>
             </div>
         </div>
+    </section>
+    <!-- Submit button -->
+    <div class="d-flex justify-content-center flex-wrap mt-5 border-top pt-4">
+        <button type="submit" class="custom-btn custom-border-btn btn edit-btn mt-2 ms-lg-4 ms-3" id="submitBtn">Modifier ce commentaire</button>
     </div>
-    <div class="card-body">
-        <p class="card-text"><?php echo $commentaire['commentaire']; ?></p>
-    </div>
-    <div class="card-footer d-flex justify-content-between">
-        <a href="?delete=<?php echo $commentaire['id_commentaire']; ?>" class="btn btn-primary" style="background-color: #D46F4D; color: white;">Supprimer le commentaire</a>
-        <a href="comment-edit.php?id=<?php echo $commentaire['id_commentaire']; ?>" class="btn btn-primary" style="background-color: blue; color: white;">Modifier le commentaire</a>
-    </div>
-</div>
- 
-        <?php endif; ?>
-    <?php endforeach; ?>
-</div>
+</form>
 
+
+
+        <div class="d-flex justify-content-center flex-wrap mt-5 border-top pt-4">
+
+            <button type="submit" class="custom-btn custom-border-btn btn edit-btn mt-2 ms-lg-4 ms-3">Modifier cette commentaire</button>
+
+            <div class="job-detail-share d-flex align-items-center">
+                <p class="mb-0 me-lg-4 me-3">Partager:</p>
+
+                <a href="#" class="bi-facebook"></a>
+
+                <a href="#" class="bi-twitter mx-3"></a>
+
+                <a href="#" class="bi-share"></a>
             </div>
         </div>
-    </div>
-</div>
-
-
-                </div>
-            </div>
         </div>
-    </div></div>
-
-</section>
+        </div>
 
 
 
-
-
+        </div>
+        </div>
+        </section>
 
 
 
@@ -366,7 +318,7 @@ Bootstrap 5 HTML CSS Template
                 <div class="row">
 
                     <div class="col-lg-4 col-12 d-flex align-items-center">
-                        <p class="copyright-text">Copyright © 5ademni 2024</p>
+                        <p class="copyright-text">Copyright © Gotto Job 2048</p>
 
                         <ul class="footer-menu d-flex">
                             <li class="footer-menu-item"><a href="#" class="footer-menu-link">Privacy Policy</a></li>
@@ -416,9 +368,34 @@ Bootstrap 5 HTML CSS Template
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/counter.js"></script>
     <script src="js/custom.js"></script>
+    <script src="js/input_control.js"></script>
 
 
-    <script src="js/controle-saisie-comment.js"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var commentForm = document.getElementById("commentForm");
+        var commentaireField = document.getElementById("commentaire");
+        var commentaireError = document.getElementById("commentaireError");
+
+        commentForm.addEventListener("submit", function(event) {
+            // Retrieve the content of the comment field
+            var commentaireContent = commentaireField.value;
+
+            // Check if the comment contains at least 3 characters
+            if (commentaireContent.length < 3) {
+                // Prevent the form submission
+                event.preventDefault();
+
+                // Display the error message
+                commentaireError.style.display = "block";
+            } else {
+                // The comment is valid, hide the error message
+                commentaireError.style.display = "none";
+            }
+        });
+    });
+</script>
+
 
 </body>
 

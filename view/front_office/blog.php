@@ -199,20 +199,17 @@ Bootstrap 5 HTML CSS Template
         <div class="photo" style="background-image: url(https://storage.googleapis.com/chydlx/codepen/blog-cards/image-1.jpg);"></div>
         <ul class="details">
           <li class="author"><a href="#"><?php echo $ArticlesBlogC['id_auteur']; ?></a></li>
-          <li class="date"><?php echo $ArticlesBlogC['datePublication']; ?></li>
-          <li class="tags">
-            <ul>
-              <li><a href="#">Learn</a></li>
-              <li><a href="#">Code</a></li>
-              <li><a href="#">HTML</a></li>
-              <li><a href="#">CSS</a></li>
-            </ul>
-          </li>
+          <br>
+
+
         </ul>
       </div>
       <div class="description">
+      <li class="date"><?php echo $ArticlesBlogC['datePublication']; ?></li>
+      <br>
         <h1><?php echo $ArticlesBlogC['titre']; ?></h1>
         <p><?php echo $ArticlesBlogC['contenu']; ?></p>
+
         <p class="read-more">
           <a href="blog-edit.php?id=<?php echo $ArticlesBlogC['id_article']; ?>" class="btn btn-primary" style="background-color: blue ; color: white;"> Modifier le blog </a>
           <br>
