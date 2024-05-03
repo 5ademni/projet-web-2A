@@ -3,9 +3,10 @@ include_once '../../controller/event2.php';
 include_once '../../model/event.php';
 include_once '../../controller/Categorie_Evenement2.php';
 include_once '../../controller/auteurE.php';
+include_once '../../controller/domaineEV2.php';
 
 // Créer une instance du contrôleur
-$controller = new EvenementC();
+$controller = new EvenementC(); 
 $controller2 = new auteurEC();
 
 $id_evenement = "";
@@ -88,7 +89,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_POST['nbPlaces'],
             $target_file,
             $_POST['heureEvenement'],
-            $_POST['id_categorie'] // Ajout de id_categorie à la construction de l'objet Evenement
+            $_POST['id_categorie'],
+            $_POST['id_domaine'] // Ajout de id_categorie à la construction de l'objet Evenement
         );
 
         // Appeler la méthode addEvenement
@@ -209,7 +211,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                           </select>
                           <span class="error"><?php echo $id_categorie_err;?></span>
                         </div>
-                        <div class="form-group
+                        <div class="form-group">
+                            <label for="id_domaine">Domaine</label>
+                            <select class="form-control select-css" id="id_domaine" name="id_domaine">
+                            <?php
+                            ini_set('display_errors', 1);
+                            ini_set('display_startup_errors', 1);
+                            error_reporting(E_ALL);
+                            $domaineController = new DomaineEVC();
+                            $domaines = $domaineController->listDomaines();
+                            foreach ($domaines as $domaine) {
+                            echo "<option value=\"" . $domaine['id_domaine'] . "\">" . $domaine['nom_domaine']. "</option>";
+                            }
+                            ?>
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <label for="titre">Titre</label>
                             <input type="text" class="form-control" id="titre" name="titre" placeholder="Entrez le titre">
                             <span class="error"><?php echo $titre_err;?></span>

@@ -243,9 +243,6 @@ input[type="submit"] {
     <input type="hidden" name="event_id" value="<?php echo $event['id_evenement']; ?>">
     <?php
     $isRegistered = $inscription->estInscrit($event['id_evenement'], $_SESSION['id']);
-    var_dump($isRegistered);
-    var_dump($event['id_evenement']);
-    var_dump($_SESSION['id']);
     if ($event['nbPlaces'] > 0 && !$isRegistered) : ?>
         <button class="tickets" type="submit" name="inscription"><?= $event['prix'] ?> TND </button>
     <?php elseif ($isRegistered) : ?>

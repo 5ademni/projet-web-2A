@@ -1,58 +1,52 @@
 <?php
-include_once '../../controller/event2.php';
-include_once '../../model/event.php';
-include_once '../../controller/Categorie_Evenement2.php';
-include_once '../../controller/domaineEV2.php';
+session_start(); // Assurez-vous de démarrer la session en haut de votre fichier
 
+include_once '../../controller/Categorie_Evenement2.php';
+include_once '../../model/Categorie_Evenement.php';
 
 // Créer une instance du contrôleur
-$controller = new EvenementC();
+$controller = new CategorieEvenementC();
+$nom_categorie_err = "";
 
-// Assurez-vous d'appeler la fonction getevenementbyid pour obtenir les détails de l'événement
+// Assurez-vous d'appeler la fonction getCategoriebyid pour obtenir les détails de la catégorie
 if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
-    $event_id = $_GET['id'];
-    $evenement = $controller->getEvenement($event_id);
+    $categorie_id = $_GET['id'];
+    $categorie = $controller->getCategorie($categorie_id);
+    $_SESSION['old_id'] = $categorie_id;
+    $_SESSION['old_nom'] = $categorie ;
 } elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $target_dir = "../../upload/";
-  $default_image = $target_dir . "event-imagef.png"; // Chemin vers votre image par défaut
+    // Vérifiez si le nom de la catégorie contient uniquement des lettres et des espaces
+    if (!preg_match("/^[a-zA-Z ]*$/",$_POST['nom'])) {
+        $nom_categorie_err = "Seules les lettres et les espaces sont autorisés.";
+    } elseif ($controller->categorieExists($_POST['nom'])) { // Vérifiez si le nom de la catégorie existe déjà
+        $nom_categorie_err = "Le nom de la catégorie existe déjà.";
+    } else {
+        // Créer une instance de la classe Categorie
+        $categorie = new CategorieEvenement(
+            $_POST['id_categorie'],
+            $_POST['nom']
+        );
 
-  // Vérifiez si une image a été téléchargée
-  if (!empty($_FILES["image"]["name"])) {
-      $target_file = $target_dir . basename($_FILES["image"]["name"]);
-      move_uploaded_file($_FILES["image"]["tmp_name"], $target_file);
-  } else {
-      // Si aucune image n'a été téléchargée, utilisez l'image par défaut
-      $target_file = $default_image;
-  }
-    // Créer une instance de la classe Evenement
-    $evenement = new Evenement(
-        $_POST['id_evenement'],
-        $_POST['id_auteur'],
-        $_POST['titre'],
-        $_POST['contenu'],
-        $_POST['dateEvenement'],
-        $_POST['lieu'],
-        $_POST['prix'],
-        $_POST['nbPlaces'],
-        $target_file,
-        $_POST['heureEvenement'],
-        $_POST['id_categorie'],
-        $_POST['id_domaine']
-
-    );
-
-    // Appeler la méthode updateEvenement
-    
-try {
-    $controller->updateEvenement($_POST['id_evenement'], $evenement);
-    echo "L'événement a été modifié avec succès.";
-} catch (Exception $e) {
-    echo 'Erreur: ' . $e->getMessage();
-}
-header('Location: evenement.php');
-exit;
+        // Appeler la méthode updateCategorie
+        try {
+            $controller->updateCategorie($_POST['id_categorie'], $categorie);
+            echo "<script>alert('La catégorie a été modifiée avec succès.'); window.location.href='categorie.php';</script>";
+        } catch (Exception $e) {
+            echo 'Erreur: ' . $e->getMessage();
+        }
+    }
+    if (!empty($nom_categorie_err)) {
+      echo "<script>
+      alert('$nom_categorie_err');
+      window.location.href='http://localhost:8011/projet-web-2A/view/back_office/Modifier-categorie.php?id=' + " . $_POST['id_categorie'] . ";
+      </script>";
+    }
 }
 ?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -619,110 +613,47 @@ exit;
   <?php
   //MARK: Main form
   ?>
-  <main id="main" class="main">
-    <div class="pagetitle">
-      <h1>Users</h1>
-      <nav>
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-          <li class="breadcrumb-item"><a href="evenement.php">Les evenements </a></li>
-          <li class="breadcrumb-item active">modification des evenements <?php echo $evenement['id_evenement']; ?></li>
-        </ol>
-      </nav>
-    </div>
-    <!-- End Page Title -->
+ <main id="main" class="main">
+  <div class="pagetitle">
+    <h1>Categories</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+        <li class="breadcrumb-item"><a href="categorie.php">Les catégories </a></li>
+        <li class="breadcrumb-item active">Modification des catégories <?php echo $categorie['id_categorie']; ?></li>
+      </ol>
+    </nav>
+  </div>
 
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">Edit job <?php echo $evenement['id_evenement']; ?></h5>
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Edit category <?php echo $categorie['id_categorie']; ?></h5>
 
-        <!-- General Form Elements -->
-        <section class="about-section">
+      <section class="about-section">
         <div class="container">
-      <div class="row">
-        <div class="col-lg-12 col-12">
-          <!-- Formulaire pour modifier un événement -->
-          <form method="POST" enctype="multipart/form-data">
-            <div class="form-group">
-              <label for="id_evenement">ID de l'événement</label>
-              <input type="text" class="form-control" id="id_evenement" name="id_evenement" value="<?php echo $evenement['id_evenement']; ?> "readonly> 
+          <div class="row">
+            <div class="col-lg-12 col-12">
+              <!-- Formulaire pour modifier une catégorie -->
+              <form method="POST">
+                <div class="form-group">
+                  <label for="id_categorie">ID de la catégorie</label>
+                  <input type="text" class="form-control" id="id_categorie" name="id_categorie" value="<?php echo $categorie['id_categorie']; ?>" readonly> 
+                </div>
+                <div class="form-group">
+                  <label for="nom">Nom</label>
+                  <input type="text" class="form-control" id="nom" name="nom" value="<?php echo $categorie['nom_categorie']; ?>">
+                  <span class="invalid-feedback"><?php echo $nom_categorie_err; ?></span>
+                </div>
+                <button type="submit" class="btn btn-primary">Modifier la catégorie</button>
+              </form>
             </div>
-            <div class="form-group">
-              <label for="id_auteur">ID de l'auteur</label>
-              <input type="text" class="form-control" id="id_auteur" name="id_auteur" value="<?php echo $evenement['id_auteur']; ?> "readonly>
-            </div>
-            <div class="form-group">
-            <label for="id_categorie">Catégorie</label>
-            <select class="form-control select-css" id="id_categorie" name="id_categorie">
-            <?php
-             $categorieController = new CategorieEvenementC(); 
-            $categories = $categorieController->listCategories();
-            foreach ($categories as $categorie) {
-            echo "<option value=\"" . $categorie['id_categorie'] . "\">" . $categorie['nom_categorie']. "</option>"; }
-            ?>
-            </select>
-            </div> 
-            <div class="form-group">
-            <label for="id_domaine">Domaine</label>
-            <select class="form-control select-css" id="id_domaine" name="id_domaine">
-            <?php
-            $domaineController = new DomaineEVC();
-            $domaines = $domaineController->listDomaines();
-            foreach ($domaines as $domaine) {
-            echo "<option value=\"" . $domaine['id_domaine'] . "\">" . $domaine['nom_domaine']. "</option>"; }
-            ?>
-            </select>
-            </div>
-
-            <!-- ... -->
-            <div class="form-group">
-              <label for="titre">Titre de l'événement</label>
-              <input type="text" class="form-control" id="titre" name="titre" value="<?php echo $evenement['titre']; ?>">
-            </div>
-            <!-- ... -->
-<div class="form-group">
-  <label for="contenu">Contenu de l'événement</label>
-  <input type="text" class="form-control" id="contenu" name="contenu" value="<?php echo $evenement['contenu']; ?>">
-</div>
-<div class="form-group">
-  <label for="dateEvenement">Date de l'Evenement</label>
-  <input type="date" class="form-control" id="dateEvenement" name="dateEvenement" value="<?php echo $evenement['dateEvenement']; ?>">
-</div>
-<div class="form-group">
-  <label for="heureEvenement">Heure de l'Evenement</label>
-  <input type="time" class="form-control" id="heureEvenement" name="heureEvenement" value="<?php echo $evenement['heureEvenement']; ?>">
-</div>
-<div class="form-group">
-  <label for="lieu">Lieu de l'événement</label>
-  <input type="text" class="form-control" id="lieu" name="lieu" value="<?php echo $evenement['lieu']; ?>">
-</div>
-<div class="form-group">
-  <label for="prix">Prix</label>
-  <input type="text" class="form-control" id="prix" name="prix" value="<?php echo $evenement['prix']; ?>">
-</div>
-<div class="form-group">
-  <label for="nbPlaces">Nombre de Places</label>
-  <input type="text" class="form-control" id="nbPlaces" name="nbPlaces" value="<?php echo $evenement['nbPlaces']; ?>">
-</div>
-<div class="form-group">
-  <label for="image">Image</label>
-  <input type="file" class="form-control" id="image" name="image" value="<?php echo $evenement['image']; ?>">
-</div>  
-<!-- ... -->
-
-            <button type="submit" class="btn btn-primary">Modifier l'événement</button>
-            
-          </form>
+          </div>
         </div>
-      </div>
+      </section>
     </div>
-  </section>
-        </form><!-- End General Form Elements -->
+  </div>
+</main>
 
-      </div>
-    </div>
-
-  </main>
   <!-- End #main -->
 
   <!-- ======= Footer ======= -->

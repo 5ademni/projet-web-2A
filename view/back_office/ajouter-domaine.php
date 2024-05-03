@@ -1,58 +1,49 @@
 <?php
-include_once '../../controller/event2.php';
-include_once '../../model/event.php';
-include_once '../../controller/Categorie_Evenement2.php';
 include_once '../../controller/domaineEV2.php';
 
-
 // Créer une instance du contrôleur
-$controller = new EvenementC();
+$controllerDomaine = new DomaineEVC();
 
-// Assurez-vous d'appeler la fonction getevenementbyid pour obtenir les détails de l'événement
-if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
-    $event_id = $_GET['id'];
-    $evenement = $controller->getEvenement($event_id);
-} elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $target_dir = "../../upload/";
-  $default_image = $target_dir . "event-imagef.png"; // Chemin vers votre image par défaut
+// Initialiser les messages d'erreur
+$nom_domaine_err = "";
 
-  // Vérifiez si une image a été téléchargée
-  if (!empty($_FILES["image"]["name"])) {
-      $target_file = $target_dir . basename($_FILES["image"]["name"]);
-      move_uploaded_file($_FILES["image"]["tmp_name"], $target_file);
-  } else {
-      // Si aucune image n'a été téléchargée, utilisez l'image par défaut
-      $target_file = $default_image;
-  }
-    // Créer une instance de la classe Evenement
-    $evenement = new Evenement(
-        $_POST['id_evenement'],
-        $_POST['id_auteur'],
-        $_POST['titre'],
-        $_POST['contenu'],
-        $_POST['dateEvenement'],
-        $_POST['lieu'],
-        $_POST['prix'],
-        $_POST['nbPlaces'],
-        $target_file,
-        $_POST['heureEvenement'],
-        $_POST['id_categorie'],
-        $_POST['id_domaine']
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Valider les entrées
+    if (empty($_POST['nom_domaine'])) {
+        $nom_domaine_err = "Veuillez entrer un nom de domaine.";
+    } else {
+        $nom_domaine = $_POST['nom_domaine'];
+        if (!preg_match("/^[a-zA-ZÀ-ÿ ]*$/",$nom_domaine)) {
+            $nom_domaine_err = "Seules les lettres et les espaces blancs sont autorisés dans le nom du domaine.";
+        }
+    }
 
-    );
+    if (empty($nom_domaine_err)) {
+        // Vérifier si le domaine existe déjà
+        $domaineExistant = $controllerDomaine->searchDomaine($nom_domaine);
+        if ($domaineExistant == false) {
+            // Obtenir le dernier ID utilisé
+            $lastId = $controllerDomaine->getLastId();
+            $newId = $lastId + 1;
 
-    // Appeler la méthode updateEvenement
-    
-try {
-    $controller->updateEvenement($_POST['id_evenement'], $evenement);
-    echo "L'événement a été modifié avec succès.";
-} catch (Exception $e) {
-    echo 'Erreur: ' . $e->getMessage();
-}
-header('Location: evenement.php');
-exit;
+            // Créer une instance de la classe DomaineEV
+            $domaine = new DomaineEV($newId, $nom_domaine);
+
+            // Appeler la méthode addDomaine
+            try {
+                $controllerDomaine->addDomaine($domaine);
+                echo "Le domaine a été ajouté avec succès.";
+            } catch (Exception $e) {
+                echo 'Erreur: ' . $e->getMessage();
+            }
+        } else {
+            $nom_domaine_err = "Ce domaine existe déjà.";
+        }
+    }
 }
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -80,6 +71,7 @@ exit;
   <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet" />
   <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet" />
   <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet" />
+  <link href="valid.css" rel="stylesheet" />
 
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet" />
@@ -350,6 +342,7 @@ exit;
             <a href="domaine.php">
                 <i class="bi bi-circle"></i><span>Les domaines</span>
             </a>
+        </li> 
     </ul>
 </li>
       <!-- End Dashboard Nav -->
@@ -368,6 +361,12 @@ exit;
         <a class="nav-link" href="job-posts.php">
           <i class="bi bi-briefcase"></i>
           <span>Job Posts</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="evenement.php">
+          <i class="bi bi-briefcase"></i>
+          <span>Les evenements</span>
         </a>
       </li>
       <!-- End Job Posts Nav -->
@@ -625,8 +624,8 @@ exit;
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-          <li class="breadcrumb-item"><a href="evenement.php">Les evenements </a></li>
-          <li class="breadcrumb-item active">modification des evenements <?php echo $evenement['id_evenement']; ?></li>
+          <li class="breadcrumb-item"><a href="domaine.php">Les domaines </a></li>
+          <li class="breadcrumb-item active">Ajouter un dpmaine </li>
         </ol>
       </nav>
     </div>
@@ -634,90 +633,29 @@ exit;
 
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title">Edit job <?php echo $evenement['id_evenement']; ?></h5>
+        <h5 class="card-title">Ajout domaine</h5>
 
         <!-- General Form Elements -->
         <section class="about-section">
-        <div class="container">
-      <div class="row">
-        <div class="col-lg-12 col-12">
-          <!-- Formulaire pour modifier un événement -->
-          <form method="POST" enctype="multipart/form-data">
-            <div class="form-group">
-              <label for="id_evenement">ID de l'événement</label>
-              <input type="text" class="form-control" id="id_evenement" name="id_evenement" value="<?php echo $evenement['id_evenement']; ?> "readonly> 
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 col-12">
+                <!-- Formulaire pour ajouter un domaine -->
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="nom_domaine">Nom du domaine</label>
+                        <input type="text" class="form-control" id="nom_domaine" name="nom_domaine" placeholder="Entrez le nom du domaine">
+                        <small class="form-text text-danger"><?php echo $nom_domaine_err; ?></small>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Ajouter un domaine</button>
+                </form>
             </div>
-            <div class="form-group">
-              <label for="id_auteur">ID de l'auteur</label>
-              <input type="text" class="form-control" id="id_auteur" name="id_auteur" value="<?php echo $evenement['id_auteur']; ?> "readonly>
-            </div>
-            <div class="form-group">
-            <label for="id_categorie">Catégorie</label>
-            <select class="form-control select-css" id="id_categorie" name="id_categorie">
-            <?php
-             $categorieController = new CategorieEvenementC(); 
-            $categories = $categorieController->listCategories();
-            foreach ($categories as $categorie) {
-            echo "<option value=\"" . $categorie['id_categorie'] . "\">" . $categorie['nom_categorie']. "</option>"; }
-            ?>
-            </select>
-            </div> 
-            <div class="form-group">
-            <label for="id_domaine">Domaine</label>
-            <select class="form-control select-css" id="id_domaine" name="id_domaine">
-            <?php
-            $domaineController = new DomaineEVC();
-            $domaines = $domaineController->listDomaines();
-            foreach ($domaines as $domaine) {
-            echo "<option value=\"" . $domaine['id_domaine'] . "\">" . $domaine['nom_domaine']. "</option>"; }
-            ?>
-            </select>
-            </div>
-
-            <!-- ... -->
-            <div class="form-group">
-              <label for="titre">Titre de l'événement</label>
-              <input type="text" class="form-control" id="titre" name="titre" value="<?php echo $evenement['titre']; ?>">
-            </div>
-            <!-- ... -->
-<div class="form-group">
-  <label for="contenu">Contenu de l'événement</label>
-  <input type="text" class="form-control" id="contenu" name="contenu" value="<?php echo $evenement['contenu']; ?>">
-</div>
-<div class="form-group">
-  <label for="dateEvenement">Date de l'Evenement</label>
-  <input type="date" class="form-control" id="dateEvenement" name="dateEvenement" value="<?php echo $evenement['dateEvenement']; ?>">
-</div>
-<div class="form-group">
-  <label for="heureEvenement">Heure de l'Evenement</label>
-  <input type="time" class="form-control" id="heureEvenement" name="heureEvenement" value="<?php echo $evenement['heureEvenement']; ?>">
-</div>
-<div class="form-group">
-  <label for="lieu">Lieu de l'événement</label>
-  <input type="text" class="form-control" id="lieu" name="lieu" value="<?php echo $evenement['lieu']; ?>">
-</div>
-<div class="form-group">
-  <label for="prix">Prix</label>
-  <input type="text" class="form-control" id="prix" name="prix" value="<?php echo $evenement['prix']; ?>">
-</div>
-<div class="form-group">
-  <label for="nbPlaces">Nombre de Places</label>
-  <input type="text" class="form-control" id="nbPlaces" name="nbPlaces" value="<?php echo $evenement['nbPlaces']; ?>">
-</div>
-<div class="form-group">
-  <label for="image">Image</label>
-  <input type="file" class="form-control" id="image" name="image" value="<?php echo $evenement['image']; ?>">
-</div>  
-<!-- ... -->
-
-            <button type="submit" class="btn btn-primary">Modifier l'événement</button>
-            
-          </form>
         </div>
-      </div>
     </div>
-  </section>
-        </form><!-- End General Form Elements -->
+</section>
+
+
+
 
       </div>
     </div>
@@ -753,7 +691,6 @@ exit;
 
   <!-- custom js -->
   <script src="assets/js/WYSIWYG.js"></script>
-  <script src="js/controlesaisiemodif.js"></script>
 </body>
 
 </html>

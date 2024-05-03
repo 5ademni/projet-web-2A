@@ -276,6 +276,27 @@
           <span>Dashboard</span>
         </a>
       </li>
+      <li class="nav-item">
+    <a class="nav-link collapsed" data-bs-target="#evenement-nav" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-briefcase"></i><span>Les evenements</span><i class="bi bi-chevron-down ms-auto"></i>
+    </a>
+    <ul id="evenement-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <li>
+            <a href="evenement.php">
+                <i class="bi bi-eye"></i><span>Afficher les evenements</span>
+            </a>
+        </li>
+        <li>
+            <a href="categorie.php">
+                <i class="bi bi-circle"></i><span>Les catégories</span>
+            </a>
+        </li>
+        <li>
+            <a href="domaine.php">
+                <i class="bi bi-circle"></i><span>Les domaines</span>
+            </a>
+    </ul>
+</li>
       <!-- End Dashboard Nav -->
 
       <!-- Start Users Nav -->

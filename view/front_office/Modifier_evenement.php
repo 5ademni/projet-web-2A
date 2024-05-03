@@ -2,6 +2,7 @@
 include_once '../../controller/event2.php';
 include_once '../../model/event.php';
 include_once '../../controller/Categorie_Evenement2.php';
+include_once '../../controller/DomaineEV2.php';
 
 
 // Créer une instance du contrôleur
@@ -36,6 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
         $target_file,
         $_POST['heureEvenement'],
         $_POST['id_categorie'],
+        $_POST['id_domaine']
     );
 
     // Appeler la méthode updateEvenement
@@ -154,6 +156,17 @@ try {
             ?>
             </select>
             </div>  
+            <div class="form-group">
+            <label for="id_domaine">Domaine</label>
+            <select class="form-control select-css " id="id_domaine" name="id_domaine">
+            <?php
+            $domaineController = new DomaineEVC();
+            $domaines = $domaineController->listDomaines();
+            foreach ($domaines as $domaine) {
+            echo "<option value=\"" . $domaine['id_domaine'] . "\">" . $domaine['nom_domaine']. "</option>"; }  
+            ?>
+            </select>
+            </div>
             <div class="form-group">
               <label for="titre">Titre de l'événement</label>
               <input type="text" class="form-control" id="titre" name="titre" value="<?php echo $evenement['titre']; ?>">

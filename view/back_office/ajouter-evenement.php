@@ -3,6 +3,7 @@ include_once '../../controller/event2.php';
 include_once '../../model/event.php';
 include_once '../../controller/Categorie_Evenement2.php';
 include_once '../../controller/auteurE.php';
+include_once '../../controller/domaineEV2.php';
 
 
 // Créer une instance du contrôleur
@@ -95,7 +96,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           $_POST['nbPlaces'],
           $target_file,
           $_POST['heureEvenement'],
-          $_POST['id_categorie']
+          $_POST['id_categorie'],
+          $_POST['id_domaine']
       );
         // Appeler la méthode addEvenement
         try {
@@ -388,6 +390,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <span>Dashboard</span>
         </a>
       </li>
+      <li class="nav-item">
+    <a class="nav-link collapsed" data-bs-target="#evenement-nav" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-briefcase"></i><span>Les evenements</span><i class="bi bi-chevron-down ms-auto"></i>
+    </a>
+    <ul id="evenement-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <li>
+            <a href="evenement.php">
+                <i class="bi bi-eye"></i><span>Afficher les evenements</span>
+            </a>
+        </li>
+        <li>
+            <a href="categorie.php">
+                <i class="bi bi-circle"></i><span>Les catégories</span>
+            </a>
+        </li>
+        <li>
+            <a href="domaine.php">
+                <i class="bi bi-circle"></i><span>Les domaines</span>
+            </a>
+    </ul>
+</li>
       <!-- End Dashboard Nav -->
 
       <!-- Start Users Nav -->
@@ -705,7 +728,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                           ?>
                           </select>   
                            </div>
-                        <div class="form-group
+                           <div class="form-group">
+                            <label for="id_domaine">Domaine</label>
+                            <select class="form-control select-css" id="id_domaine" name="id_domaine">
+                            <?php
+                            ini_set('display_errors', 1);
+                            ini_set('display_startup_errors', 1);
+                            error_reporting(E_ALL);
+                            $domaineController = new DomaineEVC();
+                          $domaines = $domaineController->listDomaines();
+                          foreach ($domaines as $domaine) {
+                          echo "<option value=\"" . $domaine['id_domaine'] . "\">" . $domaine['nom_domaine']. "</option>";
+                           }
+                          ?>
+                          </select>   
+                           </div>
+                          
+                        <div class="form-group">
                             <label for="titre">Titre</label>
                             <input type="text" class="form-control" id="titre" name="titre" placeholder="Entrez le titre">
                             <span class="error"><?php echo $titre_err;?></span>
