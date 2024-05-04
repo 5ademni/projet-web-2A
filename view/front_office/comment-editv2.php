@@ -2,19 +2,26 @@
 include_once '../../controller/commentaireC.php'; // Include the CommentaireC class
 
 $commentaireC = new CommentaireC(); // Instantiate the CommentaireC class
+$error = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // No need for data validation as we are dealing with comments
-    $id = $_GET['id']; // Get the ID from the POST data
+    // Validate comment field
     $contenu = $_POST['commentaire'];
+    if (empty($contenu)) {
+        $error = "Commentaire is required.";
+    } else {
+        // No need for data validation as we are dealing with comments
+        $id = $_GET['id']; // Get the ID from the POST data
 
-    // Update the comment
-    $commentaireC->updateCommentaire($id, $contenu);
+        // Update the comment
+        $commentaireC->updateCommentaire($id, $contenu);
 
-    // Redirect to the appropriate page after updating
-    header("Location: job-details.php?id=$id");
-    exit;
+        // Redirect to the appropriate page after updating
+        header("Location: comment-editv2.php?id=$id");
+        exit;
+    }
 }
+
 
 if (isset($_GET['id'])) {
     $commentId = $_GET['id'];
@@ -159,11 +166,17 @@ Bootstrap 5 HTML CSS Template
                             </div>
 
                             <div class="form-group">
-                                <label for="commentaire">Commentaire:</label>
-                                <textarea class="form-control" id="commentaire" name="commentaire"><?php echo $comment['commentaire']; ?></textarea>
-                            </div>
+    <label for="commentaire">Commentaire:</label>
+    <textarea class="form-control" id="commentaire" name="commentaire"><?php echo $comment['commentaire']; ?></textarea>
+    <?php if (!empty($error)) { ?>
+        <div class="alert alert-danger" role="alert">
+            <?php echo $error; ?>
+        </div>
+    <?php } ?>
+</div>
 
-                            <button type="submit" class="btn btn-primary">Save Changes</button>
+
+                            <button type="submit" class="btn btn-primary" onclick="refreshPage()">Save Changes</button>
                         </form>
                     </div>
                 </div>
@@ -370,6 +383,12 @@ Bootstrap 5 HTML CSS Template
     <script src="js/counter.js"></script>
     <script src="js/custom.js"></script>
     <script src="js/input_control.js"></script>
+    <script>
+    function refreshPage() {
+        location.reload();
+    }
+</script>
+<script src="js/controle-saisie-comment.js"></script>
 
 </body>
 

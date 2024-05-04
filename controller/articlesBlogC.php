@@ -45,27 +45,6 @@ class ArticlesBlogC
         try {
             $stmt = $db->prepare($sql);
             $stmt->bindValue(':id_article', $id_article);
-        // Send SMS notification
-        $sid = "AC91a50383419acdf7cadecda20c603b66"; // Your Account SID from www.twilio.com/console
-        $token = "cac2f531d3fbc24a0b1afd4bac6b3392"; // Your Auth Token from www.twilio.com/console
-        $twilioNumber = "+21655448828"; // Your Twilio phone number
-        $recipientNumber = "+21655448828"; // Recipient's phone number
-
-        // Create a Twilio client
-        $client = new Twilio\Rest\Client($sid, $token);
-
-        // Compose the message
-        $messageBody = "New article added: " ;
-
-        // Send the SMS
-        $message = $client->messages->create(
-            $recipientNumber, // Text this number
-            [
-                'from' => $twilioNumber, // From your Twilio number
-                'body' => $messageBody // Message body
-            ]
-        );
-            
             $stmt->execute();
 
         } catch (Exception $e) {
@@ -96,7 +75,8 @@ class ArticlesBlogC
                 '+21655448828',  // Destination number
                 [
                     'from' => $twilio_number,
-                    'body' => 'nchalah mabrouk mas3oud' // Message body
+                    'body' => 'Félicitations ! Votre blog a été ajouté avec succès. Merci pour votre contribution professionnelle.' 
+
                 ]
             );
 

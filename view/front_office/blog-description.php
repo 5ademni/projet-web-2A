@@ -242,9 +242,10 @@ Bootstrap 5 HTML CSS Template
         <p class="card-text"><?php echo $commentaire['commentaire']; ?></p>
     </div>
     <div class="card-footer d-flex justify-content-between">
-        <a href="?delete=<?php echo $commentaire['id_commentaire']; ?>" class="btn btn-primary" style="background-color: #D46F4D; color: white;">Supprimer le commentaire</a>
-        <a href="comment-editv2.php?id=<?php echo $commentaire['id_commentaire']; ?>" class="btn btn-primary" style="background-color: blue; color: white;">Modifier le commentaire</a>
-    </div>
+    <a href="?delete=<?php echo $commentaire['id_commentaire']; ?>" class="btn btn-primary delete-btn" style="background-color: #D46F4D; color: white;">Supprimer le commentaire</a>
+    <a href="comment-editv2.php?id=<?php echo $commentaire['id_commentaire']; ?>" class="btn btn-primary" style="background-color: blue; color: white;">Modifier le commentaire</a>
+</div>
+
 </div>
  
         <?php endif; ?>
@@ -416,6 +417,25 @@ Bootstrap 5 HTML CSS Template
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/counter.js"></script>
     <script src="js/custom.js"></script>
+    <script>
+    document.querySelectorAll('.delete-btn').forEach(item => {
+        item.addEventListener('click', event => {
+            event.preventDefault(); // Prevent default action of link click
+            let url = event.target.getAttribute('href'); // Get the URL from the href attribute
+            fetch(url) // Send a request to the server to delete the comment
+                .then(response => {
+                    if (response.ok) {
+                        location.reload(); // Reload the page if deletion is successful
+                    } else {
+                        console.error('Delete request failed');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    });
+</script>
 
 
     <script src="js/controle-saisie-comment.js"></script>
