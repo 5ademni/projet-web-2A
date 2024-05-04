@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Créer un nouvel objet Commentaires avec le commentaire saisi
         $newComment = new Commentaires(
             null, // Laisser le champ id_commentaire vide, car il sera généré automatiquement
-            $id_article, // Remplacer $id_article par la valeur appropriée
+            $id_commentaire, // Remplacer $id_article par la valeur appropriée
             $nom, // Remplacer $nom par la valeur appropriée
             $commentaireContent, // Utiliser le commentaire saisi
             $current_date
@@ -36,7 +36,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 } else {
-    echo "Méthode non autorisée pour l'ajout de commentaire.";
+    // Check if id_commentaire is set before using it
+    if (isset($_GET['id_commentaire'])) {
+        $cmnt = $commentaireC->getCommentbyId($_GET['id_commentaire']);
+        if (!$cmnt) {
+            // Handle case where no comment is found
+            echo "Commentaire introuvable.";
+            exit;
+        }
+    } else {
+        // Handle case where id_commentaire is not set in the URL
+        echo "Identifiant de commentaire non défini.";
+        exit;
+    }
 }
 ?>
 
@@ -172,20 +184,23 @@ Bootstrap 5 HTML CSS Template
             <div class="row">
                 <!-- Input fields for comment details -->
                 <div class="col-lg-8 col-12">
-                    <h2 class="job-title mb-0">#<?php echo $commentaire['nom']; ?></h2>
+            
+
+                    <h2 class="job-title mb-0">#<?php echo $cmnt['nom']; ?></h2>
                     <div class="job-thumb job-thumb-detail">
                         <div class="d-flex flex-wrap align-items-center border-bottom pt-lg-3 pt-2 pb-3 mb-4">
                             <!-- Display comment details -->
                             <p class="job-date mb-0">
                                 <i class="custom-icon bi-clock me-1"></i>
-                                <?php echo $commentaire['dateCommentaire']; ?>
+                                <?php echo $cmnt['dateCommentaire']; ?>
                             </p>
                         </div>
                         <!-- Text area for updating comment -->
-                        <textarea name="commentaire" id="commentaire"><?php echo $commentaire['commentaire']; ?></textarea>
+                        <textarea name="commentaire" id="commentaire"><?php echo $cmnt['commentaire']; ?></textarea>
                         <!-- Error message section -->
                         <span id="commentaireError" style="color: red; display: none;">Veuillez écrire au moins 3 caractères pour le commentaire.</span>
-                    </div>
+                    </div>    
+
                 </div>
             </div>
         </div>
@@ -199,8 +214,6 @@ Bootstrap 5 HTML CSS Template
 
 
         <div class="d-flex justify-content-center flex-wrap mt-5 border-top pt-4">
-
-            <button type="submit" class="custom-btn custom-border-btn btn edit-btn mt-2 ms-lg-4 ms-3">Modifier cette commentaire</button>
 
             <div class="job-detail-share d-flex align-items-center">
                 <p class="mb-0 me-lg-4 me-3">Partager:</p>

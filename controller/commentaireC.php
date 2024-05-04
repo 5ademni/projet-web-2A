@@ -1,5 +1,6 @@
 <?php
 include "../../model/commentaire.php";
+include_once '../../auth/config.php';
 
 class CommentaireC
 {
@@ -17,13 +18,28 @@ class CommentaireC
             die('Erreur: ' . $e->getMessage());
         }
     }
-    public function listCommentairesByArticleId($articleId) {
-        $query = "SELECT * FROM commentaires WHERE id_article = :articleId";
-        $statement = $this->db->prepare($query);
-        $statement->bindParam(':articleId', $articleId);
+    public function listCommentairesByArticleId($id_article) {
+        $sql = "SELECT * FROM commentaires WHERE id_article = :id_article";
+        $this->db = config::getConnexion();
+        $statement = $this->db->prepare($sql);
+        $statement->bindParam(':id_article', $id_article);
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
+    
+    public function getCommentbyId($id_commentaire)
+  {
+    $sql = "SELECT *FROM commentaires WHERE id_commentaire = ?";
+    $db = config::getConnexion();
+    try {
+      $stmt = $db->prepare($sql);
+      $stmt->execute([$id_commentaire]);
+      $job_post = $stmt->fetch();
+      return $job_post;
+    } catch (Exception $e) {
+      die('Erreur: ' . $e->getMessage());
+    }
+  }
     public function addDummyCommentaire()
     {
         $sql = "INSERT INTO commentaires (id_commentaire, id_article, id_auteur, contenu, datePublication) VALUES (NULL, '1', '1', 'Dummy Commentaire', '2021-06-01')";
@@ -77,24 +93,22 @@ class CommentaireC
     }
 
     public function updateCommentaire($id_commentaire, $new_comment)
-    {
-        $sql = "UPDATE commentaires SET commentaire = :new_comment WHERE id_commentaire = :id_commentaire";
-        $db = config::getConnexion();
-        try {
-            $stmt = $db->prepare($sql);
+{
+    $sql = "UPDATE commentaires SET commentaire = :new_comment WHERE id_commentaire = :id_commentaire";
+    $db = config::getConnexion();
+    try {
+        $stmt = $db->prepare($sql);
     
-            // Assuming $new_comment is an object of class Commentaires
-            // If the updated content is stored in the 'commentaire' property of the Commentaires object
-            // Retrieve that property and bind it to the PDOStatement
-            $commentaireContent = $new_comment->getCommentaire();
-            $stmt->bindValue(':new_comment', $commentaireContent);
-            $stmt->bindValue(':id_commentaire', $id_commentaire);
+        // Bind the updated comment directly to the prepared statement
+        $stmt->bindValue(':new_comment', $new_comment);
+        $stmt->bindValue(':id_commentaire', $id_commentaire);
     
-            $stmt->execute();
-        } catch (Exception $e) {
-            die('Erreur: ' . $e->getMessage());
-        }
+        $stmt->execute();
+    } catch (Exception $e) {
+        die('Erreur: ' . $e->getMessage());
     }
+}
+
     
     
     

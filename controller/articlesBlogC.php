@@ -1,7 +1,7 @@
 <?php
 include "../../auth/config.php";
 include "../../model/articlesBlog.php";
-
+require  "autoload.php";
 class ArticlesBlogC
 {
     public function listArticles()
@@ -43,30 +43,57 @@ class ArticlesBlogC
         try {
             $stmt = $db->prepare($sql);
             $stmt->bindValue(':id_article', $id_article);
+        // Send SMS notification
+        $sid = "AC91a50383419acdf7cadecda20c603b66"; // Your Account SID from www.twilio.com/console
+        $token = "cac2f531d3fbc24a0b1afd4bac6b3392"; // Your Auth Token from www.twilio.com/console
+        $twilioNumber = "+21655448828"; // Your Twilio phone number
+        $recipientNumber = "+21655448828"; // Recipient's phone number
+
+        // Create a Twilio client
+        $client = new Twilio\Rest\Client($sid, $token);
+
+        // Compose the message
+        $messageBody = "New article added: " ;
+
+        // Send the SMS
+        $message = $client->messages->create(
+            $recipientNumber, // Text this number
+            [
+                'from' => $twilioNumber, // From your Twilio number
+                'body' => $messageBody // Message body
+            ]
+        );
+            
             $stmt->execute();
+
         } catch (Exception $e) {
             die('Erreur: ' . $e->getMessage());
         }
     }
-
     public function addArticle(ArticlesBlog $ArticlesBlog)
-    {
-        $sql = "INSERT INTO articlesblog (id_article, id_auteur, titre, contenu, datePublication) VALUES (:id_article, :id_auteur, :titre, :contenu, :datePublication)";
-        $db = config::getConnexion();
-        try {
-            $stmt = $db->prepare($sql);
+{
+    $sql = "INSERT INTO articlesblog (id_article, id_auteur, titre, contenu, datePublication) VALUES (:id_article, :id_auteur, :titre, :contenu, :datePublication)";
+    $db = config::getConnexion();
+    try {
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':id_article', $ArticlesBlog->getIdArticle());
+        $stmt->bindValue(':id_auteur', $ArticlesBlog->getIdAuteur());
+        $stmt->bindValue(':titre', $ArticlesBlog->getTitre());
+        $stmt->bindValue(':contenu', $ArticlesBlog->getContenu());
+        $stmt->bindValue(':datePublication', $ArticlesBlog->getDatePublication());
+        $stmt->execute();
 
-            $stmt->bindvalue(':id_article', $ArticlesBlog->getIdArticle());
-            $stmt->bindvalue(':id_auteur', $ArticlesBlog->getIdAuteur());
-            $stmt->bindvalue(':titre', $ArticlesBlog->getTitre());
-            $stmt->bindvalue(':contenu', $ArticlesBlog->getContenu());
-            $stmt->bindvalue(':datePublication', $ArticlesBlog->getDatePublication());
 
-            $stmt->execute();
-        } catch (Exception $e) {
-            die('erreur: ' . $e->getMessage());
-        }
+
+        // Optionally, you can log or handle the message status or any errors
+        // For example:
+        // echo "Message SID: " . $message->sid;
+    } catch (Exception $e) {
+        die('erreur: ' . $e->getMessage());
     }
+}
+
+    
 
     public function updateArticle($id, ArticlesBlog $ArticlesBlog)
     {
@@ -184,4 +211,9 @@ class ArticlesBlogC
             die('Erreur: ' . $e->getMessage());
         }
     }
+
+
+
+    
+
 }

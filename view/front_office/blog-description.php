@@ -243,7 +243,7 @@ Bootstrap 5 HTML CSS Template
     </div>
     <div class="card-footer d-flex justify-content-between">
         <a href="?delete=<?php echo $commentaire['id_commentaire']; ?>" class="btn btn-primary" style="background-color: #D46F4D; color: white;">Supprimer le commentaire</a>
-        <a href="comment-edit.php?id=<?php echo $commentaire['id_commentaire']; ?>" class="btn btn-primary" style="background-color: blue; color: white;">Modifier le commentaire</a>
+        <a href="comment-editv2.php?id=<?php echo $commentaire['id_commentaire']; ?>" class="btn btn-primary" style="background-color: blue; color: white;">Modifier le commentaire</a>
     </div>
 </div>
  
