@@ -1,12 +1,49 @@
 <?php
+ob_start();
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+header('Content-Type: text/html; charset=utf-8');
 session_start();
 var_dump($_SESSION['id']);
 include_once '../../controller/event2.php';
 include_once '../../controller/Categorie_Evenement2.php';
 include_once '../../controller/inscriptionEvenement.php';
-// Inclure le fichier correct
+require 'phpmailer/src/Exception.php';
+require 'phpmailer/src/PHPMailer.php';
+require 'phpmailer/src/SMTP.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 $Eventc = new EvenementC();
-$CategorieEvenementC = new CategorieEvenementC(); // Utiliser la classe correcte
+$CategorieEvenementC = new CategorieEvenementC();
+function sendEmail($to, $subject, $body, $altBody) {
+    $mail = new PHPMailer(true);
+    try {
+        $mail->SMTPDebug = 2;
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'mohamedmalek.hammami8@gmail.com';
+        $mail->Password = 'vmrp zyva odds efpu';
+        $mail->SMTPSecure = 'tls';
+        $mail->Port = 587;
+
+        $mail->setFrom('5ademni@esprit.tn', '5ademni Team');
+        $mail->addAddress($to, 'Joe User');
+        $mail->isHTML(true);
+        $mail->CharSet = 'UTF-8';
+        $mail->Subject = $subject;
+        $mail->Body    = $body;
+        $mail->AltBody = $altBody;
+
+        $mail->send();
+        echo 'Message has been sent';
+    } catch (Exception $e) {
+        echo 'Message could not be sent. Mailer Error: ', $mail->ErrorInfo;
+    }
+}
 
 if (isset($_GET['categorie']) && $_GET['categorie'] != '') {
     $categorie_id = $_GET['categorie'];
@@ -18,29 +55,50 @@ $inscription = new inscriptionEC();
 
 if (isset($_POST['inscription']) && isset($_POST['event_id'])) {
     $event_id = $_POST['event_id'];
-    // Récupérez les détails de l'événement spécifique
     $db = config::getConnexion();
     $event = $Eventc->getEvenement($event_id);
     if (isset($event['nbPlaces']) && $event['nbPlaces'] > 0) {
-        // Vérifiez si l'id_auteur existe dans la table auteur
         $sql = "SELECT * FROM auteur WHERE id_auteur = :id_auteur";
         $stmt = $db->prepare($sql);
         $stmt->execute([':id_auteur' => $_SESSION['id']]);
         $auteur = $stmt->fetch();
-
-        if ($auteur) {
-            // L'id_auteur existe, vous pouvez procéder à l'inscription
-            if (!$inscription->estInscrit($event['id_evenement'], $_SESSION['id'])) {
-                $inscription->addInscription($event['id_evenement'], $_SESSION['id']);
-                header('Location: trouver_evenement.php');
-                exit();
-            }
-        } else {
-            // L'id_auteur n'existe pas, affichez un message d'erreur
+        if ($auteur==false) {
             echo "<script>alert('Erreur : cet utilisateur n\'existe pas.');</script>";
         }
-    }
-}
+
+        if ($auteur) {
+            if (!$inscription->estInscrit($event['id_evenement'], $_SESSION['id'])) {
+                $inscription->addInscription($event['id_evenement'], $_SESSION['id']);
+                $subject = "Inscription à l'événement";
+                $body = "Vous êtes inscrit à l'événement " . $event['titre'] . "<br>" .
+                        'Votre ID : ' . $_SESSION['id'] . "<br>" .
+                        'ID de l\'événement : ' . $event['id_evenement'] . "<br>" .
+                        'Titre de l\'événement : ' . $event['titre'];
+                $altBody = "Vous êtes inscrit à l'événement " . $event['titre'];
+                sendEmail($auteur['email'], $subject, $body, $altBody);
+        
+                $organisateur = $Eventc->getOrganisateur($event_id);
+                $subject = "Nouvelle inscription à votre événement";
+                $body = "Un nouvel utilisateur s'est inscrit à votre événement " . $event['titre'] . "<br>" .
+                        'ID de l\'utilisateur : ' . $_SESSION['id'] . "<br>" .
+                        'ID de l\'événement : ' . $event['id_evenement'] . "<br>" .
+                        'Titre de l\'événement : ' . $event['titre'];
+                $altBody = "Un nouvel utilisateur s'est inscrit à votre événement " . $event['titre'];
+                sendEmail($organisateur['email'], $subject, $body, $altBody);
+            }
+         
+        $event = $Eventc->getEvenement($event_id);
+        if ($event['nbPlaces'] == 0) {
+            $organisateur = $Eventc->getOrganisateur($event_id);
+            $subject = "Votre événement est complet";
+            $body = "Votre événement " . $event['titre'] . " est complet.";
+            $altBody = "Votre événement " . $event['titre'] . " est complet.";
+            sendEmail($organisateur['email'], $subject, $body, $altBody);
+        }
+        
+    header('Location: trouver_evenement.php');
+    exit;}
+}}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["tri"])) {
     $tri = $_POST["tri"];
@@ -56,7 +114,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["tri"])) {
 }
 
 $categories = $CategorieEvenementC->listCategories();
+ob_end_flush();
 ?>
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>

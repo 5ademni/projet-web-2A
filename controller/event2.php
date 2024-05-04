@@ -235,5 +235,13 @@ public function trierEventsParDateDecroissante()
         die('Erreur: ' . $e->getMessage());
     }
 }
+public function getOrganisateur($event_id) {
+    $db = config::getConnexion();
+    $sql = "SELECT auteur.* FROM auteur JOIN evenement ON auteur.id_auteur = evenement.id_auteur WHERE evenement.id_evenement = :id_evenement";
+    $stmt = $db->prepare($sql);
+    $stmt->execute([':id_evenement' => $event_id]);
+    $organisateur = $stmt->fetch();
+    return $organisateur;
+}
 }
 ?>
