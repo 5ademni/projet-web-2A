@@ -1,7 +1,9 @@
 <?php
 include "../../auth/config.php";
 include "../../model/articlesBlog.php";
-require  "autoload.php";
+require __DIR__ . '../../../projet-web-2A/twilio-php-main/src/Twilio/autoload.php';
+
+use Twilio\Rest\Client;
 class ArticlesBlogC
 {
     public function listArticles()
@@ -71,27 +73,42 @@ class ArticlesBlogC
         }
     }
     public function addArticle(ArticlesBlog $ArticlesBlog)
-{
-    $sql = "INSERT INTO articlesblog (id_article, id_auteur, titre, contenu, datePublication) VALUES (:id_article, :id_auteur, :titre, :contenu, :datePublication)";
-    $db = config::getConnexion();
-    try {
-        $stmt = $db->prepare($sql);
-        $stmt->bindValue(':id_article', $ArticlesBlog->getIdArticle());
-        $stmt->bindValue(':id_auteur', $ArticlesBlog->getIdAuteur());
-        $stmt->bindValue(':titre', $ArticlesBlog->getTitre());
-        $stmt->bindValue(':contenu', $ArticlesBlog->getContenu());
-        $stmt->bindValue(':datePublication', $ArticlesBlog->getDatePublication());
-        $stmt->execute();
+    {
+        $sql = "INSERT INTO articlesblog (id_article, id_auteur, titre, contenu, datePublication) VALUES (:id_article, :id_auteur, :titre, :contenu, :datePublication)";
+        $db = config::getConnexion(); // Assuming config::getConnexion() is a valid database connection method
+        try {
+            $stmt = $db->prepare($sql);
+            $stmt->bindValue(':id_article', $ArticlesBlog->getIdArticle());
+            $stmt->bindValue(':id_auteur', $ArticlesBlog->getIdAuteur());
+            $stmt->bindValue(':titre', $ArticlesBlog->getTitre());
+            $stmt->bindValue(':contenu', $ArticlesBlog->getContenu());
+            $stmt->bindValue(':datePublication', $ArticlesBlog->getDatePublication());
+            $stmt->execute();
 
+            // After successfully inserting the article, send an SMS using Twilio
+            $account_sid = 'AC91a50383419acdf7cadecda20c603b66'; // Your Twilio Account SID
+            $auth_token = 'cac2f531d3fbc24a0b1afd4bac6b3392'; // Your Twilio Auth Token
+            $twilio_number = "+18787288349"; // Your Twilio phone number
+            
+            $client = new Client($account_sid, $auth_token);
 
+            $client->messages->create(
+                '+21655448828',  // Destination number
+                [
+                    'from' => $twilio_number,
+                    'body' => 'nchalah mabrouk mas3oud' // Message body
+                ]
+            );
 
-        // Optionally, you can log or handle the message status or any errors
-        // For example:
-        // echo "Message SID: " . $message->sid;
-    } catch (Exception $e) {
-        die('erreur: ' . $e->getMessage());
+            // Optionally, you can log or handle the message status or any errors
+            // For example:
+            // echo "Message SID: " . $message->sid;
+
+        } catch (Exception $e) {
+            die('erreur: ' . $e->getMessage());
+        }
     }
-}
+
 
     
 
