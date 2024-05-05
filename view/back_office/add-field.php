@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   $newField = new jobField($createId, $createName, $createDescription);
   $jobFieldC->addField($newField);
-  header("Location: job-posts.php");
+  header("Location: fields.php");
   exit();
 }
 ?>
