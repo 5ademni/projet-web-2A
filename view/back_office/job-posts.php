@@ -624,7 +624,7 @@ if (isset($_GET['delete-job'])) {
                   <?php } ?>
                 </td>
                 <td>
-                  <a href="job-details.html" class="btn btn-primary"><i class="bi bi-eye"></i></a>
+                  <a href="../front_office/job-details.php?id=<?php echo $jobPost['JobID']; ?>" class="btn btn-primary"><i class="bi bi-eye"></i></a>
                   <a href="edit-job.php?id=<?php echo $jobPost['JobID']; ?>" class="btn btn-success"><i class="bi bi-pencil"></i></a>
                   <a href="?delete-job=<?php echo $jobPost['JobID']; ?>" class="btn btn-danger"><i class="bi bi-trash"></i></a>
                 </td>
