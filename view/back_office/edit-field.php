@@ -1,14 +1,64 @@
 <?php
-include_once '../../controller/jobPostC.php';
-$jobPostC = new JobPostC();
-$totalJobs = $jobPostC->countJobPosts();
+include_once '../../controller/jobFieldC.php';
+include_once '../../model/jobField.php';
 
-if (isset($_GET['delete-job'])) {
-  $jobPostC->deleteJobPost($_GET['delete-job']);
-  header('Location: job-posts.php');
-  exit();
+$jobFieldC = new jobFieldC();
+$fieldlist = $jobFieldC->listJobFields();
+
+
+if (isset($_GET['edit'])) {
+  $fieldId = $_GET['edit'];
+  $fieldedit = $jobFieldC->getFieldById($fieldId);
 }
 
+
+function generateUniqueFieldId($category, $jobFieldC)
+{
+  // Map category numbers to base IDs
+  $categoryBases = array(
+    '1' => 100, // 'IT'
+    '2' => 200, // 'Business'
+    '3' => 300, // 'Design'
+    '4' => 400, // 'Health'
+    '5' => 500  // 'Mechanical'
+  );
+
+  $baseId = $categoryBases[$category];
+  $maxId = $baseId + 99;
+
+  // Get all existing IDs
+  $allFields = $jobFieldC->listJobFields();
+
+  // Filter fields by category
+  $existingIds = array();
+  foreach ($allFields as $field) {
+    if ($field['FieldID'] >= $baseId && $field['FieldID'] <= $maxId) {
+      $existingIds[] = $field['FieldID'];
+    }
+  }
+
+  // Generate a unique ID
+  do {
+    $newId = rand($baseId, $maxId);
+  } while (in_array($newId, $existingIds));
+
+  return $newId;
+}
+
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $category = $_POST['fieldCategory'];
+  $editName = $_POST['edit-name'];
+  $editDescription = $_POST['edit-description'];
+
+  // Generate a new unique FieldID based on the selected category
+  $newFieldId = generateUniqueFieldId($category, $jobFieldC);
+
+  $updatedField = new jobField($newFieldId, $editName, $editDescription);
+  $jobFieldC->updateField($fieldId, $updatedField);
+  header("Location: fields.php");
+  exit();
+}
 ?>
 
 <!DOCTYPE html>
@@ -47,7 +97,7 @@ if (isset($_GET['delete-job'])) {
   <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top d-flex align-items-center">
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index.php" class="logo d-flex align-items-center">
+      <a href="index.html" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="" />
         <span class="d-none d-lg-block">5ademni-Admin</span>
       </a>
@@ -284,7 +334,7 @@ if (isset($_GET['delete-job'])) {
   <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="index.php">
+        <a class="nav-link" href="index.html">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
@@ -317,20 +367,6 @@ if (isset($_GET['delete-job'])) {
         </a>
       </li>
       <!-- End Blog Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-menu-button-wide"></i><span>Categories</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="fields.php">
-              <i class="bi bi-circle"></i><span>Fields</span>
-            </a>
-          </li>
-        </ul>
-      </li>
-      <!-- End categories Nav -->
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
@@ -567,73 +603,73 @@ if (isset($_GET['delete-job'])) {
     </ul>
   </aside>
   <!-- End Sidebar-->
-
+  <?php
+  //MARK: Main form
+  ?>
   <main id="main" class="main">
     <div class="pagetitle">
-      <h1>Users</h1>
+      <h1>Fields</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-          <li class="breadcrumb-item active">posts d'emploi</li>
+          <li class="breadcrumb-item"><a href="fields.php">Fields</a></li>
+          <li class="breadcrumb-item active">Field Creation</li>
         </ol>
       </nav>
     </div>
     <!-- End Page Title -->
-    <?php
-    //MARK: main form
-    ?>
+
     <div class="card">
       <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center">
-          <h5 class="card-title">Liste des postes d'emploi</h5>
-          <a href="add-job.php" class="btn btn-primary">
-            <i class="bi bi-plus-lg"></i>
-          </a>
-        </div>
+        <h5 class="card-title">Create job</h5>
 
-        <table class="table table-striped datatable">
-          <thead>
-            <tr>
-              <th scope="col">ID</th>
-              <th scope="col">Position</th>
-              <th scope="col">Type</th>
-              <th scope="col">Field</th>
-              <th scope="col">Company</th>
-              <th scope="col">Location</th>
-              <th scope="col">Status</th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php
-            $list = $jobPostC->listJobPosts();
-            foreach ($list as $jobPost) {
-            ?>
-              <tr>
-                <th scope="row"><?php echo $jobPost['JobID']; ?></th>
-                <td><?php echo $jobPost['Title']; ?></td>
-                <td><?php echo $jobPost['EmploymentTypeName']; ?></td>
-                <td><?php echo $jobPost['FieldName']; ?></td>
-                <td><?php echo $jobPost['Company']; ?></td>
-                <td><?php echo $jobPost['Location']; ?></td>
-                <td>
-                  <?php if ($jobPost['Status'] == 1) { ?>
-                    <span class="badge bg-success">Active</span>
-                  <?php } else { ?>
-                    <span class="badge bg-danger">Inactive</span>
-                  <?php } ?>
-                </td>
-                <td>
-                  <a href="../front_office/job-details.php?id=<?php echo $jobPost['JobID']; ?>" class="btn btn-primary"><i class="bi bi-eye"></i></a>
-                  <a href="edit-job.php?id=<?php echo $jobPost['JobID']; ?>" class="btn btn-success"><i class="bi bi-pencil"></i></a>
-                  <a href="?delete-job=<?php echo $jobPost['JobID']; ?>" class="btn btn-danger"><i class="bi bi-trash"></i></a>
-                </td>
-              </tr>
-            <?php
-            }
-            ?>
-          </tbody>
-        </table>
+        <!-- General Form Elements -->
+        <form method="POST" id="addfield">
+          <div class="row mb-3">
+            <label for="inputText" class="col-sm-2 col-form-label">Field Category</label>
+            <div class="col-sm-10">
+              <select class="form-control" name="fieldCategory" id="fieldCategory">
+                <?php
+                $categories = array(
+                  '1' => 'IT',
+                  '2' => 'Business',
+                  '3' => 'Design',
+                  '4' => 'Health',
+                  '5' => 'Mechanical'
+                );
+                $categoryNumber = floor($fieldedit["FieldID"] / 100);
+                foreach ($categories as $value => $name) {
+                  $selected = ($value == $categoryNumber) ? 'selected' : '';
+                  echo "<option value=\"$value\" $selected>$name</option>";
+                }
+                ?>
+              </select>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label for="inputText" class="col-sm-2 col-form-label">Field Name</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="edit-name" id="edit-name" value="<?php echo $fieldedit["FieldName"] ?>">
+            </div>
+          </div>
+          <div class=" row mb-3">
+            <label for="inputText" class="col-sm-2 col-form-label">Description</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="edit-description" id="edit-description" value="<?php echo $fieldedit["Description"] ?>">
+            </div>
+          </div>
+
+          <br>
+          <br>
+          <br>
+
+          <div class="row mb-3">
+            <div class="col-sm-10">
+              <button type="submit" class="btn btn-primary" value="Submit">Submit Form</button>
+            </div>
+          </div>
+
+        </form><!-- End General Form Elements -->
 
       </div>
     </div>
@@ -647,11 +683,7 @@ if (isset($_GET['delete-job'])) {
       &copy; Copyright <strong><span>5ademni</span></strong>. All Rights Reserved
     </div>
     <div class="credits">
-      <!-- All the links in the footer should remain intact. -->
-      <!-- You can delete the links only if you purchased the pro version. -->
-      <!-- Licensing information: https://bootstrapmade.com/license/ -->
-      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      Designed by DevForce</a>
+      Designed by DevForce
     </div>
   </footer>
   <!-- End Footer -->
@@ -670,6 +702,10 @@ if (isset($_GET['delete-job'])) {
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+
+  <!-- custom js -->
+  <script src="assets/js/WYSIWYG.js"></script>
+  <script src="assets/js/input_control_job.js"></script>
 </body>
 
 </html>

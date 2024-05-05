@@ -40,6 +40,17 @@ Bootstrap 5 HTML CSS Template
 
 <body id="top">
 
+    <iframe src="http://127.0.0.1:7890/" style="
+        border-radius: 10px;
+        width: 20vw; /* Adjust this to change the width */
+        height: calc(60vh - 70px); /* Adjust this to change the height */
+        padding-top: 10px;
+        position: fixed; /* Make the iframe stick to the corner */
+        bottom: 0; /* Position it at the bottom of the page */
+        right: 0; /* Position it at the right of the page */
+        z-index: 9999; /* Make it appear above everything else */
+    "></iframe>
+
     <nav class="navbar navbar-expand-lg">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="index.php">
