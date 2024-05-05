@@ -40,6 +40,13 @@ Bootstrap 5 HTML CSS Template
 
 <body id="top">
 
+    <iframe src="http://127.0.0.1:7890/" style="
+        border-radius: 10px;
+        width: 96vw;
+        height: calc(100vh - 70px);
+        padding-top: 10px;
+      "></iframe>
+
     <nav class="navbar navbar-expand-lg">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="index.php">
