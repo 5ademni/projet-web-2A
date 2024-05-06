@@ -31,6 +31,22 @@ function getAuteur($nom)
 
 $auteur = getAuteur($articlesBlog[0]['id_auteur']); 
 
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Define patterns for validation
+    $commentairePattern = "/^.{3,}$/"; // At least 3 characters
+
+    // Get the value of commentaire from $_POST
+    $commentaire = $_POST['commentaire'];
+
+    // Validate commentaire
+    if (!preg_match($commentairePattern, $commentaire)) {
+        echo "Commentaire must be at least 3 characters long";
+    } else {
+        // Process the form (save to database, etc.)
+        // Redirect or display success message
+    }
+}
+
 ?>
 
 <!doctype html>
@@ -195,15 +211,6 @@ Bootstrap 5 HTML CSS Template
                 <input type="hidden" name="id_commentaire"> <!-- Assuming you have a default author ID -->
                 <input type="hidden" name="nom" value="<?php echo $auteur['id_auteur']; ?>">
                 <input name="dateCommentaire" value="<?php echo date('Y-m-d H:i:s'); ?>"> <!-- Current timestamp -->
-
-                <div class="mb-3">
-                    <label for="rating" class="form-label">Rating</label>
-                    <div class="rating">
-                        <input type="radio" name="rating" value="5" id="5" class="visually-hidden" />
-                        <label for="5" class="star">&#9733;</label>
-                        <!-- More rating options -->
-                    </div>
-                </div>
 
                 <div class="mb-3">
                     <label for="commentaire" class="form-label">Commentaire</label>

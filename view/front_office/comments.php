@@ -188,22 +188,12 @@ Bootstrap 5 HTML CSS Template
     <div class="card shadow-sm">
         <div class="card-body">
             <h4 class="card-title">Ajouter un commentaire</h4>
-
             <form action="comments.php" method="post">
                 <!-- Add fields for id_article, id_auteur, and datePublication -->
                 <input type="hidden" name="id_article" value="<?php echo $articlesBlog[0]['id_article']; ?>">
                 <input type="hidden" name="id_commentaire"> <!-- Assuming you have a default author ID -->
                 <input type="hidden" name="nom" value="<?php echo $auteur['id_auteur']; ?>">
                 <input name="dateCommentaire" value="<?php echo date('Y-m-d H:i:s'); ?>"> <!-- Current timestamp -->
-
-                <div class="mb-3">
-                    <label for="rating" class="form-label">Rating</label>
-                    <div class="rating">
-                        <input type="radio" name="rating" value="5" id="5" class="visually-hidden" />
-                        <label for="5" class="star">&#9733;</label>
-                        <!-- More rating options -->
-                    </div>
-                </div>
 
                 <div class="mb-3">
                     <label for="commentaire" class="form-label">Commentaire</label>

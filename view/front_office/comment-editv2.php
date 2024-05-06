@@ -8,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validate comment field
     $contenu = $_POST['commentaire'];
     if (empty($contenu)) {
-        $error = "Commentaire is required.";
+        $error = "Veuillez modifier votre commentaire.";
     } else {
         // No need for data validation as we are dealing with comments
         $id = $_GET['id']; // Get the ID from the POST data
