@@ -178,9 +178,9 @@ Bootstrap 5 HTML CSS Template
                     <div class="col-lg-2 col-md-4 col-6">
                         <div class="categories-block">
                             <a href="#" class="d-flex flex-column justify-content-center align-items-center h-100">
-                                <i class="categories-icon bi-window"></i>
+                                <i class="categories-icon bi-display"></i>
 
-                                <small class="categories-block-title">Web design</small>
+                                <small class="categories-block-title">IT jobs</small>
 
                                 <div class="categories-block-number d-flex flex-column justify-content-center align-items-center">
                                     <span class="categories-block-number-text">320</span>
@@ -192,9 +192,9 @@ Bootstrap 5 HTML CSS Template
                     <div class="col-lg-2 col-md-4 col-6">
                         <div class="categories-block">
                             <a href="#" class="d-flex flex-column justify-content-center align-items-center h-100">
-                                <i class="categories-icon bi-twitch"></i>
+                                <i class="categories-icon bi-plug"></i>
 
-                                <small class="categories-block-title">Marketing</small>
+                                <small class="categories-block-title">electrical</small>
 
                                 <div class="categories-block-number d-flex flex-column justify-content-center align-items-center">
                                     <span class="categories-block-number-text">180</span>
@@ -205,10 +205,10 @@ Bootstrap 5 HTML CSS Template
 
                     <div class="col-lg-2 col-md-4 col-6">
                         <div class="categories-block">
-                            <a href="#" class="d-flex flex-column justify-content-center align-items-center h-100">
-                                <i class="categories-icon bi-play-circle-fill"></i>
+                            <a href="job-scrape-it.php" class="d-flex flex-column justify-content-center align-items-center h-100">
+                                <i class="categories-icon bi-tools"></i>
 
-                                <small class="categories-block-title">Video</small>
+                                <small class="categories-block-title">engineer</small>
 
                                 <div class="categories-block-number d-flex flex-column justify-content-center align-items-center">
                                     <span class="categories-block-number-text">340</span>
@@ -220,9 +220,9 @@ Bootstrap 5 HTML CSS Template
                     <div class="col-lg-2 col-md-4 col-6">
                         <div class="categories-block">
                             <a href="#" class="d-flex flex-column justify-content-center align-items-center h-100">
-                                <i class="categories-icon bi-globe"></i>
+                                <i class="categories-icon bi-palette"></i>
 
-                                <small class="categories-block-title">Websites</small>
+                                <small class="categories-block-title">Design</small>
 
                                 <div class="categories-block-number d-flex flex-column justify-content-center align-items-center">
                                     <span class="categories-block-number-text">140</span>
@@ -234,9 +234,9 @@ Bootstrap 5 HTML CSS Template
                     <div class="col-lg-2 col-md-4 col-6">
                         <div class="categories-block">
                             <a href="#" class="d-flex flex-column justify-content-center align-items-center h-100">
-                                <i class="categories-icon bi-people"></i>
+                                <i class="categories-icon bi-diagram-2"></i>
 
-                                <small class="categories-block-title">Service client</small>
+                                <small class="categories-block-title">TIC</small>
 
                                 <div class="categories-block-number d-flex flex-column justify-content-center align-items-center">
                                     <span class="categories-block-number-text">84</span>
