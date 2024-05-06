@@ -177,7 +177,7 @@ Bootstrap 5 HTML CSS Template
 
                     <div class="col-lg-2 col-md-4 col-6">
                         <div class="categories-block">
-                            <a href="#" class="d-flex flex-column justify-content-center align-items-center h-100">
+                            <a href="job-scrape-it.php" class="d-flex flex-column justify-content-center align-items-center h-100">
                                 <i class="categories-icon bi-display"></i>
 
                                 <small class="categories-block-title">IT jobs</small>
@@ -191,7 +191,7 @@ Bootstrap 5 HTML CSS Template
 
                     <div class="col-lg-2 col-md-4 col-6">
                         <div class="categories-block">
-                            <a href="#" class="d-flex flex-column justify-content-center align-items-center h-100">
+                            <a href="job-scrape-electric.php" class="d-flex flex-column justify-content-center align-items-center h-100">
                                 <i class="categories-icon bi-plug"></i>
 
                                 <small class="categories-block-title">electrical</small>
@@ -205,7 +205,7 @@ Bootstrap 5 HTML CSS Template
 
                     <div class="col-lg-2 col-md-4 col-6">
                         <div class="categories-block">
-                            <a href="job-scrape-it.php" class="d-flex flex-column justify-content-center align-items-center h-100">
+                            <a href="job-scrape-eng.php" class="d-flex flex-column justify-content-center align-items-center h-100">
                                 <i class="categories-icon bi-tools"></i>
 
                                 <small class="categories-block-title">engineer</small>
@@ -219,7 +219,7 @@ Bootstrap 5 HTML CSS Template
 
                     <div class="col-lg-2 col-md-4 col-6">
                         <div class="categories-block">
-                            <a href="#" class="d-flex flex-column justify-content-center align-items-center h-100">
+                            <a href="job-scrape-design.php" class="d-flex flex-column justify-content-center align-items-center h-100">
                                 <i class="categories-icon bi-palette"></i>
 
                                 <small class="categories-block-title">Design</small>
@@ -233,7 +233,7 @@ Bootstrap 5 HTML CSS Template
 
                     <div class="col-lg-2 col-md-4 col-6">
                         <div class="categories-block">
-                            <a href="#" class="d-flex flex-column justify-content-center align-items-center h-100">
+                            <a href="job-scrape-tic.php" class="d-flex flex-column justify-content-center align-items-center h-100">
                                 <i class="categories-icon bi-diagram-2"></i>
 
                                 <small class="categories-block-title">TIC</small>
