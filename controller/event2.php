@@ -243,5 +243,42 @@ public function getOrganisateur($event_id) {
     $organisateur = $stmt->fetch();
     return $organisateur;
 }
+public function deleteEvenementsByDomaine($id_domaine)
+{
+    $sql = "DELETE FROM evenement WHERE id_domaine = :id_domaine";
+    $db = config::getConnexion();
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':id_domaine', $id_domaine);
+    try {
+        $stmt->execute();
+    } catch (Exception $e) {
+        die('Erreur: ' . $e->getMessage());
+    }
+}
+public function deleteEvenementsByCategorie($id_categorie)
+{
+    $sql = "DELETE FROM evenement WHERE id_categorie = :id_categorie";
+    $db = config::getConnexion();
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':id_categorie', $id_categorie);
+    try {
+        $stmt->execute();
+    } catch (Exception $e) {
+        die('Erreur: ' . $e->getMessage());
+    }
+}
+    public function deleteProduitsByCategorie($id_categorie)
+{
+    $sql = "DELETE FROM evenement WHERE id_categorie = :id_categorie";
+    $db = config::getConnexion();
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':id_categorie', $id_categorie);
+    try {
+        $stmt->execute();
+    } catch (Exception $e) {
+        die('Erreur: ' . $e->getMessage());
+}
+}
+
 }
 ?>

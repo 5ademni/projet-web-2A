@@ -1,9 +1,18 @@
 <?php
 include "../../controller/Categorie_Evenement2.php";
+include_once '../../controller/event2.php';
 $categorieC = new CategorieEvenementC();
 
 if (isset($_GET['delete'])) {
-  $categorieC->deleteCategorie($_GET['delete']);
+  $id_categorie = $_GET['delete'];
+  
+  // Supprimer d'abord les lignes référencées dans d'autres tables
+  // Par exemple, si vous avez une table `produit` qui fait référence à `id_categorie`
+  $produitC = new EvenementC();
+  $produitC->deleteProduitsByCategorie($id_categorie);
+  
+  // Ensuite, supprimer la ligne dans la table `categorie`
+  $categorieC->deleteCategorie($id_categorie);
 }
 
 $listeCategories = $categorieC->listCategories();
@@ -303,7 +312,7 @@ $listeCategories = $categorieC->listCategories();
             </a>
         </li>
         <li>
-            <a href="id_auteur.php">
+            <a href="categorie.php">
                 <i class="bi bi-circle"></i><span>Les catégories</span>
             </a>
         </li>
@@ -582,6 +591,7 @@ $listeCategories = $categorieC->listCategories();
 
       <td>
       <a href="Modifier-categorie.php?id=<?php echo $categorie['id_categorie']; ?>" class="btn btn-success">Modifier</a>
+      <a href="categorie.php?delete=<?php echo $categorie['id_categorie']; ?>" class="btn btn-danger">Supprimer</a>
   </td>
     </tr>
   <?php

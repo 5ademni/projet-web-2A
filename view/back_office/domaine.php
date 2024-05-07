@@ -1,10 +1,19 @@
 <?php
 include_once "../../controller/domaineEV2.php";
+include_once "../../controller/event2.php";
 $domaineC = new DomaineEVC();
 
 if (isset($_GET['delete'])) {
-  $domaineC->deleteDomaine($_GET['delete']);
+  $id_domaine = $_GET['delete'];
+  
+  // Supprimer d'abord les lignes référencées dans la table `evenement`
+  $evenementC = new EvenementC();
+  $evenementC->deleteEvenementsByDomaine($id_domaine);
+  
+  // Ensuite, supprimer la ligne dans la table `domaine`
+  $domaineC->deleteDomaine($id_domaine);
 }
+
 
 $listeDomaines = $domaineC->listDomaines();
 ?>
@@ -582,6 +591,8 @@ foreach ($list as $domaine) {
 
   <td>
   <a href="Modifier-domaine.php?id=<?php echo $domaine['id_domaine']; ?>" class="btn btn-success">Modifier</a>
+  <a href="domaine.php?delete=<?php echo $domaine['id_domaine']; ?>" class="btn btn-danger">Supprimer</a>
+  </td>
 </tr>
 <?php
 }

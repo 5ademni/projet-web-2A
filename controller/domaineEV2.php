@@ -5,15 +5,16 @@ class DomaineEVC
 {
     public function listDomaines()
 {
-    $sql = "SELECT * FROM domaine"; // Modifier ici
+    $sql = "SELECT * FROM domaine";
     $db = config::getConnexion();
     try {
         $liste = $db->query($sql);
-        return $liste;
+        return $liste->fetchAll(PDO::FETCH_ASSOC);
     } catch (Exception $e) {
         die('Erreur: ' . $e->getMessage());
     }
 }
+
     public function addDomaine(DomaineEV $domaine)
     {
         $sql = "INSERT INTO domaine (id_domaine, nom_domaine) VALUES (:id_domaine, :nom_domaine)";
@@ -106,6 +107,19 @@ class DomaineEVC
         die('Erreur: ' . $e->getMessage());
     }
 }
-
+public function getEventsByDomaine($id_domaine)
+{
+    $sql = "SELECT * FROM evenement WHERE id_domaine = :id_domaine";
+    $db = config::getConnexion();
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':id_domaine', $id_domaine);
+    try {
+        $stmt->execute();
+        $liste = $stmt->fetchAll();
+        return $liste;
+    } catch (Exception $e) {
+        die('Erreur: ' . $e->getMessage());
+    }
+}
 }
 ?>
