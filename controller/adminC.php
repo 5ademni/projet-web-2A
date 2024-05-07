@@ -111,7 +111,7 @@ function modifierAdmin($id,$admin) {
         die('Erreur: '.$e->getMessage());
     }
 }
-public function afficherAdminDetail(int $rech1)
+/* public function afficherAdminDetail(int $rech1)
     {
         $sql="select * from admin where id=".$rech1."";
         
@@ -123,7 +123,7 @@ public function afficherAdminDetail(int $rech1)
         catch(Exception $e){
             die('Erreur: '.$e->getMessage());
         }
-    } 
+    }  */
     
 
     function afficherAdminTrie(string $selon)
