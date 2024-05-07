@@ -4,6 +4,51 @@ require_once('C:/Users/Dorra Sioud/Downloads/TCPDF-main/TCPDF-main/tcpdf.php');
 
 class projetC
 {
+    
+    public function getDomaines() {
+        $sql = "SELECT DISTINCT domaine FROM projet"; // Sélectionnez tous les domaines distincts de la table projet
+        $db = config::getConnexion();
+        try {
+            $result = $db->query($sql);
+            $domaines = [];
+            while ($row = $result->fetch()) {
+                $domaines[] = $row['domaine'];
+            }
+            return $domaines;
+        } catch (Exception $e) {
+            die('Error:' . $e->getMessage());
+        }
+    }
+    
+    public function afficherDomaine($domaine){
+        $sql = "SELECT * FROM projet WHERE domaine = :domaine"; // Utilisez une requête préparée pour éviter les injections SQL
+        $db = config::getConnexion();
+        try {
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(':domaine', $domaine);
+            $stmt->execute();
+            $liste = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $liste;
+        } catch (Exception $e) {
+            die('Error:' . $e->getMessage());
+        }
+    }
+    
+    public function getProjetsAvecPostulations() {
+        // Utilisez ici votre logique pour récupérer les projets avec des postulations depuis la base de données
+        // Assurez-vous de retourner les résultats sous une forme appropriée, comme un tableau associatif
+        // Cette méthode devrait retourner un tableau des projets avec des postulations
+
+        // Exemple simplifié
+        $projetsAvecPostulations = array(
+            array('nom_projet' => 'Projet 1'),
+            array('nom_projet' => 'Projet 2'),
+            // Ajoutez d'autres projets si nécessaire
+        );
+
+        return $projetsAvecPostulations;
+    }
+    
     public function generate_pdf($id)
     {
         // Create a new PDF instance

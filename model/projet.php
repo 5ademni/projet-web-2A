@@ -8,7 +8,7 @@ class projet{
     private ?int $time = null;
     private ?string $domaine = null;
     private ?int $budget = null;
-    private ?string $description = null;    
+    private ?string $description = null;   
   
     function __construct(string $nom_projet,string $nom_realisateur,string $niveau_etudes,string $email,int $time,string $domaine,int $budget,string $description)
     {

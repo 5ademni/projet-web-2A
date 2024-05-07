@@ -1,13 +1,9 @@
-<?php
-   
+
+<?php 
+session_start();
 // include 'config.php';
-
 include '../../connexion.php';
-       include '../../config.php';
-    
-
-
-
+include '../../config.php';
 ?>
 
 <!doctype html>
@@ -93,6 +89,7 @@ Bootstrap 5 HTML CSS Template
                         <li>
                             <a class="dropdown-item" href="ajouterProjet.php">new project</a>
                               <a class="dropdown-item" href="ajouterPostulation.php">postuler</a>
+                              <a class="dropdown-item" href="accueil.php">Parcourir par Domaine</a>  
                         </li>
     
                     </ul>
@@ -1310,6 +1307,20 @@ Bootstrap 5 HTML CSS Template
         <script src="js/owl.carousel.min.js"></script>
         <script src="js/counter.js"></script>
         <script src="js/custom.js"></script>
-
     </body>
 </html>
+
+<button id="notifications-btn" class="nav-link">
+    <img src="../front/images/notifications.png" alt="Notifications">
+    <span id="project-name-placeholder"></span>
+</button>
+
+<script>
+    // Vérifier si le nom du projet postulé est disponible dans la session
+    let projectName = "<?php echo isset($_SESSION['nouveau_projet_postule']) ? $_SESSION['nouveau_projet_postule'] : '' ?>";
+
+    // Mettre à jour le contenu du bouton de notifications avec le nom du projet
+    if (projectName) {
+        document.getElementById("project-name-placeholder").textContent = projectName;
+    }
+</script>

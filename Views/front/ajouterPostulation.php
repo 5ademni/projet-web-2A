@@ -1,76 +1,41 @@
 <?php
-include_once("../../Model/postulation.php");
-include_once("../../Controller/postulationC.php");
+session_start(); // Démarrez la session
 
-include_once '../../Model/projet.php';
-include_once '../../Controller/projetC.php';
-// Check if form is submitted
-if(isset($_POST['submit'])) {
-    // Récupération des données du formulaire
-    $participer = $_POST['participer'];
-    $disponibilite_horaire = $_POST['disponibilite_horaire'];
-    $details = $_POST['details'];
+$nom_projet = isset($_GET['nom_projet']) ? $_GET['nom_projet'] : "Nom du projet non trouvé";
+$_SESSION['nom_projet'] = $nom_projet;
 
-    // Validation pour 'participer'
-    if($participer !== "oui" && $participer !== "non") {
-        echo "Le champ 'participer' doit être 'oui' ou 'non'.";
-        return; // Arrête l'exécution si la validation échoue
-    }
-
-    // Validation pour 'disponibilite_horaire'
-    if($disponibilite_horaire !== "matin" && $disponibilite_horaire !== "soir") {
-        echo "Le champ 'disponibilite horaire' doit être 'matin' ou 'soir'.";
-        return; // Arrête l'exécution si la validation échoue
-    }
-
-    // Si les validations passent, créez l'objet postulation et continuez
-    $postulation = new postulation($participer, $disponibilite_horaire, $details);
-
-        // Create postulation controller object
-        $postulationController = new postulationC();
-
-        // Add postulation
-        $postulationController->ajouterPostulation($postulation);
-    } else {
-        echo "All fields are required.";
-    }
-?>
-
-<!-- HTML form to add a new postulation -->
-<?php
+// Include the necessary files and classes
 include_once '../../Model/postulation.php';
 include_once '../../Controller/postulationC.php';
+include_once '../../Model/projet.php';
+include_once '../../Controller/projetC.php';
 
-$postulationC = new postulationC();
+// Create an instance of the postulation controller
+$postulationController = new postulationC($connect);
 
-// Add a project
-if (isset($_POST["participer"], $_POST["disponibilte_horaire"], $_POST["details"])) {
-    $participer = $_POST["participer"];
-    $disponibilte_horaire = $_POST["disponibilte_horaire"];
-    $description = $_POST["details"];
+// Check if the form is submitted and the 'participer' key is set in the $_POST array
+if(isset($_POST['submit']) && isset($_POST['participer'])) {
+    // Retrieve form data
+    $participer = $_POST['participer'];
+    $nom_societe = isset($_POST['nom_societe']) ? $_POST['nom_societe'] : ""; // Check if nom_societe is set
+    $disponibilite_horaire = $_POST['disponibilite_horaire'];
+    $details = $_POST['details'];
+    $id_post = $_POST['id_post'];
+    $status = $_POST['status'];
+    // Create a new postulation object
+    $postulation = new postulation($participer, $nom_societe, $disponibilite_horaire, $details, $id_post,$status);
 
-    if (!empty($participer) && !empty($disponibilte_horaire) &&  !empty($details)) {
-        $postulation = new postulation($participer, $disponibilte_horaire, $details);
-        $postulationC->ajouterPostulation($projet);
-        // Rediriger vers la page d'affichage des projets après l'ajout
-        header('Location: affichagePostulation.php');
-        exit;
-    } else {
-        $error = "Missing information";
-    }
-}
-if (isset($_SESSION['success_message'])) {
-    echo '<div class="alert alert-success" role="alert">' . $_SESSION['success_message'] . '</div>';
-    // Supprimez le message de succès après l'affichage
-    unset($_SESSION['success_message']);
-}
-
-// Affichez les messages d'erreur s'il y en a
-if (!empty($error)) {
-    echo '<div class="alert alert-danger" role="alert">' . $error . '</div>';
+    // Add the postulation to the database
+    $postulationController->ajouterPostulation($postulation);
+    
+    // Redirigez l'utilisateur vers la page de notification après avoir ajouté la postulation
+    header("Location: notification.php");
+    exit(); // Assurez-vous que le script s'arrête ici
+} else {
+    // If 'participer' key is not set in $_POST array, display an error message or handle the situation accordingly
+    echo "Error: 'participer' key is not set in the form data.";
 }
 ?>
-
 <!doctype html>
 <html lang="en">
     <head>
@@ -185,7 +150,6 @@ if (!empty($error)) {
                 <h1 class="white-bold-text">
                     <?php echo isset($_GET['nom_projet']) ? $_GET['nom_projet'] : 'Nom du projet non trouvé'; ?>
                 </h1>
-
                 <?php
                 if(isset($_GET['image'])) {
                     $imagePath = $_GET['image'];
@@ -198,23 +162,48 @@ if (!empty($error)) {
                     echo 'Image not found';
                 }
                 ?>
+                 <a href="http://localhost/projet/Views/front/chat/" class="chat-button">
+        <span class="chat-icon">🗨️</span>
+        <span class="chat-text">Chat du Projet</span>
+    </a>
             </div>
             <!-- Column for the form -->
             <div class="col-lg-6">
-                <form method="post" action="">
-                    <div class="mb-3">
-                        <label for="participer" class="form-label">Participer:</label>
-                        <input type="text" class="form-control" id="participer" name="participer" required>
-                    </div>
+    <form method="post" action="" onsubmit="return validateForm()">
+        <div class="mb-3">
+            <label for="participer" class="form-label">Avez-vous participé dans un projet freelance avant?</label>
+            <label for="participer_oui">
+                <input type="radio" id="participer_oui" name="participer" value="oui" onclick="toggleSocieteField()"> Oui
+            </label>
+            <label for="participer_non">
+                <input type="radio" id="participer_non" name="participer" value="non" onclick="toggleSocieteField()"> Non
+            </label>
+        </div>
+
+        <div id="societeField" style="display: none;">
+            <div class="mb-3">
+                <label for="nom_societe">Nom de la société :</label>
+                <input type="text" id="nom_societe" name="nom_societe">
+            </div>
+        </div>
 
                     <div class="mb-3">
                         <label for="disponibilite_horaire" class="form-label">Disponibilité Horaire:</label>
-                        <input type="text" class="form-control" id="disponibilite_horaire" name="disponibilite_horaire" required>
+                       
+<select id="disponibilite_horaire" name="disponibilite_horaire">
+    <option value="matin">Matin</option>
+    <option value="soir">Soir</option>
+</select>
                     </div>
 
                     <div class="mb-3">
                         <label for="details" class="form-label">Détails:</label>
                         <textarea class="form-control" id="details" name="details" required></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="id_post" class="form-label">Id_post:</label>
+                        <textarea class="form-control" id="id_post" name="id_post" required></textarea>
                     </div>
 
                     <button type="submit" name="submit" class="btn btn-primary">Submit</button>
@@ -1395,7 +1384,16 @@ if (!empty($error)) {
     </body>
 </html>
 <script>
+    function toggleSocieteField() {
+        var societeField = document.getElementById("societeField");
+        var participerOui = document.getElementById("participer_oui");
 
+        if (participerOui.checked) {
+            societeField.style.display = "block";
+        } else {
+            societeField.style.display = "none";
+        }
+    }
     function validateForm() {
     // Suppression des messages d'erreur précédents
     var errorMessages = document.querySelectorAll('.error-message');
@@ -1406,6 +1404,7 @@ if (!empty($error)) {
     var participer = document.getElementById("participer").value;
     var disponibilite_horaire = document.getElementById("disponibilite_horaire").value;
     var details = document.getElementById("details").value;
+    var id_p = document.getElementById("id_p").value;
 
     // Vos autres contrôles de saisie ici...
 

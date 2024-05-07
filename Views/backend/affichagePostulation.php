@@ -2,19 +2,21 @@
 include_once '../../Model/postulation.php';
 include_once '../../Controller/postulationC.php';
 
-$postulationC = new postulationC();
+$postulationC = new postulationC($connect);
 
-// Fetch list of projects
+
+// Fetch list of postulations
 $listeC = $postulationC->afficherPostulation();
 
-// Add a project
-if (isset($_POST["participer"],$_POST["disponibilte_horaire"],$_POST["details"])) {
+// Add a postulation
+if (isset($_POST["participer"], $_POST["nom_societe"], $_POST["disponibilte_horaire"], $_POST["details"])) {
     $participer = $_POST["participer"];
+    $nom_societe = $_POST["nom_societe"];
     $disponibilte_horaire = $_POST["disponibilte_horaire"];
     $details = $_POST["details"];
 
-    if (!empty($participer) && !empty($disponibilte_horaire) &&  !empty($details)) {
-        $postulation = new postulation($participer,$disponibilte_horaire,$details);
+    if (!empty($participer) && !empty($nom_societe) && !empty($disponibilte_horaire) && !empty($details)) {
+        $postulation = new postulation($participer, $nom_societe, $disponibilte_horaire, $details);
         $postulationC->ajouterPostulation($postulation);
         header('Location: affichagePostulation.php');
         exit;
@@ -150,17 +152,8 @@ if (isset($_POST["tri"]) && !empty($_POST["tri"])) {
     </header>
 
     <div class="wrapper">
-       
-    
-    
-    
-    <!-- Page Content -->
+        <!-- Page Content -->
         <div class="content-wrapper">
-            <!-- Page Header -->
-            <div class="page-header">
-            </div>
-            <!-- End Page Header -->
-            <div class="content-wrapper">
             <!-- Page Header -->
             <div class="page-header">
                 <h1 class="m-0 font-weight-bold text-primary">Affichage Postulation</h1>
@@ -168,7 +161,6 @@ if (isset($_POST["tri"]) && !empty($_POST["tri"])) {
 
             <!-- Search Form -->
             <div class="card-body">
-      
                 <form method="POST" action="affichagePostulation.php" class="d-flex align-items-center">
                     <input type="submit" value="Reset" class="button mr-2">
                     <input type="submit" value="Voir en détails" name="det" class="button mr-2">
@@ -176,40 +168,55 @@ if (isset($_POST["tri"]) && !empty($_POST["tri"])) {
                     <input type="text" class="form-control mr-2" name="rech" id="rech">
                     <select name="selon" class="form-control mr-2">
                         <option value="participer">Participation</option>
-                        <option value="disponibilite_horaire">Disponibilite_Horaire</option>
+                        <option value="disponibilte_horaire">Disponibilite_Horaire</option>
                     </select>
                     <input type="submit" class="button" value="Search" name="search">
                 </form>
             </div>
             <!-- End Search Form -->
 
-            <!-- Project Table -->
+            <!-- Postulation Table -->
             <div class="table">
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <thead>
                         <tr>
                             <th>id_post</th>
                             <th>Participer</th>
+                            <th>Nom Societe</th>
                             <th>Disponibilite Horaire</th>
                             <th>Details</th>
+                            <th>Status</th> <!-- Nouvelle colonne pour le menu déroulant -->
                         </tr>
                     </thead>
                     <tbody>
-                    <?php foreach($listeC as $postulation): ?>
-    <tr>
-        <td><?php echo $postulation['id_post']; ?></td>
-        <td><?php echo $postulation['participer']; ?></td>
-
-        <td><?php echo $postulation['disponibilite_horaire']; ?></td>
-        <td><?php echo $postulation['details']; ?></td>
-        <td><a href="supprimerPostulation.php?id_post=<?php echo $postulation['id_post']; ?>" class="btn btn-primary" style = "background-color: red; ">Delete</a></td>
-        <td><a href="modifierPostulation.php?id_post=<?php echo $postulation['id_post']; ?>" class="btn btn-primary" style = "background-color: green; ">Edit</a></td>
-    </tr>
-<?php endforeach; ?>
+                        <?php 
+                        if (!is_null($listeC) && (is_array($listeC) || is_object($listeC))) {
+                            foreach($listeC as $postulation): ?>
+                                <tr>
+                                    <td><?php echo $postulation['id_post']; ?></td>
+                                    <td><?php echo $postulation['participer']; ?></td>
+                                    <td><?php echo $postulation['nom_societe']; ?></td>
+                                    <td><?php echo $postulation['disponibilite_horaire']; ?></td>
+                                    <td><?php echo $postulation['details']; ?></td>
+                                    <td>
+                                        <select class="status-select" data-postulation-id="<?php echo $postulation['id_post']; ?>">
+                                            <option value="en_cours" <?php echo ($postulation['status'] == 'en_cours') ? 'selected' : ''; ?>>En cours</option>
+                                            <option value="accepté" <?php echo ($postulation['status'] == 'accepté') ? 'selected' : ''; ?>>Accepté</option>
+                                            <option value="refusé" <?php echo ($postulation['status'] == 'refusé') ? 'selected' : ''; ?>>Refusé</option>
+                                        </select>
+                                    </td>
+                                    <td><a href="supprimerPostulation.php?id_post=<?php echo $postulation['id_post']; ?>" class="btn btn-primary" style="background-color: red;">Delete</a></td>
+                                    <td><a href="modifierPostulation.php?id_post=<?php echo $postulation['id_post']; ?>" class="btn btn-primary" style="background-color: green;">Edit</a></td>
+                                </tr>
+                        <?php endforeach; 
+                        } else {
+                            echo "<tr><td colspan='6'>No data available</td></tr>";
+                        }
+                        ?>
                     </tbody>
                 </table>
             </div>
-            <!-- End Project Table -->
+            <!-- End Postulation Table -->
 
             <!-- Sorting Form -->
             <div class="sort">
@@ -217,6 +224,7 @@ if (isset($_POST["tri"]) && !empty($_POST["tri"])) {
                     <label for="tri" class="mr-2">Sort by</label>
                     <select name="tri" class="form-control mr-2">
                         <option value="participer">Participation</option>
+                        <option value="nom_societe">Disponibilite_Horaire</option>
                         <option value="disponibilite_horaire">Disponibilite_Horaire</option>
                     </select>
                     <input type="submit" value="Trier" class="button">
@@ -233,5 +241,33 @@ if (isset($_POST["tri"]) && !empty($_POST["tri"])) {
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="js/sb-admin-2.min.js"></script>
     <script src="js/num-orders.js"></script>
+
+    <!-- JavaScript for handling status updates -->
+    <script>
+        $(document).ready(function() {
+            // When the selection in the dropdown changes
+            $('.status-select').change(function() {
+                // Get the ID of the associated postulation
+                var postulationId = $(this).data('postulation-id');
+                // Get the newly selected status
+                var newStatus = $(this).val();
+
+                // Send an AJAX request to update the status in the database
+                $.ajax({
+                    url: 'updateStatus.php', // PHP script to update the status
+                    method: 'POST',
+                    data: { id_post: postulationId, status: newStatus },
+                    success: function(response) {
+                        // Display a success message or perform any other necessary action
+                        console.log('Status updated successfully');
+                    },
+                    error: function(xhr, status, error) {
+                        // Handle AJAX request errors
+                        console.error('Error updating status: ' + error);
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

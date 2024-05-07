@@ -89,70 +89,89 @@ if (isset($_SESSION['success_message'])) {
         <link href="css/owl.theme.default.min.css" rel="stylesheet">
 
         <link href="css/tooplate-gotto-job.css" rel="stylesheet">
-        
+        <style>
+    #notifications-btn {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+}
 
+#notifications-btn img {
+    width: 24px;
+    height: 24px;
+}
+
+#notifications-btn:focus {
+    outline: none; /* Supprime la bordure de focus */
+}
+
+/* Style supplémentaire pour simuler l'apparence de LinkedIn */
+#notifications-btn {
+    position: relative;
+}
+
+#notifications-btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 8px;
+    height: 8px;
+    background-color: #e84d4d; /* Couleur du point de notification */
+    border-radius: 50%;
+}
+</style>
     </head>
     
     <body id="top">
-
-        <nav class="navbar navbar-expand-lg">
-            <div class="container">
-                <a class="navbar-brand d-flex align-items-center" href="index.html">
-                    <img src="images/logo.png" class="img-fluid logo-image">
-
-                    <div class="d-flex flex-column">
-                        <a class="logo-text">5ademni</a>
-                    </div>
-                </a>
-
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarNav" style="margin-top: 5px;">
-                    <ul class="navbar-nav align-items-center ms-lg-5">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="index.html">Page d'accueil</a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a class="nav-link" href="about.html">About 5ademni</a>
-                        </li>
-
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
-
-                            <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">
-                                <li><a class="dropdown-item" href="job-listings.html">Listes d'emplois</a></li>
-
-                                <li><a class="dropdown-item" href="job-details.html">Détails du poste</a></li>
-                            </ul>
-                        </li>
-
-                        <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        projet et postuler
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        
-                        <li>
-                            <a class="dropdown-item" href="ajouterPostulation.php">postuler</a>
-                        </li>
-                    </ul>
-
-                        <li class="nav-item ms-lg-auto">
-                            <!-- <a class="nav-link" href="#">Registre</a> -->
-                            <a href="login.php" class="nav-link">register</a>
-                        </li>
-
-                        <li class="nav-item">
-                            
-                            <a href="logout.php" class="btn btn-primary py-2 px-4">Log Out</a>
-                        </li>
-                    </ul>
-                </div>
+    <nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="index.html">
+            <img src="images/logo.png" class="img-fluid logo-image">
+            <div class="d-flex flex-column">
+                <a class="logo-text">5ademni</a>
             </div>
-        </nav>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav" style="margin-top: 5px;">
+            <ul class="navbar-nav align-items-center ms-lg-5">
+                <li class="nav-item">
+                    <a class="nav-link active" href="index.html">Page d'accueil</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="about.html">About 5ademni</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Projet et Postuler</a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li>
+                            <a class="dropdown-item" href="ajouterPostulation.php">Postuler</a>
+                        </li>
+                    </ul>
+                </li>
+
+                
+                <!-- Bouton de notification -->
+                <li class="nav-item">
+                    <button id="notifications-btn" class="nav-link">
+                        <img src="../front/images/notifications.png" alt="Notifications">
+                    </button>
+                </li>
+
+                <li class="nav-item ms-lg-auto">
+                    <a href="login.php" class="nav-link">Register</a>
+                </li>
+                <li class="nav-item">
+                    <a href="logout.php" class="btn btn-primary py-2 px-4">Log Out</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
         <main>
         <section class="hero-section d-flex justify-content-center align-items-center">
@@ -608,6 +627,12 @@ foreach ($projects as $project) {
 
     </body>
 </html>
+
+<script>
+        document.getElementById("notifications-btn").addEventListener("click", function() {
+            window.location.href = "notification.php"; // Rediriger vers la page des projets postulés
+        });
+    </script>
 <script>
     function validateForm() {
         // Clear previous error messages
