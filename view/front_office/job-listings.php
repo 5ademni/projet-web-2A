@@ -5,12 +5,14 @@ include_once '../../controller/jobFieldC.php';
 $jobPostC = new JobPostC();
 $jobFieldC = new jobFieldC();
 
-$totalJobs = $jobPostC->countJobPosts();
+session_start();
+
+$sort = isset($_GET['sort']) ? $_GET['sort'] : null;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $titlePattern = "/^[a-zA-Z0-9\s]{1,30}$/";
     $locationPattern = "/^[a-zA-Z0-9\s]{1,30}$/";
-    $salaryPattern = "/^[0-9,]+(\$|TND)$/";
+    $salaryPattern = "/^[0-9,]+(\$|TND)$/"; //TODO: make it only numbers
     $descriptionPattern = "/^[a-zA-Z0-9\s,;:!?@#$%&*()-+=\[\]{}|<>.\'\"]{1,1000}$/";
 
     $title = $_POST['job-titleT'];
@@ -42,6 +44,68 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
     }
 }
+//SEARCH
+$list = [];
+if (isset($_GET['search'])) {
+    if (!empty($_GET['job-fieldS'])) {
+        $fieldS = $_GET['job-fieldS'];
+        $list = array_merge($list, $jobPostC->searchJobPostByFieldId($fieldS));
+    }
+    if (!empty($_GET['job-levelS'])) {
+        $levelS = $_GET['job-levelS'];
+        $list = array_merge($list, $jobPostC->searchJobPostByLevelId($levelS));
+    }
+    if (!empty($_GET['job-typeS'])) {
+        $typeS = $_GET['job-typeS'];
+        $list = array_merge($list, $jobPostC->searchJobPostByEmploymentTypeId($typeS));
+    }
+    if (!empty($_GET['job-titleS'])) {
+        $titleS = $_GET['job-titleS'];
+        $list = array_merge($list, $jobPostC->searchJobPostByTitle($titleS));
+    }
+    if (!empty($_GET['job-salaryS'])) {
+        $salaryS = $_GET['job-salaryS'];
+        $list = array_merge($list, $jobPostC->searchJobPostBySalary($salaryS));
+    }
+    if (!empty($_GET['job-locationS'])) {
+        $locationS = $_GET['job-locationS'];
+        $list = array_merge($list, $jobPostC->searchJobPostByLocation($locationS));
+    }
+    if (!empty($_GET['fieldsS'])) {
+        $fieldsS = $_GET['fieldsS'];
+        $list = array_merge($list, $jobPostC->searchJobPostByFieldId($fieldsS));
+    }
+    $list = array_unique($list, SORT_REGULAR);
+    $_SESSION['searchQuery'] = $list;
+} else if (isset($_SESSION['searchQuery'])) {
+    // If there's no new search query but there's a saved one in the session, use that
+    $list = $_SESSION['searchQuery'];
+} else {
+    $list = $jobPostC->listJobPosts();
+    if ($list instanceof PDOStatement) {
+        $list = $list->fetchAll(PDO::FETCH_ASSOC);
+    }
+}
+if (isset($_POST['reset'])) {
+    unset($_SESSION['searchQuery']);
+}
+// Sorting
+switch ($sort) {
+    case 'latest':
+        usort($list, function ($a, $b) {
+            return strtotime($b['PostingDate']) - strtotime($a['PostingDate']);
+        });
+        break;
+    case 'salary':
+        usort($list, function ($a, $b) {
+            return (int)$b['Salary'] - (int)$a['Salary'];
+        });
+        break;
+}
+
+$totalJobs = count($list);
+$topFields = $jobFieldC->getTopFields();
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -153,7 +217,10 @@ Bootstrap 5 HTML CSS Template
                 </div>
             </div>
         </header>
-
+        <?php
+        //MARK: job search
+        //S is for search
+        ?>
         <section class="section-padding pb-0 d-flex justify-content-center align-items-center">
             <div class="container">
                 <div class="row">
@@ -165,9 +232,8 @@ Bootstrap 5 HTML CSS Template
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 col-12">
                                     <div class="input-group">
-                                        <span class="input-group-text" id="basic-addon1"><i class="bi-person custom-icon"></i></span>
-
-                                        <input type="text" name="job-title" id="job-title" class="form-control" placeholder="Job Title">
+                                        <span class="input-group-text" id="basic-addon1"><i class="bi-cash custom-icon"></i></span>
+                                        <input type="text" class="form-control" name="job-salaryS" id="salaryS" placeholder="Enter Salary">
                                     </div>
                                 </div>
 
@@ -175,19 +241,7 @@ Bootstrap 5 HTML CSS Template
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1"><i class="bi-geo-alt custom-icon"></i></span>
 
-                                        <input type="text" name="job-location" id="job-location" class="form-control" placeholder="Location">
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-4 col-md-4 col-12">
-                                    <div class="input-group">
-                                        <span class="input-group-text" id="basic-addon1"><i class="bi-cash custom-icon"></i></span>
-
-                                        <select class="form-select form-control" name="job-salary" id="job-salary" aria-label="Default select example">
-                                            <option selected>Salary Range</option>
-                                            <option value="1">$300k - $500k</option>
-                                            <option value="2">$10000k - $45000k</option>
-                                        </select>
+                                        <input type="text" name="job-locationS" id="job-location" class="form-control" placeholder="Location">
                                     </div>
                                 </div>
 
@@ -195,11 +249,11 @@ Bootstrap 5 HTML CSS Template
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1"><i class="bi-laptop custom-icon"></i></span>
 
-                                        <select class="form-select form-control" name="job-level" id="job-level" aria-label="Default select example">
+                                        <select class="form-select form-control" name="job-levelS" id="job-level" aria-label="Default select example">
                                             <option selected>Level</option>
                                             <option value="1">Internship</option>
                                             <option value="2">Junior</option>
-                                            <option value="2">Senior</option>
+                                            <option value="3">Senior</option>
                                         </select>
                                     </div>
                                 </div>
@@ -208,31 +262,52 @@ Bootstrap 5 HTML CSS Template
                                     <div class="input-group">
                                         <span class="input-group-text" id="basic-addon1"><i class="bi-laptop custom-icon"></i></span>
 
-                                        <select class="form-select form-control" name="job-remote" id="job-remote" aria-label="Default select example">
-                                            <option selected>Remote</option>
+                                        <select class="form-select form-control" name="job-typeS" id="job-type" aria-label="Default select example">
+                                            <option selected>Type</option>
                                             <option value="1">Full Time</option>
-                                            <option value="2">Contract</option>
                                             <option value="2">Part Time</option>
+                                            <option value="3">Contract</option>
+                                            <option value="4">Freelance</option>
+                                            <option value="5">Remote</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4 col-md-4 col-12">
+                                    <div class="input-group">
+                                        <span class="input-group-text" id="basic-addon1"><i class="bi-briefcase custom-icon create-icon"></i></span>
+                                        <select class="form-select form-control" name="fieldsS" id="fieldsT" aria-label="Default select example">
+                                            <option selected>field</option>
+                                            <?php
+                                            $fieldlist = $jobFieldC->listJobFields();
+
+                                            foreach ($fieldlist as $field) {
+                                                echo '<option value="' . $field['FieldID'] . '">' . $field['FieldName'] . '</option>';
+                                            }
+                                            ?>
                                         </select>
                                     </div>
                                 </div>
 
                                 <div class="col-lg-12 col-12">
-                                    <button type="submit" class="form-control">
+                                    <button type="submit" class="form-control" name="search">
                                         Search job
+                                    </button>
+                                    <button type="submit" class="form-control" name="reset">
+                                        Reset Filter
                                     </button>
                                 </div>
 
                                 <div class="col-12">
                                     <div class="d-flex flex-wrap align-items-center mt-4 mt-lg-0">
-                                        <span class="text-white mb-lg-0 mb-md-0 me-2">Popular keywords:</span>
+                                        <span class="text-white mb-lg-0 mb-md-0 me-2">Popular fields:</span>
 
                                         <div>
-                                            <a href="job-listings.html" class="badge">Web design</a>
-
-                                            <a href="job-listings.html" class="badge">Marketing</a>
-
-                                            <a href="job-listings.html" class="badge">Customer support</a>
+                                            <?php
+                                            for ($i = 0; $i < min(3, count($topFields)); $i++) {
+                                                echo '<a href="job-listings.html" class="badge">' . $topFields[$i]['FieldName'] . '</a>';
+                                            }
+                                            ?>
                                         </div>
                                     </div>
                                 </div>
@@ -253,7 +328,10 @@ Bootstrap 5 HTML CSS Template
             <div class="container">
                 <div class="row">
 
-
+                    <?php
+                    //MARK: job post
+                    //T is from talent
+                    ?>
                     <div class="col-lg-12 col-12">
                         <form class="custom-form hero-form create-form" action="#" method="post" role="form" id="jobform">
                             <h3 class="text-white mb-3">Search for talent</h3>
@@ -314,8 +392,10 @@ Bootstrap 5 HTML CSS Template
                                         <select class="form-select form-control" name="job-typeT" id="job-typeT" aria-label="Default select example">
                                             <option selected>Type</option>
                                             <option value="1">Full Time</option>
-                                            <option value="2">Contract</option>
-                                            <option value="3">Part Time</option>
+                                            <option value="2">Part Time</option>
+                                            <option value="3">Contract</option>
+                                            <option value="4">Freelance</option>
+                                            <option value="5">Remote</option>
                                         </select>
                                     </div>
                                 </div>
@@ -357,31 +437,35 @@ Bootstrap 5 HTML CSS Template
 
                     <div class="col-lg-4 col-12 d-flex align-items-center ms-auto mb-5 mb-lg-4">
                         <p class="mb-0 ms-lg-auto">Sort by:</p>
+                        <?php
+                        //TODO:fix each sort to render when pressing it despite the redirection
+                        ?>
 
                         <div class="dropdown dropdown-sorting ms-3 me-4">
+                            <?php
+                            $sort = $_GET['sort'] ?? '';
+                            $buttonText = 'Select Filter';
+                            if ($sort === 'latest') {
+                                $buttonText = 'Latest Jobs';
+                            } elseif ($sort === 'salary') {
+                                $buttonText = 'Highest Salary Jobs';
+                            }
+                            ?>
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownSortingButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                Newest Jobs
+                                <?php echo $buttonText; ?>
                             </button>
 
                             <ul class="dropdown-menu" aria-labelledby="dropdownSortingButton">
-                                <li><a class="dropdown-item" href="#">Lastest Jobs</a></li>
-
-                                <li><a class="dropdown-item" href="#">Highed Salary Jobs</a></li>
-
-                                <li><a class="dropdown-item" href="#">Internship Jobs</a></li>
+                                <li><a class="dropdown-item" href="?sort=latest">Latest Jobs</a></li>
+                                <li><a class="dropdown-item" href="?sort=salary">Highest Salary Jobs</a></li>
                             </ul>
                         </div>
 
-                        <div class="d-flex">
-                            <a href="#" class="sorting-icon active bi-list me-2"></a>
-
-                            <a href="#" class="sorting-icon bi-grid"></a>
-                        </div>
                     </div>
 
                     <?php
                     //MARK: main part
-                    $list = $jobPostC->listJobPosts();
+                    //moved the list part to the top to integrate the search
                     foreach ($list as $jobPost) {
                         $companyName = strtolower(str_replace(' ', '_', $jobPost['Company'])); // Replace spaces with underscores and convert to lowercase
                         $imagePath = 'images/logos/'; // Replace this with the actual path to your images
@@ -445,7 +529,7 @@ Bootstrap 5 HTML CSS Template
                                     <div class="d-flex align-items-center border-top pt-3">
                                         <p class="job-price mb-0">
                                             <i class="custom-icon bi-cash me-1"></i>
-                                            <?php echo $jobPost['Salary']; ?>
+                                            <?php echo $jobPost['Salary']; ?> TND
                                         </p>
 
                                         <a href="job-details.php?id=<?php echo $jobPost['JobID']; ?>" class="custom-btn btn ms-auto">Apply now</a>

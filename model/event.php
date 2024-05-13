@@ -11,19 +11,21 @@ class Evenement
     private $prix;
     private $nbPlaces;
     private $image;
+    private $id_categorie;
     
-    public function __construct($id_evenement, $id_auteur, $titre, $contenu, $dateEvenement, $lieu, $prix, $nbPlaces, $image, $heureEvenement)
+    public function __construct($id_evenement, $id_auteur, $titre, $contenu, $dateEvenement, $lieu, $prix, $nbPlaces, $image, $heureEvenement, $id_categorie)
     {
         $this->id_evenement = $id_evenement;
         $this->id_auteur = $id_auteur;
         $this->titre = $titre;
         $this->contenu = $contenu;
         $this->dateEvenement = $dateEvenement;
-        $this->heureEvenement = $heureEvenement;
         $this->lieu = $lieu;
         $this->prix = $prix;
         $this->nbPlaces = $nbPlaces;
         $this->image = $image;
+        $this->heureEvenement = $heureEvenement;
+        $this->id_categorie = $id_categorie;
     }
 
     public function getId_evenement()
@@ -109,4 +111,13 @@ class Evenement
     {
         $this->image = $image;
     }
+    public function getIdCategorie()
+    {
+        return $this->id_categorie;
+    }
+    public function setIdCategorie($id_categorie)
+    {
+        $this->id_categorie = $id_categorie;
+    }
 }
+?>

@@ -1,16 +1,17 @@
 <?php
-include_once '../../controller/jobPostC.php';
-$jobPostC = new JobPostC();
-$totalJobs = $jobPostC->countJobPosts();
+session_start();
+include_once '../../controller/jobFieldC.php';
+include_once '../../model/jobField.php';
 
-if (isset($_GET['delete-job'])) {
-  $jobPostC->deleteJobPost($_GET['delete-job']);
-  header('Location: job-posts.php');
-  exit();
-}
+$jobFieldC = new jobFieldC();
+$fieldlist = $jobFieldC->listJobFields();
+
+
+$idPattern = "/^[0-9]{1,3}$/";
+$fieldNamePattern = "/^[a-zA-Z]{1,20}$/";
+$descriptionPattern = "/^.{1,60}$/";
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -320,20 +321,6 @@ if (isset($_GET['delete-job'])) {
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-menu-button-wide"></i><span>Categories</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="fields.php">
-              <i class="bi bi-circle"></i><span>Fields</span>
-            </a>
-          </li>
-        </ul>
-      </li>
-      <!-- End categories Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-menu-button-wide"></i><span>Components</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
@@ -570,11 +557,11 @@ if (isset($_GET['delete-job'])) {
 
   <main id="main" class="main">
     <div class="pagetitle">
-      <h1>Users</h1>
+      <h1>Fields</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-          <li class="breadcrumb-item active">posts d'emploi</li>
+          <li class="breadcrumb-item active">Fields</li>
         </ol>
       </nav>
     </div>
@@ -582,61 +569,49 @@ if (isset($_GET['delete-job'])) {
     <?php
     //MARK: main form
     ?>
-    <div class="card">
-      <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center">
-          <h5 class="card-title">Liste des postes d'emploi</h5>
-          <a href="add-job.php" class="btn btn-primary">
-            <i class="bi bi-plus-lg"></i>
-          </a>
+    <section class="section">
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center">
+                <h5 class="card-title">Field List</h5>
+                <a href="add-field.php" class="btn btn-primary">
+                  <i class="bi bi-plus-lg"></i>
+                </a>
+              </div>
+
+              <table class="table table-striped datatable">
+                <thead>
+                  <tr>
+                    <th scope="col">Field ID</th>
+                    <th scope="col">Field Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+                  foreach ($fieldlist as $field) {
+                  ?>
+                    <tr>
+                      <th scope="row"><?php echo $field['FieldID']; ?></th>
+                      <td><?php echo $field['FieldName']; ?></td>
+                      <td><?php echo $field['Description']; ?></td>
+                      <td>
+                        <a href="edit-field.php?edit=<?php echo $field['FieldID']; ?>" class="btn btn-success"><i class="bi bi-pencil"></i></a>
+                      </td>
+                    </tr>
+                  <?php
+                  }
+                  ?>
+                </tbody>
+              </table>
+
+            </div>
+          </div>
         </div>
-
-        <table class="table table-striped datatable">
-          <thead>
-            <tr>
-              <th scope="col">ID</th>
-              <th scope="col">Position</th>
-              <th scope="col">Type</th>
-              <th scope="col">Field</th>
-              <th scope="col">Company</th>
-              <th scope="col">Location</th>
-              <th scope="col">Status</th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <?php
-            $list = $jobPostC->listJobPosts();
-            foreach ($list as $jobPost) {
-            ?>
-              <tr>
-                <th scope="row"><?php echo $jobPost['JobID']; ?></th>
-                <td><?php echo $jobPost['Title']; ?></td>
-                <td><?php echo $jobPost['EmploymentTypeName']; ?></td>
-                <td><?php echo $jobPost['FieldName']; ?></td>
-                <td><?php echo $jobPost['Company']; ?></td>
-                <td><?php echo $jobPost['Location']; ?></td>
-                <td>
-                  <?php if ($jobPost['Status'] == 1) { ?>
-                    <span class="badge bg-success">Active</span>
-                  <?php } else { ?>
-                    <span class="badge bg-danger">Inactive</span>
-                  <?php } ?>
-                </td>
-                <td>
-                  <a href="../front_office/job-details.php?id=<?php echo $jobPost['JobID']; ?>" class="btn btn-primary"><i class="bi bi-eye"></i></a>
-                  <a href="edit-job.php?id=<?php echo $jobPost['JobID']; ?>" class="btn btn-success"><i class="bi bi-pencil"></i></a>
-                  <a href="?delete-job=<?php echo $jobPost['JobID']; ?>" class="btn btn-danger"><i class="bi bi-trash"></i></a>
-                </td>
-              </tr>
-            <?php
-            }
-            ?>
-          </tbody>
-        </table>
-
-      </div>
-    </div>
+    </section>
 
   </main>
   <!-- End #main -->

@@ -1,16 +1,47 @@
 <?php
-include_once '../../controller/jobPostC.php';
-$jobPostC = new JobPostC();
-$totalJobs = $jobPostC->countJobPosts();
+include_once '../../controller/event2.php';
+include_once '../../model/event.php';
+include_once '../../controller/Categorie_Evenement2.php';
 
-if (isset($_GET['delete-job'])) {
-  $jobPostC->deleteJobPost($_GET['delete-job']);
-  header('Location: job-posts.php');
-  exit();
+
+// Créer une instance du contrôleur
+$controller = new EvenementC();
+
+// Assurez-vous d'appeler la fonction getevenementbyid pour obtenir les détails de l'événement
+if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
+    $event_id = $_GET['id'];
+    $evenement = $controller->getEvenement($event_id);
+} elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $target_dir = "../../sql/";
+    $target_file = $target_dir . basename($_FILES["image"]["name"]);
+    move_uploaded_file($_FILES["image"]["tmp_name"], $target_file);
+    // Créer une instance de la classe Evenement
+    $evenement = new Evenement(
+        $_POST['id_evenement'],
+        $_POST['id_auteur'],
+        $_POST['titre'],
+        $_POST['contenu'],
+        $_POST['dateEvenement'],
+        $_POST['lieu'],
+        $_POST['prix'],
+        $_POST['nbPlaces'],
+        $target_file,
+        $_POST['heureEvenement'],
+        $_POST['id_categorie']
+    );
+
+    // Appeler la méthode updateEvenement
+    
+try {
+    $controller->updateEvenement($_POST['id_evenement'], $evenement);
+    echo "L'événement a été modifié avec succès.";
+} catch (Exception $e) {
+    echo 'Erreur: ' . $e->getMessage();
 }
-
+header('Location: evenement.php');
+exit;
+}
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -47,7 +78,7 @@ if (isset($_GET['delete-job'])) {
   <!-- ======= Header ======= -->
   <header id="header" class="header fixed-top d-flex align-items-center">
     <div class="d-flex align-items-center justify-content-between">
-      <a href="index.php" class="logo d-flex align-items-center">
+      <a href="index.html" class="logo d-flex align-items-center">
         <img src="assets/img/logo.png" alt="" />
         <span class="d-none d-lg-block">5ademni-Admin</span>
       </a>
@@ -284,7 +315,7 @@ if (isset($_GET['delete-job'])) {
   <aside id="sidebar" class="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="index.php">
+        <a class="nav-link" href="index.html">
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
@@ -317,20 +348,6 @@ if (isset($_GET['delete-job'])) {
         </a>
       </li>
       <!-- End Blog Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-menu-button-wide"></i><span>Categories</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="fields.php">
-              <i class="bi bi-circle"></i><span>Fields</span>
-            </a>
-          </li>
-        </ul>
-      </li>
-      <!-- End categories Nav -->
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
@@ -567,73 +584,96 @@ if (isset($_GET['delete-job'])) {
     </ul>
   </aside>
   <!-- End Sidebar-->
-
+  <?php
+  //MARK: Main form
+  ?>
   <main id="main" class="main">
     <div class="pagetitle">
       <h1>Users</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-          <li class="breadcrumb-item active">posts d'emploi</li>
+          <li class="breadcrumb-item"><a href="evenement.php">Les evenements </a></li>
+          <li class="breadcrumb-item active">modification des evenements <?php echo $evenement['id_evenement']; ?></li>
         </ol>
       </nav>
     </div>
     <!-- End Page Title -->
-    <?php
-    //MARK: main form
-    ?>
+
     <div class="card">
       <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center">
-          <h5 class="card-title">Liste des postes d'emploi</h5>
-          <a href="add-job.php" class="btn btn-primary">
-            <i class="bi bi-plus-lg"></i>
-          </a>
-        </div>
+        <h5 class="card-title">Edit job <?php echo $evenement['id_evenement']; ?></h5>
 
-        <table class="table table-striped datatable">
-          <thead>
-            <tr>
-              <th scope="col">ID</th>
-              <th scope="col">Position</th>
-              <th scope="col">Type</th>
-              <th scope="col">Field</th>
-              <th scope="col">Company</th>
-              <th scope="col">Location</th>
-              <th scope="col">Status</th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
+        <!-- General Form Elements -->
+        <section class="about-section">
+        <div class="container">
+      <div class="row">
+        <div class="col-lg-12 col-12">
+          <!-- Formulaire pour modifier un événement -->
+          <form method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+              <label for="id_evenement">ID de l'événement</label>
+              <input type="text" class="form-control" id="id_evenement" name="id_evenement" value="<?php echo $evenement['id_evenement']; ?> "readonly> 
+            </div>
+            <div class="form-group">
+              <label for="id_auteur">ID de l'auteur</label>
+              <input type="text" class="form-control" id="id_auteur" name="id_auteur" value="<?php echo $evenement['id_auteur']; ?> "readonly>
+            </div>
+            <div class="form-group">
+            <label for="id_categorie">Catégorie</label>
+            <select class="form-control select-css" id="id_categorie" name="id_categorie">
             <?php
-            $list = $jobPostC->listJobPosts();
-            foreach ($list as $jobPost) {
+             $categorieController = new CategorieEvenementC(); 
+            $categories = $categorieController->listCategories();
+            foreach ($categories as $categorie) {
+            echo "<option value=\"" . $categorie['id_categorie'] . "\">" . $categorie['nom_categorie']. "</option>"; }
             ?>
-              <tr>
-                <th scope="row"><?php echo $jobPost['JobID']; ?></th>
-                <td><?php echo $jobPost['Title']; ?></td>
-                <td><?php echo $jobPost['EmploymentTypeName']; ?></td>
-                <td><?php echo $jobPost['FieldName']; ?></td>
-                <td><?php echo $jobPost['Company']; ?></td>
-                <td><?php echo $jobPost['Location']; ?></td>
-                <td>
-                  <?php if ($jobPost['Status'] == 1) { ?>
-                    <span class="badge bg-success">Active</span>
-                  <?php } else { ?>
-                    <span class="badge bg-danger">Inactive</span>
-                  <?php } ?>
-                </td>
-                <td>
-                  <a href="../front_office/job-details.php?id=<?php echo $jobPost['JobID']; ?>" class="btn btn-primary"><i class="bi bi-eye"></i></a>
-                  <a href="edit-job.php?id=<?php echo $jobPost['JobID']; ?>" class="btn btn-success"><i class="bi bi-pencil"></i></a>
-                  <a href="?delete-job=<?php echo $jobPost['JobID']; ?>" class="btn btn-danger"><i class="bi bi-trash"></i></a>
-                </td>
-              </tr>
-            <?php
-            }
-            ?>
-          </tbody>
-        </table>
+            </select>
+            </div> 
+            <!-- ... -->
+            <div class="form-group">
+              <label for="titre">Titre de l'événement</label>
+              <input type="text" class="form-control" id="titre" name="titre" value="<?php echo $evenement['titre']; ?>">
+            </div>
+            <!-- ... -->
+<div class="form-group">
+  <label for="contenu">Contenu de l'événement</label>
+  <input type="text" class="form-control" id="contenu" name="contenu" value="<?php echo $evenement['contenu']; ?>">
+</div>
+<div class="form-group">
+  <label for="dateEvenement">Date de l'Evenement</label>
+  <input type="date" class="form-control" id="dateEvenement" name="dateEvenement" value="<?php echo $evenement['dateEvenement']; ?>">
+</div>
+<div class="form-group">
+  <label for="heureEvenement">Heure de l'Evenement</label>
+  <input type="time" class="form-control" id="heureEvenement" name="heureEvenement" value="<?php echo $evenement['heureEvenement']; ?>">
+</div>
+<div class="form-group">
+  <label for="lieu">Lieu de l'événement</label>
+  <input type="text" class="form-control" id="lieu" name="lieu" value="<?php echo $evenement['lieu']; ?>">
+</div>
+<div class="form-group">
+  <label for="prix">Prix</label>
+  <input type="text" class="form-control" id="prix" name="prix" value="<?php echo $evenement['prix']; ?>">
+</div>
+<div class="form-group">
+  <label for="nbPlaces">Nombre de Places</label>
+  <input type="text" class="form-control" id="nbPlaces" name="nbPlaces" value="<?php echo $evenement['nbPlaces']; ?>">
+</div>
+<div class="form-group">
+  <label for="image">Image</label>
+  <input type="file" class="form-control" id="image" name="image" value="<?php echo $evenement['image']; ?>">
+</div>  
+<!-- ... -->
+
+            <button type="submit" class="btn btn-primary">Modifier l'événement</button>
+            
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+        </form><!-- End General Form Elements -->
 
       </div>
     </div>
@@ -647,11 +687,7 @@ if (isset($_GET['delete-job'])) {
       &copy; Copyright <strong><span>5ademni</span></strong>. All Rights Reserved
     </div>
     <div class="credits">
-      <!-- All the links in the footer should remain intact. -->
-      <!-- You can delete the links only if you purchased the pro version. -->
-      <!-- Licensing information: https://bootstrapmade.com/license/ -->
-      <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-      Designed by DevForce</a>
+      Designed by DevForce
     </div>
   </footer>
   <!-- End Footer -->
@@ -670,6 +706,9 @@ if (isset($_GET['delete-job'])) {
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+
+  <!-- custom js -->
+  <script src="assets/js/WYSIWYG.js"></script>
 </body>
 
 </html>

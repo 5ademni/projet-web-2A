@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 11, 2024 at 11:11 PM
--- Server version: 8.0.31
--- PHP Version: 8.0.26
+-- Generation Time: Apr 28, 2024 at 04:00 PM
+-- Server version: 8.2.0
+-- PHP Version: 8.2.13
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -42,7 +42,8 @@ INSERT INTO `employmenttypes` (`EmploymentTypeID`, `EmploymentTypeName`) VALUES
 (1, 'full time'),
 (2, 'part time'),
 (3, 'contract'),
-(4, 'freelance');
+(4, 'freelance'),
+(5, 'remote');
 
 -- --------------------------------------------------------
 
@@ -54,6 +55,7 @@ DROP TABLE IF EXISTS `fields`;
 CREATE TABLE IF NOT EXISTS `fields` (
   `FieldID` int NOT NULL,
   `FieldName` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `Description` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`FieldID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -61,11 +63,15 @@ CREATE TABLE IF NOT EXISTS `fields` (
 -- Dumping data for table `fields`
 --
 
-INSERT INTO `fields` (`FieldID`, `FieldName`) VALUES
-(101, 'web dev'),
-(102, 'mobile dev'),
-(105, 'AI'),
-(108, 'game dev');
+INSERT INTO `fields` (`FieldID`, `FieldName`, `Description`) VALUES
+(101, 'web dev', 'TEST'),
+(102, 'mobile dev', '#flutter #kotlin'),
+(105, 'AI', 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABBBBBBBBBB'),
+(108, 'game dev', NULL),
+(201, 'marketing', NULL),
+(206, 'human resources', NULL),
+(555, 'teacher', NULL),
+(999, 'AAAAAAAA', NULL);
 
 -- --------------------------------------------------------
 
@@ -80,26 +86,25 @@ CREATE TABLE IF NOT EXISTS `jobpostings` (
   `Company` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `Location` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `PostingDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `Salary` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `Salary` int DEFAULT NULL,
   `Status` tinyint(1) NOT NULL DEFAULT '1',
   `FieldID` int DEFAULT NULL,
   `LevelID` int DEFAULT NULL,
   `EmploymentTypeID` int DEFAULT NULL,
-  `JobDescription` varchar(1000) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `JobDescription` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   PRIMARY KEY (`JobID`),
   KEY `FieldID` (`FieldID`),
   KEY `EmploymentTypeID` (`EmploymentTypeID`),
   KEY `LevelID` (`LevelID`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `jobpostings`
 --
 
 INSERT INTO `jobpostings` (`JobID`, `Title`, `Company`, `Location`, `PostingDate`, `Salary`, `Status`, `FieldID`, `LevelID`, `EmploymentTypeID`, `JobDescription`) VALUES
-(2, 'Test engineer', 'apple', 'mars', '2024-03-30 23:11:19', '20k', 0, 101, 2, 3, 'tst dsc'),
-(3, 'test', 'spotify', 'test', '2024-03-30 23:11:19', 'test', 0, 105, 1, 3, NULL),
-(4, '3ses', 'google', '444', '2024-03-31 14:33:23', '4444', 0, 101, 2, 4, NULL);
+(13, 'AAAAAAA', 'meta', 'ariana', '2024-04-16 10:56:51', 9999, 1, 555, 1, 1, ''),
+(14, 'ss', 'login company', 'usa', '2024-04-27 01:15:36', 555555, 1, 105, 1, 2, 'OHOHO');
 
 -- --------------------------------------------------------
 
