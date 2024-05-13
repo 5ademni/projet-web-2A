@@ -732,7 +732,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   <!-- custom js -->
   <script src="assets/js/WYSIWYG.js"></script>
-  <script src="assets/js/input_control.js"></script>
+  <script src="assets/js/input_control_job.js"></script>
 </body>
 
 </html>

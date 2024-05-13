@@ -60,13 +60,17 @@ class JobFieldC
   }
 
 
-  public function addField($fieldId, $fieldName, $description)
+  public function addField($field)
   {
     $sql = "INSERT INTO fields (FieldID, FieldName, Description) VALUES (:fieldId, :fieldName, :description)";
     $db = config::getConnexion();
     $stmt = $db->prepare($sql);
     try {
-      $stmt->execute([':fieldId' => $fieldId, ':fieldName' => $fieldName, ':description' => $description]);
+      $stmt->execute([
+        ':fieldId' => $field->getFieldId(),
+        ':fieldName' => $field->getFieldName(),
+        ':description' => $field->getDescription()
+      ]);
     } catch (Exception $e) {
       die('Erreur: ' . $e->getMessage());
     }
@@ -81,6 +85,23 @@ class JobFieldC
     try {
       $stmt->execute([':fieldId' => $fieldId]);
       return $stmt->fetch();
+    } catch (Exception $e) {
+      die('Erreur: ' . $e->getMessage());
+    }
+  }
+
+  public function getTopFields()
+  {
+    $sql = "SELECT fields.FieldName, COUNT(jobpostings.JobID) as JobCount 
+        FROM jobpostings 
+        JOIN fields ON jobpostings.FieldID = fields.FieldID 
+        GROUP BY fields.FieldName 
+        ORDER BY JobCount DESC";
+    $db = config::getConnexion();
+    try {
+      $stmt = $db->prepare($sql);
+      $stmt->execute();
+      return $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (Exception $e) {
       die('Erreur: ' . $e->getMessage());
     }

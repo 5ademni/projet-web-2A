@@ -1,42 +1,17 @@
 <?php
+session_start();
 include_once '../../controller/jobFieldC.php';
 include_once '../../model/jobField.php';
 
 $jobFieldC = new jobFieldC();
 $fieldlist = $jobFieldC->listJobFields();
 
-if (isset($_GET['see-more'])) {
-  $fieldId = $_GET['see-more'];
-  $fieldCrud = $jobFieldC->getFieldById($fieldId);
-}
 
-if (isset($_GET['edit'])) {
-  $fieldId = $_GET['edit'];
-  $fieldCrud = $jobFieldC->getFieldById($fieldId);
-}
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit'])) {
-  $id = $_POST['edit']; // Get the id from the POST data
+$idPattern = "/^[0-9]{1,3}$/";
+$fieldNamePattern = "/^[a-zA-Z]{1,20}$/";
+$descriptionPattern = "/^.{1,60}$/";
 
-  $editedField = new jobField(
-    $_POST['edit-id'],
-    $_POST['edit-name'],
-    $_POST['description-name'],
-  );
-  $jobFieldC->updateField($id, $editedField);
-  header('Location: fields.php');
-  exit;
-} elseif ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['create'])) {
-  $newField = new jobField(
-    $_POST['create-id'],
-    $_POST['create-name'],
-    $_POST['create-description'],
-  );
-  //$jobFieldC->createField($newField);
-  header('Location: fields.php');
-  exit;
-}
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -582,11 +557,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit'])) {
 
   <main id="main" class="main">
     <div class="pagetitle">
-      <h1>Users</h1>
+      <h1>Fields</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-          <li class="breadcrumb-item active">posts d'emploi</li>
+          <li class="breadcrumb-item active">Fields</li>
         </ol>
       </nav>
     </div>
@@ -596,11 +571,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit'])) {
     ?>
     <section class="section">
       <div class="row">
-        <div class="col-lg-8">
+        <div class="col-lg-12">
           <div class="card">
             <div class="card-body">
               <div class="d-flex justify-content-between align-items-center">
                 <h5 class="card-title">Field List</h5>
+                <a href="add-field.php" class="btn btn-primary">
+                  <i class="bi bi-plus-lg"></i>
+                </a>
               </div>
 
               <table class="table table-striped datatable">
@@ -619,10 +597,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit'])) {
                     <tr>
                       <th scope="row"><?php echo $field['FieldID']; ?></th>
                       <td><?php echo $field['FieldName']; ?></td>
-                      <td><?php echo $field['Description'] !== null ? mb_substr($field['Description'], 0, 20) . (strlen($field['Description']) > 20 ? '...' : '') : ''; ?></td>
+                      <td><?php echo $field['Description']; ?></td>
                       <td>
-                        <a href="fields.php?see-more=<?php echo $field['FieldID']; ?>" class="btn btn-primary"><i class="bi bi-eye"></i></a>
-                        <a href="fields.php?edit=<?php echo $field['FieldID']; ?>" class="btn btn-success"><i class="bi bi-pencil"></i></a>
+                        <a href="edit-field.php?edit=<?php echo $field['FieldID']; ?>" class="btn btn-success"><i class="bi bi-pencil"></i></a>
                       </td>
                     </tr>
                   <?php
@@ -634,105 +611,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['edit'])) {
             </div>
           </div>
         </div>
-        <div class="col-lg-4">
-          <div class="card">
-            <div class="card-body">
-              <div class="d-flex justify-content-between align-items-center">
-                <h5 class="card-title">Field List</h5>
-              </div>
-              <!--TODO Default Tabs  -->
-              <ul class="nav nav-tabs d-flex" id="myTabjustified" role="tablist">
-                <li class="nav-item flex-fill" role="presentation">
-                  <button class="nav-link w-100 <?php echo isset($_GET['see-more']) ? 'active' : ''; ?>" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-justified" type="button" role="tab" aria-controls="home" aria-selected="<?php echo isset($_GET['see-more']) ? 'true' : 'false'; ?>">See More</button>
-                </li>
-                <li class="nav-item flex-fill" role="presentation">
-                  <button class="nav-link w-100 <?php echo isset($_GET['create']) ? 'active' : ''; ?>" id="create-tab" data-bs-toggle="tab" data-bs-target="#create-justified" type="button" role="tab" aria-controls="create" aria-selected="<?php echo isset($_GET['create']) ? 'true' : 'false'; ?>">Create</button>
-                </li>
-                <li class="nav-item flex-fill" role="presentation">
-                  <button class="nav-link w-100 <?php echo isset($_GET['edit']) ? 'active' : ''; ?>" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-justified" type="button" role="tab" aria-controls="profile" aria-selected="<?php echo isset($_GET['edit']) ? 'true' : 'false'; ?>">Edit</button>
-                </li>
-              </ul>
-              <!-- SEE MORE TAB -->
-              <div class="tab-content pt-2" id="myTabjustifiedContent">
-                <div class="tab-pane fade show <?php echo isset($_GET['see-more']) ? 'active' : ''; ?>" id="home-justified" role="tabpanel" aria-labelledby="home-tab">
-                  <!-- Multi Columns Form -->
-                  <?php if (!isset($_GET['see-more']) && !isset($_GET['edit'])) : ?>
-                    <div class="alert alert-warning" role="alert">
-                      You must select a field first.
-                    </div>
-                  <?php else : ?>
-                    <form class="row g-3">
-                      <div class="col-md-6">
-                        <label for="inputID" class="form-label">ID</label>
-                        <input type="text" class="form-control" id="inputID" name="see-more-id" value="<?php echo $fieldCrud['FieldID']; ?>">
-                      </div>
-                      <div class="col-md-6">
-                        <label for="inputField" class="form-label">Field Name</label>
-                        <input type="text" class="form-control" id="inputField" name="see-more-name" value="<?php echo $fieldCrud['FieldName']; ?>">
-                      </div>
-                      <div class="col-12">
-                        <label for="inputDescription" class="form-label">Description</label>
-                        <input type="text" class="form-control" id="inputDescription" name="see-more-description" value="<?php echo $fieldCrud['Description']; ?>">
-                      </div>
-                    </form><!-- End Multi Columns Form -->
-                  <?php endif; ?>
-                </div>
-                <!-- End See More Tab -->
-                <!-- New Tab Content -->
-                <div class="tab-pane fade show <?php echo isset($_GET['create']) ? 'active' : ''; ?>" id="create-justified" role="tabpanel" aria-labelledby="create-tab">
-                  <!-- Multi Columns Form -->
-                  <form class="row g-3" method="POST">
-                    <div class="col-md-6">
-                      <label for="inputID" class="form-label">ID</label>
-                      <input type="text" class="form-control" id="inputID" name="create-id">
-                    </div>
-                    <div class="col-md-6">
-                      <label for="inputField" class="form-label">Field Name</label>
-                      <input type="text" class="form-control" id="inputField" name="create-name">
-                    </div>
-                    <div class="col-12">
-                      <label for="inputDescription" class="form-label">Description</label>
-                      <input type="text" class="form-control" id="inputDescription" name="create-description">
-                    </div>
-                    <div class="text-center">
-                      <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-                  </form><!-- End Multi Columns Form -->
-                </div>
-                <!-- End New Tab Content -->
-                <!--EDIT TAB-->
-                <div class="tab-pane fade show <?php echo isset($_GET['edit']) ? 'active' : ''; ?>" id="profile-justified" role="tabpanel" aria-labelledby="profile-tab">
-                  <!-- Multi Columns Form -->
-                  <?php if (!isset($_GET['see-more']) && !isset($_GET['edit'])) : ?>
-                    <div class="alert alert-warning" role="alert">
-                      You must select a field first.
-                    </div>
-                  <?php else : ?>
-                    <form class="row g-3" method="POST">
-                      <div class="col-md-6">
-                        <label for="inputID" class="form-label">ID</label>
-                        <input type="text" class="form-control" id="inputID" name="edit-id" value="<?php echo $fieldCrud['FieldID']; ?>">
-                      </div>
-                      <div class="col-md-6">
-                        <label for="inputField" class="form-label">Field Name</label>
-                        <input type="text" class="form-control" id="inputField" name="edit-name" value="<?php echo $fieldCrud['FieldName']; ?>">
-                      </div>
-                      <div class="col-12">
-                        <label for="inputDescription" class="form-label">Description</label>
-                        <input type="text" class="form-control" id="inputDescription" name="description-name" value="<?php echo $fieldCrud['Description']; ?>">
-                      </div>
-                      <div class="text-center">
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                      </div>
-                    </form><!-- End Multi Columns Form -->
-                  <?php endif; ?>
-                </div>
-                <!-- End Edit Tab -->
-              </div><!-- End Default Tabs -->
-            </div>
-          </div>
-        </div>
-      </div>
     </section>
 
   </main>
