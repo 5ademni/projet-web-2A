@@ -59,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Content
                 $mail->isHTML(true);
                 $mail->Subject = 'Reinitialisation du mot de passe';
-                $mail->Body = 'Cliquez sur le lien suivant pour réinitialiser votre mot de passe : <a href="http://localhost/crudWEB/Views/front/pw_reset/pwd_reset.php?email=' . urlencode($email) . '&token=' . urlencode($token) . '">Réinitialiser le mot de passe</a>';
+                $mail->Body = 'Cliquez sur le lien suivant pour réinitialiser votre mot de passe : <a href="http://localhost/crudWEB/Views/front_office/pw_reset/pwd_reset.php?email=' . urlencode($email) . '&token=' . urlencode($token) . '">Réinitialiser le mot de passe</a>';
 
 
                 $mail->send();

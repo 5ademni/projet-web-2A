@@ -278,7 +278,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </footer>
 
     <!-- JAVASCRIPT FILES -->
-    <script src="js/controle_saisie_front.js"></script>
+    <script src="js/controle_saisie_front_office.js"></script>
 
 </body>
 

@@ -2,7 +2,8 @@
 // Include necessary files
 include_once '../../Model/admin.php';
 include_once '../../Controller/adminC.php';
-include "../../auth/config.php";
+include_once "../../auth/config.php";
+include_once "../../auth/connexion.php";
 
 // Start session
 session_start();
