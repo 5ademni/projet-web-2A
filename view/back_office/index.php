@@ -280,7 +280,7 @@
 
       <!-- Start Users Nav -->
       <li class="nav-item">
-        <a class="nav-link" href="users.html">
+        <a class="nav-link" href="affichageAdmin.php">
           <i class="bi bi-people"></i>
           <span>Users</span>
         </a>
@@ -300,14 +300,14 @@
       <li class="nav-item">
         <a class="nav-link" href="blogs.php">
           <i class="bi bi-pencil-square"></i>
-          <span>Blogs</span>
+          <span>Blog</span>
         </a>
       </li>
       <!-- End Blog Nav -->
 
       <!-- Start projet Nav -->
       <li class="nav-item">
-        <a class="nav-link" href="projet.php">
+        <a class="nav-link" href="affichageProjet.php">
           <i class="bi bi-pencil-square"></i>
           <span>projet</span>
         </a>
@@ -537,7 +537,7 @@
       <!-- End Register Page Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-login.html">
+        <a class="nav-link collapsed" href="login.php">
           <i class="bi bi-box-arrow-in-right"></i>
           <span>Login</span>
         </a>
