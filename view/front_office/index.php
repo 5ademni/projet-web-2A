@@ -2,9 +2,7 @@
 
 // include 'config.php';
 //class "sidebar-brand-text mx-3"
-include '../../connexion.php';
-include '../../config.php';
-
+include "../../auth/config.php";
 
 // On prolonge la session
 session_start();

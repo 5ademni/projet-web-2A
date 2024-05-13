@@ -2,7 +2,8 @@
 // Include necessary files
 include_once '../../Model/admin.php';
 include_once '../../Controller/adminC.php';
-include_once '../../connexion.php';
+include_once "../../auth/config.php";
+include_once "../../auth/connexion.php";
 
 // Start session
 session_start();
@@ -21,12 +22,12 @@ try {
     $count = $pdo->prepare("SELECT COUNT(id) AS cpt FROM admin");
     $count->execute();
     $tcount = $count->fetch(PDO::FETCH_ASSOC);
-    
+
     // Debugging: Display the structure of $tcount
     var_dump($tcount);
 
     // Check if $tcount contains the key "cpt"
-    if(isset($tcount["cpt"])) {
+    if (isset($tcount["cpt"])) {
         // Pagination
         $page = isset($_GET["page"]) ? $_GET["page"] : 1;
         $nbr_elements_par_page = 5;
@@ -91,7 +92,7 @@ if (isset($_POST['tri'])) {
     $listeC = $adminC->afficherAdminTrie($tri);
 }
 
- /*    include('../../connexion.php'); // Include the file that establishes the database connection
+/*    include('../../connexion.php'); // Include the file that establishes the database connection
 
     // Check if $pdo is null or not
     // Check if $pdo is null or not
@@ -128,136 +129,141 @@ if (isset($_POST['tri'])) {
      */
 
 
-    ?>
+?>
 
 
 
 
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" type="text/css" href="css/style.css?ts=<?php echo time()?>"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Affichage Projet - 5ademni Admin Panel</title>
-        <!-- Bootstrap CSS -->
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-        <!-- Custom CSS -->
-        <link href="assets/css/style.css" rel="stylesheet">
-        <!-- Google Fonts -->
-        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
-        <!-- Font Awesome -->
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-        <style>
-            /* Additional CSS styles for better design */
-            body {
-                font-family: 'Open Sans', sans-serif;
-                background-color: #f8f9fc;
-            }
+<!DOCTYPE html>
+<html lang="en">
 
-            .wrapper {
-                display: flex;
-                flex-direction: column;
-                min-height: 100vh;
-            }
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="css/style.css?ts=<?php echo time() ?>" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Affichage Projet - 5ademni Admin Panel</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="assets/css/style.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Additional CSS styles for better design */
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f8f9fc;
+        }
 
-            .content-wrapper {
-                flex-grow: 1;
-                padding-top: 20px;
-            }
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-            .page-header {
-                margin-bottom: 20px;
-                text-align: center;
-            }
+        .content-wrapper {
+            flex-grow: 1;
+            padding-top: 20px;
+        }
 
-            .card-body {
-                margin-bottom: 20px;
-            }
+        .page-header {
+            margin-bottom: 20px;
+            text-align: center;
+        }
 
-            .table {
-                background-color: #fff;
-                border-radius: 8px;
-                box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-                overflow: hidden;
-            }
+        .card-body {
+            margin-bottom: 20px;
+        }
 
-            .table table {
-                width: 100%;
-                border-collapse: collapse;
-            }
+        .table {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
 
-            .table table th,
-            .table table td {
-                padding: 10px;
-                border-bottom: 1px solid #e0e0e0;
-            }
+        .table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-            .table table th {
-                background-color: #f5f5f5;
-                font-weight: bold;
-                text-align: left;
-            }
+        .table table th,
+        .table table td {
+            padding: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
 
-            .table table tbody tr:hover {
-                background-color: #f9f9f9;
-            }
+        .table table th {
+            background-color: #f5f5f5;
+            font-weight: bold;
+            text-align: left;
+        }
 
-            .sort {
-                margin-top: 20px;
-                padding: 10px;
-                background-color: #fff;
-                border-radius: 8px;
-                box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            }
+        .table table tbody tr:hover {
+            background-color: #f9f9f9;
+        }
 
-            .sort form {
-                display: flex;
-                align-items: center;
-            }
+        .sort {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
 
-            .sort label {
-                margin-right: 10px;
-            }
+        .sort form {
+            display: flex;
+            align-items: center;
+        }
 
-            .sort select {
-                margin-right: 10px;
-            }
+        .sort label {
+            margin-right: 10px;
+        }
 
-            .button {
-                background-color: #007bff;
-                color: #fff;
-                border: none;
-                padding: 8px 16px;
-                border-radius: 4px;
-                cursor: pointer;
-            }
+        .sort select {
+            margin-right: 10px;
+        }
 
-            .button:hover {
-                background-color: #0056b3;
-            }
-            
-    .pagination{
-        text-align: center;
-    }
-    .pagination a{
-        color: black;
-        text-decoration: none;
-        padding: 8px 15px;
-        display: inline-block;
-    }
-    .pagination a.active{
-        background-color: hsl(120, 100%, 70%);
-        font-weight: bold;
-        border-radius: 5px;
-    }
-    .pagination a:hover:not(.active){
-        background-color: hsl(0, 0%, 77%);
-        border-radius: 5px;
-    }
-        </style>
-    </head>
-    <body>
+        .button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #0056b3;
+        }
+
+        .pagination {
+            text-align: center;
+        }
+
+        .pagination a {
+            color: black;
+            text-decoration: none;
+            padding: 8px 15px;
+            display: inline-block;
+        }
+
+        .pagination a.active {
+            background-color: hsl(120, 100%, 70%);
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+        .pagination a:hover:not(.active) {
+            background-color: hsl(0, 0%, 77%);
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
     <header class="header fixed-top d-flex align-items-center">
         <div class="container d-flex justify-content-between align-items-center">
             <a href="#" class="logo d-flex align-items-center">
@@ -268,170 +274,169 @@ if (isset($_POST['tri'])) {
         </div>
     </header>
 
-    
-        
-        
-        
-        <!-- Page Content -->
-            <div class="content-wrapper">
-                <!-- Page Header -->
-                <div class="page-header">
-                </div>
-                <!-- End Page Header -->
-                <div class="content-wrapper">
-                <!-- Page Header -->
-                <div class="page-header">
-                    <h1 class="m-0 font-weight-bold text-primary">USER TABLE  </h1>
-                </div>
 
-                            <div class="card-body">
-                                <div class="table-responsive">
-                                        <thead>
-                <form method="POST" action="affichageAdmin.php">
-                <input type="submit" value="reset"class = "btn btn-primary" >
-            
-                <input type="text" class="field small-field" name="rech"/>
-                <select name="selon" class="field small-field" >
 
-                
-                
-                <option value="nom">nom</option>
-                <option value="email">email</option>
-                <option value="numtel">numtel</option>
-                
-                </select>
-                <input type="submit" class="button" value="search" name="search" /></form>
-                
-                </div>
-            
-            <div id="sidebar">
-            <!-- Box -->  <div class="sort">
-                <form method="POST"><label>SELECT</label>
-                <select name="tri" class="field" >
-                
 
-                    <option value="nom">nom</option>
-                    <option value="email">email</option>
-                    <option value="numtel">numtel</option>
-                    
-                </select><input type="submit"  value="trier"class = "btn btn-primary"style = "background-color: #90D26D "></form>
-                
-                </div>
-            <!-- End Box Head -->
-            <!-- Table -->
-            <div class="table">
-            
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+
+    <!-- Page Content -->
+    <div class="content-wrapper">
+        <!-- Page Header -->
+        <div class="page-header">
+        </div>
+        <!-- End Page Header -->
+        <div class="content-wrapper">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="m-0 font-weight-bold text-primary">USER TABLE </h1>
+            </div>
+
+            <div class="card-body">
+                <div class="table-responsive">
                     <thead>
-                        <!-- Add your table headers here -->
-                        <tr>
-                            <th>ID</th>
-                            <th>Nom</th>         
-                            <th>Email</th>
-                            <th>Adresse</th>
-                            <th>Numtel</th>
-                            <th>Mot de passe</th>
-                            <!-- Add more headers if needed -->
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Display records from $listeC -->
-                        <?php foreach($listeC as $admin): ?>
-                            <tr>
-                                <td><?php echo $admin['id']; ?></td>
-                                <td><?php echo $admin['nom']; ?></td>
-                                <td><?php echo $admin['email']; ?></td> 
-                                <td><?php echo $admin['adresse']; ?></td>
-                                <td><?php echo $admin['numtel']; ?></td>
-                                <td><?php echo $admin['mdp']; ?></td>
-                                <td><a href="supprimerAdmin.php?id=<?php echo $admin['id']; ?>" class="btn btn-primary" style="background-color: #90D26D;">Delete</a></td>
-                                <td><a href="modifierAdmin.php?id=<?php echo $admin['id']; ?>" class="btn btn-primary" style="background-color: red;">Edit</a></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-                                </div>
-                            </div>
+                        <form method="POST" action="affichageAdmin.php">
+                            <input type="submit" value="reset" class="btn btn-primary">
+
+                            <input type="text" class="field small-field" name="rech" />
+                            <select name="selon" class="field small-field">
 
 
-                    </div>
-                    <!-- /.container-fluid -->
+
+                                <option value="nom">nom</option>
+                                <option value="email">email</option>
+                                <option value="numtel">numtel</option>
+
+                            </select>
+                            <input type="submit" class="button" value="search" name="search" />
+                        </form>
 
                 </div>
-                <!-- End of Main Content -->
 
-                <!-- Footer -->
-                <footer class="sticky-footer bg-white">
-                    <div class="container my-auto">
-                        <div class="copyright text-center my-auto">
-                            <!-- <span>Copyright &copy; Your Website 2020</span> -->
-                        </div>
+                <div id="sidebar">
+                    <!-- Box -->
+                    <div class="sort">
+                        <form method="POST"><label>SELECT</label>
+                            <select name="tri" class="field">
+
+
+                                <option value="nom">nom</option>
+                                <option value="email">email</option>
+                                <option value="numtel">numtel</option>
+
+                            </select><input type="submit" value="trier" class="btn btn-primary" style="background-color: #90D26D ">
+                        </form>
+
                     </div>
-                </footer>
-                <!-- End of Footer -->
+                    <!-- End Box Head -->
+                    <!-- Table -->
+                    <div class="table">
+
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <!-- Add your table headers here -->
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nom</th>
+                                    <th>Email</th>
+                                    <th>Adresse</th>
+                                    <th>Numtel</th>
+                                    <th>Mot de passe</th>
+                                    <!-- Add more headers if needed -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Display records from $listeC -->
+                                <?php foreach ($listeC as $admin) : ?>
+                                    <tr>
+                                        <td><?php echo $admin['id']; ?></td>
+                                        <td><?php echo $admin['nom']; ?></td>
+                                        <td><?php echo $admin['email']; ?></td>
+                                        <td><?php echo $admin['adresse']; ?></td>
+                                        <td><?php echo $admin['numtel']; ?></td>
+                                        <td><?php echo $admin['mdp']; ?></td>
+                                        <td><a href="supprimerAdmin.php?id=<?php echo $admin['id']; ?>" class="btn btn-primary" style="background-color: #90D26D;">Delete</a></td>
+                                        <td><a href="modifierAdmin.php?id=<?php echo $admin['id']; ?>" class="btn btn-primary" style="background-color: red;">Edit</a></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
 
             </div>
-            <!-- End of Content Wrapper -->
+            <!-- /.container-fluid -->
 
         </div>
-        <!-- End of Page Wrapper -->
+        <!-- End of Main Content -->
 
-        <!-- Scroll to Top Button-->
-        <a class="scroll-to-top rounded" href="#page-top">
-            <i class="fas fa-angle-up"></i>
-        </a>
-        <nav>
-                    <ul class="pagination justify-content-center">
-                        <?php for ($i = 1; $i <= $nbr_de_pages; $i++) : ?>
-                            <li class="page-item <?php echo $page == $i ? 'active' : ''; ?>">
-                                <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                            </li>
-                        <?php endfor; ?>
-                    </ul>
-                </nav>
-        <!-- Logout Modal-->
-        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <a class="btn btn-primary" href="login.html">Logout</a>
-                    </div>
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <!-- <span>Copyright &copy; Your Website 2020</span> -->
+                </div>
+            </div>
+        </footer>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+    <nav>
+        <ul class="pagination justify-content-center">
+            <?php for ($i = 1; $i <= $nbr_de_pages; $i++) : ?>
+                <li class="page-item <?php echo $page == $i ? 'active' : ''; ?>">
+                    <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                </li>
+            <?php endfor; ?>
+        </ul>
+    </nav>
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="login.html">Logout</a>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Bootstrap core JavaScript-->
-        <script src="vendor/jquery/jquery.min.js"></script>
-        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-        <!-- Core plugin JavaScript-->
-        <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-        <!-- Custom scripts for all pages-->
-        <script src="js/sb-admin-2.min.js"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
 
-        <!-- Page level plugins -->
-        <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-        <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <!-- Page level plugins -->
+    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
-        <!-- Page level custom scripts -->
-        <script src="js/demo/datatables-demo.js"></script>
+    <!-- Page level custom scripts -->
+    <script src="js/demo/datatables-demo.js"></script>
 
-    </body>
-
-
+</body>
 
 
-    </html>
 
-    
 
+</html>
