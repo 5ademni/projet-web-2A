@@ -10,6 +10,7 @@ include_once '../../controller/event2.php';
 include_once '../../controller/Categorie_Evenement2.php';
 include_once '../../controller/inscriptionEvenement.php';
 include_once '../../controller/domaineEV2.php';
+include_once '../../controller/adminC.php';
 require 'phpmailer/src/Exception.php';
 require 'phpmailer/src/PHPMailer.php';
 require 'phpmailer/src/SMTP.php';
@@ -64,9 +65,9 @@ if (isset($_POST['inscription']) && isset($_POST['event_id'])) {
     $db = config::getConnexion();
     $event = $Eventc->getEvenement($event_id);
     if (isset($event['nbPlaces']) && $event['nbPlaces'] > 0) {
-        $sql = "SELECT * FROM auteur WHERE id_auteur = :id_auteur";
+        $sql = "SELECT * FROM admin WHERE id = :id";
         $stmt = $db->prepare($sql);
-        $stmt->execute([':id_auteur' => $_SESSION['id']]);
+        $stmt->execute([':id' => $_SESSION['id']]);
         $auteur = $stmt->fetch();
         if ($auteur) {
             if (!$inscription->estInscrit($event['id_evenement'], $_SESSION['id'])) {
@@ -77,7 +78,16 @@ if (isset($_POST['inscription']) && isset($_POST['event_id'])) {
                         'ID de l\'événement : ' . $event['id_evenement'] . "<br>" .
                         'Titre de l\'événement : ' . $event['titre'];
                 $altBody = "Vous êtes inscrit à l'événement " . $event['titre'];
+                $email = $auteur['email'];
+
+                echo "Avant remplacement: " . $email;
+                if (substr($email, -11) === "@5ademni.tn") {
+                    $email = str_replace("@5ademni.tn", "@gmail.com", $email);
+                }
+                echo "Après remplacement: " . $email;
+                $auteur['email'] = $email;
                 sendEmail($auteur['email'], $subject, $body, $altBody);
+                ;
         
                 $organisateur = $Eventc->getOrganisateur($event_id);
                 $subject = "Nouvelle inscription à votre événement";
@@ -86,16 +96,30 @@ if (isset($_POST['inscription']) && isset($_POST['event_id'])) {
                         'ID de l\'événement : ' . $event['id_evenement'] . "<br>" .
                         'Titre de l\'événement : ' . $event['titre'];
                 $altBody = "Un nouvel utilisateur s'est inscrit à votre événement " . $event['titre'];
-                sendEmail($organisateur['email'], $subject, $body, $altBody);
+                $email = $auteur['email'];
+
+                if (substr($email, -11) === "@5ademni.tn") {
+                    $email = str_replace("@5ademni.tn", "@gmail.com", $email);
+                }
+
+            $auteur['email'] = $email;
+            var_dump($organisateur['email']);
+                sendEmail($auteur['email'], $subject, $body, $altBody);
             }
-         
         $event = $Eventc->getEvenement($event_id);
         if ($event['nbPlaces'] == 0) {
             $organisateur = $Eventc->getOrganisateur($event_id);
-            $subject = "Votre événement est complet";
+            $subject = $subject = $subject = "Félicitations, votre événement est maintenant complet !";            ;
             $body = "Votre événement " . $event['titre'] . " est complet.";
             $altBody = "Votre événement " . $event['titre'] . " est complet.";
-            sendEmail($organisateur['email'], $subject, $body, $altBody);
+            $email = $auteur['email'];
+
+            if (substr($email, -11) === "@5ademni.tn") {
+                $email = str_replace("@5ademni.tn", "@gmail.com", $email);
+            }
+
+$auteur['email'] = $email;
+            sendEmail($auteur['email'], $subject, $body, $altBody);
         }
         
     header('Location: trouver_evenement.php');
@@ -176,7 +200,7 @@ ob_end_flush();
                     
                         <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="eventButton">
                             <li><a class="dropdown-item" href="ajouter_evenement.php">Ajouter un événement</a></li>
-                            <li><a class="dropdown-item" href="trouver_id_auteur.php">Trouver un événement</a></li>
+                            <li><a class="dropdown-item" href="trouver_evenement.php">Trouver un événement</a></li>
                         </ul>
                     </li>
                     
@@ -315,8 +339,8 @@ input[type="submit"] {
         </div>
         <div class="fix"></div>
         <?php 
-        var_dump($event['id_auteur']);
-        if ($event['id_auteur'] == $_SESSION['id']) : ?>
+        var_dump($event['id_admin']);
+        if ($event['id_admin'] == $_SESSION['id']) : ?>
         <a href="Modifier_evenement.php?id=<?php echo $event['id_evenement'] ?>"class="modify" style="background-color: blue; color: white;">Modifier</a>
         <a href="supprimer_evenement.php?id=<?php echo $event['id_evenement'] ?>" class="delete" style="background-color: red; color: white; margin-left: 10px;">Supprimer</a>
         <?php endif; ?>

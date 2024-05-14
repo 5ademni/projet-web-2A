@@ -27,7 +27,6 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
     // Créer une instance de la classe Evenement
     $evenement = new Evenement(
         $_POST['id_evenement'],
-        $_POST['id_auteur'],
         $_POST['titre'],
         $_POST['contenu'],
         $_POST['dateEvenement'],
@@ -37,7 +36,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
         $target_file,
         $_POST['heureEvenement'],
         $_POST['id_categorie'],
-        $_POST['id_domaine']
+        $_POST['id_domaine'],
+        $_SESSION['id']
 
     );
 
@@ -648,8 +648,8 @@ exit;
               <input type="text" class="form-control" id="id_evenement" name="id_evenement" value="<?php echo $evenement['id_evenement']; ?> "readonly> 
             </div>
             <div class="form-group">
-              <label for="id_auteur">ID de l'auteur</label>
-              <input type="text" class="form-control" id="id_auteur" name="id_auteur" value="<?php echo $evenement['id_auteur']; ?> "readonly>
+              <label for="id_admin">ID de l'auteur</label>
+              <input type="text" class="form-control" id="id_admin" name="id_admin" value="<?php echo $evenement['id_admin']; ?> "readonly>
             </div>
             <div class="form-group">
             <label for="id_categorie">Catégorie</label>

@@ -1,14 +1,16 @@
 <?php
+session_start();
 include_once '../../controller/event2.php';
 include_once '../../model/event.php';
 include_once '../../controller/Categorie_Evenement2.php';
 include_once '../../controller/auteurE.php';
 include_once '../../controller/domaineEV2.php';
+include_once '../../controller/adminC.php';
 
 
 // Créer une instance du contrôleur
 $controller = new EvenementC();
-$controller2 = new auteurEC();
+$controller2 = new adminC();
 
 
 // Initialiser les messages d'erreur
@@ -34,10 +36,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Créer une instance de la classe Evenement
 
     // Valider les entrées
-    if (empty($_POST['id_auteur']) || !is_numeric($_POST['id_auteur'])) {
+    if (empty($_SESSION['id']) || !is_numeric($_SESSION['id'])) {
         $id_auteur_err = "Veuillez entrer un ID d'auteur valide.";
     }
-    if(($controller2->existeAuteur($_POST['id_auteur']))==false){
+    if(($controller2->existeAuteur($_SESSION['id']))==false){
       $id_auteur_err = "Cet auteur n'existe pas.";
      }
     if (empty($_POST['titre'])) {
@@ -87,7 +89,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Créer une instance de la classe Evenement
         $evenement = new Evenement(
           $id_evenement,
-          $_POST['id_auteur'],
           $_POST['titre'],
           $_POST['contenu'],
           $_POST['dateEvenement'],
@@ -97,7 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           $target_file,
           $_POST['heureEvenement'],
           $_POST['id_categorie'],
-          $_POST['id_domaine']
+          $_SESSION['id']
       );
         // Appeler la méthode addEvenement
         try {
@@ -709,10 +710,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <!-- Formulaire pour ajouter un événement -->
                         <form method="POST" enctype="multipart/form-data">
                         <div class="form-group">
-                            <label for="id_auteur">ID de l'auteur</label>
-                            <input type="text" class="form-control" id="id_auteur" name="id_auteur" placeholder="Entrez l'ID de l'auteur">
-                            <span class="error"><?php echo $id_auteur_err;?></span>
-                        </div>
+                         <label for="id_admin">ID de l'auteur</label>
+                        <input type="text" class="form-control" id="id_admin" name="id_admin" value="<?php echo $_SESSION['id']; ?> "readonly>
+                         </div>
                         <div class="form-group">
                             <label for="id_categorie">Catégorie</label>
                             <select class="form-control select-css" id="id_categorie" name="id_categorie">

@@ -621,7 +621,7 @@ $categories = $CategorieEvenementC->listCategories();
   ?>
     <tr>
       <th scope="row"><?php echo $evenement['id_evenement']; ?></th>
-      <td><?php echo $evenement['id_auteur']; ?></td>
+      <td><?php echo $evenement['id_admin']; ?></td>
       <td><?php echo $evenement['titre']; ?></td>
       <td><?php echo $evenement['contenu']; ?></td>
       <td><?php echo $evenement['dateEvenement']; ?></td>
