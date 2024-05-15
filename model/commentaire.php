@@ -1,6 +1,6 @@
 <?php
 
-class Commentaire
+class Commentaires
 {
     private $id_commentaire;
     private $id_article;

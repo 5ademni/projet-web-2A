@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   header('Location: blogs.php');
   exit;
 } elseif (isset($_GET['id'])) {
-  $ArticlesBlog = $ArticlesBlogC->getArticleById($_GET['id']);
+  $ArticlesBlog = $ArticlesBlogC->getArticlesById($_GET['id']);
 }
 ?>
 
