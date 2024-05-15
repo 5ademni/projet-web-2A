@@ -9,8 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $current_date = date('Y-m-d H:i:s');
 
     $ArticlesBlog = new ArticlesBlog(
-
-        $_POST['id_article'],
+        NULL,
         $_POST['id_auteur'],
         $_POST['titre'],
         $_POST['contenu'],

@@ -53,11 +53,11 @@ class ArticlesBlogC
     }
     public function addArticle(ArticlesBlog $ArticlesBlog)
     {
-        $sql = "INSERT INTO articlesblog (id_article, id_auteur, titre, contenu, datePublication) VALUES (:id_article, :id_auteur, :titre, :contenu, :datePublication)";
+        $sql = "INSERT INTO articlesblog ( id_auteur, titre, contenu, datePublication) VALUES ( :id_auteur, :titre, :contenu, :datePublication)";
         $db = config::getConnexion(); // Assuming config::getConnexion() is a valid database connection method
         try {
             $stmt = $db->prepare($sql);
-            $stmt->bindValue(':id_article', $ArticlesBlog->getIdArticle());
+
             $stmt->bindValue(':id_auteur', $ArticlesBlog->getIdAuteur());
             $stmt->bindValue(':titre', $ArticlesBlog->getTitre());
             $stmt->bindValue(':contenu', $ArticlesBlog->getContenu());
