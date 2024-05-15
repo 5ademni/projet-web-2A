@@ -51,10 +51,23 @@ class ArticlesBlogC
 
     public function addArticle(ArticlesBlog $ArticlesBlog)
     {
-        $sql = "INSERT INTO articlesblog (id_article, id_auteur, titre, contenu, datePublication) VALUES (:id_article, :id_auteur, :titre, :contenu, :datePublication)";
-        $db = config::getConnexion();
+        $sql = "INSERT INTO articlesblog ( id_auteur, titre, contenu, datePublication) VALUES ( :id_auteur, :titre, :contenu, :datePublication)";
+        $db = config::getConnexion(); // Assuming config::getConnexion() is a valid database connection method
         try {
             $stmt = $db->prepare($sql);
+
+            $stmt->bindValue(':id_auteur', $ArticlesBlog->getIdAuteur());
+            $stmt->bindValue(':titre', $ArticlesBlog->getTitre());
+            $stmt->bindValue(':contenu', $ArticlesBlog->getContenu());
+            $stmt->bindValue(':datePublication', $ArticlesBlog->getDatePublication());
+            $stmt->execute();
+
+            // After successfully inserting the article, send an SMS using Twilio
+            $account_sid = 'AC6280eb8f0ca52bd2141f89acbf4d9dc4'; // Your Twilio Account SID
+            $auth_token = 'e08341d95a9c6138bcdad4cfb83be6a6'; // Your Twilio Auth Token
+            $twilio_number = "+15085765764"; // Your Twilio phone number
+            
+            $client = new Client($account_sid, $auth_token);
 
             $stmt->bindvalue(':id_article', $ArticlesBlog->getIdArticle());
             $stmt->bindvalue(':id_auteur', $ArticlesBlog->getIdAuteur());
