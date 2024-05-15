@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 if (isset($_GET['id'])) {
-    $ArticlesBlog = $ArticlesBlogC->getArticlesById($_GET['id']);
+    $ArticlesBlog = $ArticlesBlogC->getArticleById($_GET['id']);
 }
 ?>
 
@@ -166,13 +166,13 @@ Bootstrap 5 HTML CSS Template
                     <div class="row">
 
                         <div class="col-lg-8 col-12">
-                            <h2 class="job-title mb-0"><input type="text" name="id_auteur" value="<?php echo $ArticlesBlogC['id_auteur']; ?>"></h2>
+                            <h2 class="job-title mb-0"><input type="text" name="id_auteur" value="<?php echo $ArticlesBlog['id_auteur']; ?>"></h2>
 
                             <div class="job-thumb job-thumb-detail">
                                 <class="d-flex flex-wrap align-items-center border-bottom pt-lg-3 pt-2 pb-3 mb-4">
                                     <p class="job-location mb-0">
                                         <i class="custom-icon bi-geo-alt me-1"></i>
-                                        <input type="text" name="titre" value="<?php echo $ArticlesBlogC['titre']; ?>">
+                                        <input type="text" name="titre" value="<?php echo $ArticlesBlog['titre']; ?>">
                                     </p>
 
                                     <p class="job-date mb-0">

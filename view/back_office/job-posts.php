@@ -320,6 +320,20 @@ if (isset($_GET['delete-job'])) {
 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-menu-button-wide"></i><span>Categories</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="fields.php">
+              <i class="bi bi-circle"></i><span>Fields</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+      <!-- End categories Nav -->
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-menu-button-wide"></i><span>Components</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
@@ -577,7 +591,7 @@ if (isset($_GET['delete-job'])) {
           </a>
         </div>
 
-        <table class="table table-striped">
+        <table class="table table-striped datatable">
           <thead>
             <tr>
               <th scope="col">ID</th>
@@ -610,7 +624,7 @@ if (isset($_GET['delete-job'])) {
                   <?php } ?>
                 </td>
                 <td>
-                  <a href="job-details.html" class="btn btn-primary"><i class="bi bi-eye"></i></a>
+                  <a href="../front_office_office/job-details.php?id=<?php echo $jobPost['JobID']; ?>" class="btn btn-primary"><i class="bi bi-eye"></i></a>
                   <a href="edit-job.php?id=<?php echo $jobPost['JobID']; ?>" class="btn btn-success"><i class="bi bi-pencil"></i></a>
                   <a href="?delete-job=<?php echo $jobPost['JobID']; ?>" class="btn btn-danger"><i class="bi bi-trash"></i></a>
                 </td>

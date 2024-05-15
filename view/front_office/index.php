@@ -1,3 +1,23 @@
+<?php
+
+// include 'config.php';
+//class "sidebar-brand-text mx-3"
+include "../../auth/config.php";
+
+// On prolonge la session
+session_start();
+$adminName = isset($_SESSION['adminName']) ? $_SESSION['adminName'] : "user";
+// On teste si la variable de session existe et contient une valeur
+if (empty($_SESSION['e'])) {
+
+    // Si inexistante ou nulle, on redirige vers le formulaire de login
+    header('Location: login.php');
+}
+
+
+
+?>
+
 <!doctype html>
 <html lang="en">
 
@@ -40,9 +60,20 @@ Bootstrap 5 HTML CSS Template
 
 <body id="top">
 
+    <iframe src="http://127.0.0.1:7890/" style="
+        border-radius: 10px;
+        width: 20vw; /* Adjust this to change the width */
+        height: calc(60vh - 70px); /* Adjust this to change the height */
+        padding-top: 10px;
+        position: fixed; /* Make the iframe stick to the corner */
+        bottom: 0; /* Position it at the bottom of the page */
+        right: 0; /* Position it at the right of the page */
+        z-index: 9999; /* Make it appear above everything else */
+    "></iframe>
+
     <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="index.php">
+            <a class="navbar-brand d-flex align-items-center" href="index.html">
                 <img src="images/logo.png" class="img-fluid logo-image">
 
                 <div class="d-flex flex-column">
@@ -57,19 +88,21 @@ Bootstrap 5 HTML CSS Template
             <div class="collapse navbar-collapse" id="navbarNav" style="margin-top: 5px;">
                 <ul class="navbar-nav align-items-center ms-lg-5">
                     <li class="nav-item">
-                        <a class="nav-link active" href="index.php">Page d'accueil</a>
+                        <a class="nav-link active" href="index.html">Page d'accueil</a>
                     </li>
 
                     <li class="nav-item">
                         <a class="nav-link" href="about.html">About 5ademni</a>
                     </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="blog.php">Blogs</a>
-                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="job-listings.php">Jobs</a>
+                        <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">
+                            <li><a class="dropdown-item" href="job-listings.html">Listes d'emplois</a></li>
+
+                            <li><a class="dropdown-item" href="job-details.html">Détails du poste</a></li>
+                        </ul>
                     </li>
 
                     <li class="nav-item">
@@ -77,11 +110,19 @@ Bootstrap 5 HTML CSS Template
                     </li>
 
                     <li class="nav-item ms-lg-auto">
-                        <a class="nav-link" href="#">Registre</a>
+                        <!-- <a class="nav-link" href="#">Registre</a> -->
+                        <a href="login.php" class="nav-link">register</a>
                     </li>
 
+
                     <li class="nav-item">
-                        <a class="nav-link custom-btn btn" href="#">Login</a>
+
+                        <a href="logout.php" class="btn btn-primary py-2 px-4">Log Out</a>
+                    </li>
+                    <li class="nav-item">
+                        <div>
+                            hello: <?php echo $adminName; ?> <!-- Display the administrator's name here -->
+                        </div>
                     </li>
 
                 </ul>
@@ -166,10 +207,10 @@ Bootstrap 5 HTML CSS Template
 
                     <div class="col-lg-2 col-md-4 col-6">
                         <div class="categories-block">
-                            <a href="#" class="d-flex flex-column justify-content-center align-items-center h-100">
-                                <i class="categories-icon bi-window"></i>
+                            <a href="job-scrape-it.php" class="d-flex flex-column justify-content-center align-items-center h-100">
+                                <i class="categories-icon bi-display"></i>
 
-                                <small class="categories-block-title">Web design</small>
+                                <small class="categories-block-title">IT jobs</small>
 
                                 <div class="categories-block-number d-flex flex-column justify-content-center align-items-center">
                                     <span class="categories-block-number-text">320</span>
@@ -180,10 +221,10 @@ Bootstrap 5 HTML CSS Template
 
                     <div class="col-lg-2 col-md-4 col-6">
                         <div class="categories-block">
-                            <a href="#" class="d-flex flex-column justify-content-center align-items-center h-100">
-                                <i class="categories-icon bi-twitch"></i>
+                            <a href="job-scrape-electric.php" class="d-flex flex-column justify-content-center align-items-center h-100">
+                                <i class="categories-icon bi-plug"></i>
 
-                                <small class="categories-block-title">Marketing</small>
+                                <small class="categories-block-title">electrical</small>
 
                                 <div class="categories-block-number d-flex flex-column justify-content-center align-items-center">
                                     <span class="categories-block-number-text">180</span>
@@ -194,10 +235,10 @@ Bootstrap 5 HTML CSS Template
 
                     <div class="col-lg-2 col-md-4 col-6">
                         <div class="categories-block">
-                            <a href="#" class="d-flex flex-column justify-content-center align-items-center h-100">
-                                <i class="categories-icon bi-play-circle-fill"></i>
+                            <a href="job-scrape-eng.php" class="d-flex flex-column justify-content-center align-items-center h-100">
+                                <i class="categories-icon bi-tools"></i>
 
-                                <small class="categories-block-title">Video</small>
+                                <small class="categories-block-title">engineer</small>
 
                                 <div class="categories-block-number d-flex flex-column justify-content-center align-items-center">
                                     <span class="categories-block-number-text">340</span>
@@ -208,10 +249,10 @@ Bootstrap 5 HTML CSS Template
 
                     <div class="col-lg-2 col-md-4 col-6">
                         <div class="categories-block">
-                            <a href="#" class="d-flex flex-column justify-content-center align-items-center h-100">
-                                <i class="categories-icon bi-globe"></i>
+                            <a href="job-scrape-design.php" class="d-flex flex-column justify-content-center align-items-center h-100">
+                                <i class="categories-icon bi-palette"></i>
 
-                                <small class="categories-block-title">Websites</small>
+                                <small class="categories-block-title">Design</small>
 
                                 <div class="categories-block-number d-flex flex-column justify-content-center align-items-center">
                                     <span class="categories-block-number-text">140</span>
@@ -222,10 +263,10 @@ Bootstrap 5 HTML CSS Template
 
                     <div class="col-lg-2 col-md-4 col-6">
                         <div class="categories-block">
-                            <a href="#" class="d-flex flex-column justify-content-center align-items-center h-100">
-                                <i class="categories-icon bi-people"></i>
+                            <a href="job-scrape-tic.php" class="d-flex flex-column justify-content-center align-items-center h-100">
+                                <i class="categories-icon bi-diagram-2"></i>
 
-                                <small class="categories-block-title">Service client</small>
+                                <small class="categories-block-title">TIC</small>
 
                                 <div class="categories-block-number d-flex flex-column justify-content-center align-items-center">
                                     <span class="categories-block-number-text">84</span>

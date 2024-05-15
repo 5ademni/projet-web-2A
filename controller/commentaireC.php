@@ -1,15 +1,12 @@
 <?php
-include "../../model/commentaire.php";
-include_once '../../auth/config.php';
+include "../auth/config.php";
+include "../model/commentaire.php";
 
 class CommentaireC
 {
-    private $db;
-
-   
     public function listCommentaires()
     {
-        $sql = "SELECT * FROM commentaires";
+        $sql = "SELECT * FROM commentaire";
         $db = config::getConnexion();
         try {
             $list = $db->query($sql);
@@ -18,31 +15,10 @@ class CommentaireC
             die('Erreur: ' . $e->getMessage());
         }
     }
-    public function listCommentairesByArticleId($id_article) {
-        $sql = "SELECT * FROM commentaires WHERE id_article = :id_article";
-        $this->db = config::getConnexion();
-        $statement = $this->db->prepare($sql);
-        $statement->bindParam(':id_article', $id_article);
-        $statement->execute();
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
-    }
-    
-    public function getCommentbyId($id_commentaire)
-  {
-    $sql = "SELECT *FROM commentaires WHERE id_commentaire = ?";
-    $db = config::getConnexion();
-    try {
-      $stmt = $db->prepare($sql);
-      $stmt->execute([$id_commentaire]);
-      $job_post = $stmt->fetch();
-      return $job_post;
-    } catch (Exception $e) {
-      die('Erreur: ' . $e->getMessage());
-    }
-  }
+
     public function addDummyCommentaire()
     {
-        $sql = "INSERT INTO commentaires (id_commentaire, id_article, id_auteur, contenu, datePublication) VALUES (NULL, '1', '1', 'Dummy Commentaire', '2021-06-01')";
+        $sql = "INSERT INTO commentaire (id_commentaire, id_article, id_auteur, contenu, datePublication) VALUES (NULL, '1', '1', 'Dummy Commentaire', '2021-06-01')";
         $db = config::getConnexion();
         try {
             $stmt = $db->prepare($sql);
@@ -62,7 +38,7 @@ class CommentaireC
 
     public function deleteCommentaire($id_commentaire)
     {
-        $sql = "DELETE FROM commentaires WHERE id_commentaire = :id_commentaire";
+        $sql = "DELETE FROM commentaire WHERE id_commentaire = :id_commentaire";
         $db = config::getConnexion();
         try {
             $stmt = $db->prepare($sql);
@@ -73,18 +49,18 @@ class CommentaireC
         }
     }
 
-    public function addCommentaire(Commentaires $Commentaire)
+    public function addCommentaire(Commentaire $Commentaire)
     {
-        $sql = "INSERT INTO commentaires (id_commentaire, id_article, nom, commentaire, dateCommentaire) VALUES (:id_commentaire, :id_article, :nom, :commentaire, :dateCommentaire)";
+        $sql = "INSERT INTO commentaire (id_commentaire, id_article, id_auteur, contenu, datePublication) VALUES (:id_commentaire, :id_article, :id_auteur, :contenu, :datePublication)";
         $db = config::getConnexion();
         try {
             $stmt = $db->prepare($sql);
 
-            $stmt->bindValue(':id_commentaire', $Commentaire->getIdCommentaire());
-            $stmt->bindValue(':id_article', $Commentaire->getIdArticle());
-            $stmt->bindValue(':nom', $Commentaire->getNom());
-            $stmt->bindValue(':commentaire', $Commentaire->getCommentaire());
-            $stmt->bindValue(':dateCommentaire', $Commentaire->getDateCommentaire());
+            $stmt->bindvalue(':id_commentaire', $Commentaire->getIdCommentaire());
+            $stmt->binvalue(':id_article', $Commentaire->getIdArticle());
+            $stmt->binvalue(':id_auteur', $Commentaire->getIdCommentaire());
+            $stmt->binvalue(':contenu', $Commentaire->getNom());
+            $stmt->binvalue(':datePublication', $Commentaire->getDateCommentaire());
 
             $stmt->execute();
         } catch (Exception $e) {
@@ -92,30 +68,28 @@ class CommentaireC
         }
     }
 
-    public function updateCommentaire($id_commentaire, $new_comment)
-{
-    $sql = "UPDATE commentaires SET commentaire = :new_comment WHERE id_commentaire = :id_commentaire";
-    $db = config::getConnexion();
-    try {
-        $stmt = $db->prepare($sql);
-    
-        // Bind the updated comment directly to the prepared statement
-        $stmt->bindValue(':new_comment', $new_comment);
-        $stmt->bindValue(':id_commentaire', $id_commentaire);
-    
-        $stmt->execute();
-    } catch (Exception $e) {
-        die('Erreur: ' . $e->getMessage());
-    }
-}
+    public function updateCommentaire(Commentaire $Commentaire)
+    {
+        $sql = "UPDATE commentaire SET id_article = :id_article, id_auteur = :id_auteur, contenu = :contenu, datePublication = :datePublication WHERE id_commentaire = :id_commentaire";
+        $db = config::getConnexion();
+        try {
+            $stmt = $db->prepare($sql);
 
-    
-    
-    
+            $stmt->bindvalue(':id_commentaire', $Commentaire->getIdCommentaire());
+            $stmt->binvalue(':id_article', $Commentaire->getIdArticle());
+            $stmt->binvalue(':id_auteur', $Commentaire->getNom());
+            $stmt->binvalue(':contenu', $Commentaire->getCommentaire());
+            $stmt->binvalue(':datePublication', $Commentaire->getDateCommentaire());
+
+            $stmt->execute();
+        } catch (Exception $e) {
+            die('Erreur: ' . $e->getMessage());
+        }
+    }
 
     public function getCommentaire($id_commentaire)
     {
-        $sql = "SELECT * FROM commentaires WHERE id_commentaire = :id_commentaire";
+        $sql = "SELECT * FROM commentaire WHERE id_commentaire = :id_commentaire";
         $db = config::getConnexion();
         try {
             $stmt = $db->prepare($sql);
@@ -125,14 +99,5 @@ class CommentaireC
         } catch (Exception $e) {
             die('Erreur: ' . $e->getMessage());
         }
-    }
-
-    public function rechercherCommentairesParIDBlog($idArticle) {
-        $sql = "SELECT * FROM Commentaires WHERE id_article = :idArticle";
-        $db = config::getConnexion();
-        $stmt = $db->prepare($sql);
-        $stmt->execute([':idArticle' => $idArticle]);
-        $result = $stmt->fetchAll(PDO::FETCH_CLASS, 'Commentaires');
-        return $result;
     }
 }

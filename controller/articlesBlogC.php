@@ -1,9 +1,7 @@
 <?php
 include "../../auth/config.php";
 include "../../model/articlesBlog.php";
-require __DIR__ . '../../../projet-web-2A/twilio-php-main/src/Twilio/autoload.php';
 
-use Twilio\Rest\Client;
 class ArticlesBlogC
 {
     public function listArticles()
@@ -33,7 +31,7 @@ class ArticlesBlogC
             ];
 
             $stmt->execute($dummyData);
-        } catch (Exception $e) {
+        }catch (Exception $e) {
             die('Erreur: ' . $e->getMessage());
         }
     }
@@ -46,11 +44,11 @@ class ArticlesBlogC
             $stmt = $db->prepare($sql);
             $stmt->bindValue(':id_article', $id_article);
             $stmt->execute();
-
         } catch (Exception $e) {
             die('Erreur: ' . $e->getMessage());
         }
     }
+
     public function addArticle(ArticlesBlog $ArticlesBlog)
     {
         $sql = "INSERT INTO articlesblog ( id_auteur, titre, contenu, datePublication) VALUES ( :id_auteur, :titre, :contenu, :datePublication)";
@@ -71,146 +69,72 @@ class ArticlesBlogC
             
             $client = new Client($account_sid, $auth_token);
 
-            $client->messages->create(
-                '+21655448828',  // Destination number
-                [
-                    'from' => $twilio_number,
-                    'body' => 'Félicitations ! Votre blog a été ajouté avec succès. Merci pour votre contribution professionnelle.' 
+            $stmt->bindvalue(':id_article', $ArticlesBlog->getIdArticle());
+            $stmt->bindvalue(':id_auteur', $ArticlesBlog->getIdAuteur());
+            $stmt->bindvalue(':titre', $ArticlesBlog->getTitre());
+            $stmt->bindvalue(':contenu', $ArticlesBlog->getContenu());
+            $stmt->bindvalue(':datePublication', $ArticlesBlog->getDatePublication());
 
-                ]
-            );
-
-            // Optionally, you can log or handle the message status or any errors
-            // For example:
-            // echo "Message SID: " . $message->sid;
-
-        } catch (Exception $e) {
-            die('erreur: ' . $e->getMessage());
-        }
-    }
-
-
-    
-
-    public function updateArticle($id, ArticlesBlog $ArticlesBlog)
-    {
-        $sql = "UPDATE articlesblog SET id_article = :id_article, id_auteur = :id_auteur, titre = :titre, contenu = :contenu, datePublication = :datePublication WHERE id_article = :id";
-        $db = config::getConnexion();
-        try {
-            $stmt = $db->prepare($sql);
-            $stmt->bindValue(':id_article', $ArticlesBlog->getIdArticle());
-            $stmt->bindValue(':id_auteur', $ArticlesBlog->getIdAuteur()); // corrected here
-            $stmt->bindValue(':titre', $ArticlesBlog->getTitre());
-            $stmt->bindValue(':contenu', $ArticlesBlog->getContenu());
-            $stmt->bindValue(':datePublication', $ArticlesBlog->getDatePublication());
-            $stmt->bindValue(':id', $id);
             $stmt->execute();
-        } catch (Exception $e) {
-            die('Erreur: ' . $e->getMessage());
+        }catch (Exception $e)
+        {
+            die('erreur: '.$e->getMessage());
         }
-    }
+        }
+
+        public function updateArticle($id, ArticlesBlog $ArticlesBlog)
+        {
+            $sql = "UPDATE articlesblog SET id_article = :id_article, id_auteur = :id_auteur, titre = :titre, contenu = :contenu, datePublication = :datePublication WHERE id_article = :id";
+            $db = config::getConnexion();
+            try {
+                $stmt = $db->prepare($sql);
+                $stmt->bindValue(':id_article', $ArticlesBlog->getIdArticle());
+                $stmt->bindValue(':id_auteur', $ArticlesBlog->getIdAuteur()); // corrected here
+                $stmt->bindValue(':titre', $ArticlesBlog->getTitre());
+                $stmt->bindValue(':contenu', $ArticlesBlog->getContenu());
+                $stmt->bindValue(':datePublication', $ArticlesBlog->getDatePublication());
+                $stmt->bindValue(':id', $id);
+                $stmt->execute();
+            }catch (Exception $e){
+            die('Erreur: '.$e->getMessage());
+            } 
+        }
 
     public function getArticle($id_article)
     {
-        $sql = "SELECT * FROM articlesblog WHERE id_article = :id_article";
+        $sql = "SELECT * FROM articlesblog WHERE id_article = : id_article";
         $db = config::getConnexion();
-        try {
+        try{
             $stmt = $db->prepare($sql);
             $stmt->bindValue(':id_article', $id_article);
             $stmt->execute();
             return $stmt->fetch();
-        } catch (Exception $e) {
-            die('Erreur: ' . $e->getMessage());
+        }catch (Exception $e)
+        {
+            die('Erreur: '.$e->getMessage());
         }
     }
 
 
-    public function getArticlesById($id_article)
-    {
-        $sql = "SELECT * FROM articlesblog WHERE id_article = :id_article";
-        $db = config::getConnexion();
-        try {
-            $stmt = $db->prepare($sql);
-            $stmt->bindValue(':id_article', $id_article);
-            $stmt->execute();
-            return $stmt->fetchAll();
-        } catch (Exception $e) {
-            die('Erreur: ' . $e->getMessage());
-        }
+public function getArticleById($id)
+{
+    $sql = "SELECT * FROM articlesblog WHERE id_article = ?";
+    $db = config::getConnexion();
+    try {
+        $stmt = $db->prepare($sql);
+        $stmt->execute([$id]);
+        $article = $stmt->fetch();
+        return $article;
+    } catch (Exception $e) {
+        die('Erreur: ' . $e->getMessage());
     }
-
-    public function getArticlesByAuteurId($id_auteur)
-    {
-        $sql = "SELECT * FROM articlesblog WHERE id_auteur = :id_auteur";
-        $db = config::getConnexion();
-        try {
-            $stmt = $db->prepare($sql);
-            $stmt->bindValue(':id_auteur', $id_auteur);
-            $stmt->execute();
-            return $stmt->fetchAll();
-        } catch (Exception $e) {
-            die('Erreur: ' . $e->getMessage());
-        }
-    }
+}
 
 
 
-
-
-    public function trierArticlesParContenuCroissant()
-    {
-        $sql = "SELECT * FROM articlesblog ORDER BY contenu ASC";
-        $db = config::getConnexion();
-        try {
-            $stmt = $db->prepare($sql);
-            $stmt->execute();
-            return $stmt->fetchAll();
-        } catch (Exception $e) {
-            die('Erreur: ' . $e->getMessage());
-        }
-    }
-
-    public function trierArticlesParContenuDecroissant()
-    {
-        $sql = "SELECT * FROM articlesblog ORDER BY contenu DESC";
-        $db = config::getConnexion();
-        try {
-            $stmt = $db->prepare($sql);
-            $stmt->execute();
-            return $stmt->fetchAll();
-        } catch (Exception $e) {
-            die('Erreur: ' . $e->getMessage());
-        }
-    }
-
-    public function trierArticlesParDateCroissante()
-    {
-        $sql = "SELECT * FROM articlesblog ORDER BY datePublication ASC";
-        $db = config::getConnexion();
-        try {
-            $stmt = $db->prepare($sql);
-            $stmt->execute();
-            return $stmt->fetchAll();
-        } catch (Exception $e) {
-            die('Erreur: ' . $e->getMessage());
-        }
-    }
-
-    public function trierArticlesParDateDecroissante()
-    {
-        $sql = "SELECT * FROM articlesblog ORDER BY datePublication DESC";
-        $db = config::getConnexion();
-        try {
-            $stmt = $db->prepare($sql);
-            $stmt->execute();
-            return $stmt->fetchAll();
-        } catch (Exception $e) {
-            die('Erreur: ' . $e->getMessage());
-        }
-    }
-
-
-
-    
 
 }
+
+
+
+

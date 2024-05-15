@@ -110,6 +110,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <!-- Formulaire pour ajouter un événement -->
                         <form method="POST" enctype="multipart/form-data" id="formblog">
                             <div class="form-group">
+                                <label for="id_article">Id d'article</label>
+                                <input type="text" class="form-control" id="id_article" name="id_article" placeholder="Entrez l'ID de l'article">
+                                <div id="erreurId_article"></div>
+                            </div>
+                            <div class="form-group">
                                 <label for="id_auteur">Id d'auteur</label>
                                 <input type="text" class="form-control" id="id_auteur" name="id_auteur" placeholder="Entrez l'ID de l'auteur">
                                 <div id="erreurId_auteur"></div>
@@ -272,7 +277,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </footer>
 
     <!-- JAVASCRIPT FILES -->
-    <script src="js/controle_saisie_front.js"></script>
+    <script src="js/controle_saisie_front_office.js"></script>
 
 </body>
 
