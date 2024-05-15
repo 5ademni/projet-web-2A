@@ -1,7 +1,7 @@
 <?php
 try {
     // Connexion à la base de données
-    $bdd = new PDO('mysql:host=localhost;dbname=projet;charset=utf8', 'root', 'root');
+    $bdd = new PDO('mysql:host=localhost;dbname=web;charset=utf8', 'root', '');
     $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Active le mode d'erreur PDO exception
 } catch (PDOException $e) {
     // Gestion des erreurs de connexion
@@ -16,7 +16,7 @@ if(isset($_POST['valider'])) {
         $message = nl2br(htmlspecialchars($_POST['message']));
 
         // Préparation et exécution de la requête SQL pour insérer le message dans la base de données
-        $insererMessage = $bdd->prepare('INSERT INTO messages(pseudo, message, timestamp) VALUES(?, ?, NOW())');
+        $insererMessage = $bdd->prepare('INSERT INTO message(pseudo, message, timestamp) VALUES(?, ?, NOW())');
         $insererMessage->execute(array($pseudo, $message));
 
         // Affichage d'une notification pour indiquer que le message a été ajouté
@@ -36,7 +36,7 @@ if(isset($_FILES['audio']) && !empty($_FILES['audio']['tmp_name'])) {
 
     // Insérer le chemin du fichier audio dans la base de données
     $audioPath = $_FILES['audio']['name'];
-    $insertQuery = $bdd->prepare('INSERT INTO messages (pseudo, message, timestamp) VALUES (?, ?, NOW())');
+    $insertQuery = $bdd->prepare('INSERT INTO message (pseudo, message, timestamp) VALUES (?, ?, NOW())');
     $insertQuery->execute(['', $audioPath]);
 }
 ?>

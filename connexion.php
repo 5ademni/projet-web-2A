@@ -1,5 +1,15 @@
 <?php
+$host = 'localhost';
+$dbname = 'web';
+$username = 'root';
+$password = '';
 
-$connect = mysqli_connect('localhost','root','root','projet') or die('connection failed');
-
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+    // Set PDO in exception mode
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    // Handle database connection error
+    echo "Connection failed: " . $e->getMessage();
+}
 ?>

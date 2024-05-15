@@ -18,17 +18,29 @@ class postulationC
             return "Erreur de connexion à la base de données";
         }
     
-        // Préparez et exécutez votre requête SQL pour récupérer le statut de la postulation
-        $query = "SELECT status FROM postulation WHERE id_post = ?";
-        $stmt = $this->connect->prepare($query);
-        $stmt->bind_param("i", $postulation_id); // "i" pour un entier, "s" pour une chaîne
-        $stmt->execute();
-        $stmt->bind_result($status);
-        $stmt->fetch();
+        try {
+            // Préparez et exécutez votre requête SQL pour récupérer le statut de la postulation
+            $query = "SELECT status FROM postulation WHERE id_post = ?";
+            $stmt = $this->connect->prepare($query);
+            $stmt->bindValue(1, $postulation_id, PDO::PARAM_INT);
+            $stmt->execute();
     
-        // Retournez le statut
-        return $status;
+            // Récupérez le résultat sous forme de tableau associatif
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+            // Assurez-vous que la requête a retourné un résultat
+            if ($result) {
+                // Retournez le statut
+                return $result['status'];
+            } else {
+                return "Aucun résultat trouvé pour l'ID de postulation spécifié.";
+            }
+        } catch (PDOException $e) {
+            // Gérez toute exception PDO
+            return "Erreur PDO : " . $e->getMessage();
+        }
     }
+    
     
     public function updatePostulationStatus($id_post, $new_status) {
         // Préparez la requête SQL pour mettre à jour le statut
@@ -114,7 +126,7 @@ class postulationC
             $query->execute([
                 'participer' => $postulation->getParticiper(),
                 'nom_societe' => $postulation->getNomSociete(),
-                'disponibilite_horaire' => $postulation->getDisponibileHoraire(), // Updated method name
+                'disponibilite_horaire' => $postulation->getDisponibiliteHoraire(), // Updated method name
                 'details' => $postulation->getDetails(),
                 'id_p' => $postulation->getIdP()
             ]);
@@ -131,10 +143,9 @@ class postulationC
             $result = $query->execute([
                 'participer' => $postulation->getParticiper(),
                 'nom_societe' => $postulation->getNomSociete(),
-                'disponibilite_horaire' => $postulation->getDisponibileHoraire(), // Corrected method name
+                'disponibilite_horaire' => $postulation->getDisponibiliteHoraire(),
                 'details' => $postulation->getDetails(),
-                'id_post' => $id_post,
-                
+                'id_post' => $id_post
             ]);
             if ($result) {
                 echo "Postulation details updated successfully.";
@@ -145,6 +156,7 @@ class postulationC
             echo 'Erreur: '.$e->getMessage();
         }
     }
+    
     
     public function supprimerPostulation($id_post)
     {

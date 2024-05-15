@@ -6,12 +6,9 @@ if(isset($_POST['id_post'], $_POST['status'])) {
     $status = $_POST['status'];
     
     // Effectuez la mise à jour du statut dans la base de données
-    // Par exemple, vous pouvez utiliser PDO pour se connecter à la base de données et exécuter la requête SQL correspondante.
-    // Assurez-vous d'utiliser des requêtes préparées pour éviter les attaques par injection SQL.
-
-    // Exemple d'utilisation de PDO pour la mise à jour du statut dans une table postulation
     try {
-        $pdo = new PDO('mysql:host=localhost;dbname=projet', 'root', 'root');
+        // Créez une connexion à la base de données avec PDO
+        $pdo = new PDO('mysql:host=localhost;dbname=web', 'root', '');
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         // Préparez la requête SQL avec un paramètre
@@ -35,5 +32,3 @@ if(isset($_POST['id_post'], $_POST['status'])) {
     echo json_encode(array("success" => false, "message" => "Données manquantes dans la requête POST."));
 }
 ?>
-
-

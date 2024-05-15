@@ -1,14 +1,14 @@
 <?php
 // Connexion à la base de données
 try {
-    $bdd = new PDO('mysql:host=localhost;dbname=projet;charset=utf8', 'root', 'root');
+    $bdd = new PDO('mysql:host=localhost;dbname=web;charset=utf8', 'root', '');
     $bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Active le mode d'erreur PDO exception
 } catch (PDOException $e) {
     echo "Erreur de connexion à la base de données : " . $e->getMessage();
 }
 
 // Récupération des messages, en les triant par ordre décroissant d'identifiant pour obtenir les plus récents en premier
-$recupMessage = $bdd->query('SELECT * FROM messages ORDER BY id DESC');
+$recupMessage = $bdd->query('SELECT * FROM message ORDER BY id DESC');
 
 // Affichage des messages
 while ($message = $recupMessage->fetch()) {

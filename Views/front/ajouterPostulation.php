@@ -9,6 +9,7 @@ include_once '../../Model/postulation.php';
 include_once '../../Controller/postulationC.php';
 include_once '../../Model/projet.php';
 include_once '../../Controller/projetC.php';
+include '../../connexion.php';
 
 // Create an instance of the postulation controller
 $postulationController = new postulationC($connect);

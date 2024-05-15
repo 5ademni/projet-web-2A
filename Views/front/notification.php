@@ -4,13 +4,11 @@ session_start(); // Démarrez la session
 // Inclure le fichier contenant la classe postulationC
 require_once("../../Controller/postulationC.php");
 
-include_once '../../connexion.php';
+// Inclure le fichier de connexion PDO
+require_once("../../connexion.php");
 
-// Connexion à la base de données
-$connect = mysqli_connect('localhost', 'root', 'root', 'projet') or die('La connexion à la base de données a échoué');
-// Créer une instance de la classe postulationC avec l'objet de connexion en argument
-$postulationController = new postulationC($connect);
-
+// Créer une instance de la classe postulationC avec l'objet de connexion PDO en argument
+$postulationController = new postulationC($pdo);
 
 // Récupérer toutes les postulations depuis la base de données
 $postulations = $postulationController->getAllPostulations(); // Assurez-vous d'implémenter cette méthode dans votre classe postulationC
@@ -138,7 +136,7 @@ if (!empty($postulations)) {
         // Afficher le statut avec la classe CSS appropriée
         echo '<p>Status : <span class="' . $statusClass . '">' . $status . '</span></p>';
         // Personnaliser le message en fonction du statut
-        if ($status == 'En cours') {
+        if ($status == 'en cours') {
             echo '<p>Votre candidature pour ce projet est en cours de traitement. Nous vous tiendrons informé dès que possible.</p>';
         } elseif ($status == 'accepté') {
             echo '<p>Félicitations ! Votre candidature pour ce projet a été acceptée. Un responsable vous contactera sous peu pour discuter des prochaines étapes.</p>';

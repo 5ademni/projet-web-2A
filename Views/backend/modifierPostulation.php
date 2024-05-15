@@ -4,14 +4,21 @@ include_once("../../Model/postulation.php");
 include_once("../../Controller/postulationC.php");
 include_once '../../connexion.php';
 
-// Connexion à la base de données
-$connect = mysqli_connect('localhost', 'root', 'root', 'projet') or die('La connexion à la base de données a échoué');
+// Connexion à la base de données avec PDO
+try {
+    $pdo = new PDO('mysql:host=localhost;dbname=web', 'root', '');
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch(PDOException $e) {
+    // En cas d'erreur de connexion, afficher un message d'erreur et arrêter l'exécution du script
+    die("Erreur de connexion à la base de données: " . $e->getMessage());
+}
+
 // Vérifiez si l'ID de la postulation est passé en paramètre GET
 if(isset($_GET['id_post'])) {
     
     // Récupérer les données de la postulation à modifier
-    $co = new postulationC($connect);
-    $postulation = $co->afficherPostulationDetail($_GET['id_post']);
+    $postulationC = new postulationC($pdo);
+    $postulation = $postulationC->afficherPostulationDetail($_GET['id_post']);
 
     // Vérifiez si la postulation existe
     if($postulation) {
@@ -23,17 +30,14 @@ if(isset($_GET['id_post'])) {
             $disponibilite_horaire = $_POST['disponibilite_horaire'];
             $details = $_POST['details'];
             
-            // Validation des champs
-            // Assurez-vous d'ajouter vos validations selon vos besoins
-            
+            // Vérifier si la clé "status" existe dans le tableau $postulation
+            $status = isset($postulation['status']) ? $postulation['status'] : ""; 
+
             // Création de l'objet postulation
-            $postulation = new postulation($participer, $nom_societe, $disponibilite_horaire, $details);
+            $postulation = new postulation($participer, $nom_societe, $disponibilite_horaire, $details, (int)$_GET['id_post'], $status);
 
-            // Création de l'objet de contrôleur de postulation
-            $postulationController = new postulationC($connect);
-
-            // Modification de la postulation
-            $postulationController->modifierPostulation($_GET['id_post'], $postulation);
+            // Modification de la postulation dans la base de données
+            $postulationC->modifierPostulation($_GET['id_post'], $postulation);
             
             // Redirection vers une autre page après la modification
             header('Location: affichagePostulation.php');
@@ -50,6 +54,7 @@ if(isset($_GET['id_post'])) {
     exit;
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -151,5 +156,3 @@ if(isset($_GET['id_post'])) {
 </body>
 
 </html>
-
-

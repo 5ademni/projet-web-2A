@@ -6,23 +6,25 @@
     <title>Projets pour le domaine sélectionné</title>
     <style>
         body {
-            background: -webkit-linear-gradient(left, #0072ff, #00c6ff);
+            background-color: #f2f2f2;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
         }
         .container {
             max-width: 800px;
-            background: #e8e8e8;
-            background: linear-gradient(0deg, rgb(255, 255, 255) 0%, rgb(244, 247, 251) 100%);
-            border-radius: 40px;
-            padding: 25px 35px;
-            border: 5px solid rgb(255, 255, 255);
-            box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 30px 30px -20px;
             margin: 50px auto;
+            padding: 25px 35px;
+            background-color: #fff;
+            border-radius: 40px;
+            box-shadow: 0px 30px 30px -20px rgba(133, 189, 215, 0.878);
+            border: 5px solid #fff;
         }
         .heading {
             text-align: center;
             font-weight: 900;
             font-size: 30px;
-            color: rgb(16, 137, 211);
+            color: green;
             margin-bottom: 30px;
         }
         .text-before-table {
@@ -47,12 +49,12 @@
             display: block;
             width: 100%;
             font-weight: bold;
-            background: linear-gradient(45deg, rgb(16, 137, 211) 0%, rgb(18, 177, 209) 100%);
-            color: white;
+            background-color: #1089d3;
+            color: #fff;
             padding: 15px;
             margin: 20px auto;
             border-radius: 20px;
-            box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 20px 10px -15px;
+            box-shadow: 0px 20px 10px -15px rgba(133, 189, 215, 0.878);
             border: none;
             transition: all 0.2s ease-in-out;
             text-decoration: none;
@@ -60,13 +62,38 @@
         }
         .login-button:hover {
             transform: scale(1.03);
-            box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 23px 10px -20px;
+            box-shadow: 0px 23px 10px -20px rgba(133, 189, 215, 0.878);
         }
         .login-button:active {
             transform: scale(0.95);
-            box-shadow: rgba(133, 189, 215, 0.8784313725) 0px 15px 10px -10px;
+            box-shadow: 0px 15px 10px -10px rgba(133, 189, 215, 0.878);
         }
-        </style>
+        .btn-delete {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #e74c3c;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .btn-edit {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #3498db;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .btn-delete:hover, .btn-edit:hover {
+            background-color: #c0392b;
+        }
+
+        .btn-delete:active, .btn-edit:active {
+            background-color: #2980b9;
+        }
+    </style>
 </head>
 
 <body>
@@ -79,16 +106,17 @@
             $domaine = urldecode($_GET['domaine']);
             $tab = $c->afficherDomaine($domaine);
             if (!empty($tab)) {
-                echo '<table border="1">';
+                echo '<table>';
                 echo '<tr>';
                 echo '<th>Nom du projet</th>';
-                echo '<th>Nom du realisateur</th>';
-                echo '<th>Niveau Etudes</th>';
+                echo '<th>Nom du réalisateur</th>';
+                echo '<th>Niveau d\'études</th>';
                 echo '<th>Email</th>';
                 echo '<th>Durée</th>';
                 echo '<th>Domaine</th>';
                 echo '<th>Budget</th>';
                 echo '<th>Description</th>';
+                echo '<th>Actions</th>';
                 echo '</tr>';
                 foreach ($tab as $projet) {
                     echo '<tr>';
@@ -96,13 +124,13 @@
                     echo '<td>' . $projet['nom_realisateur'] . '</td>';
                     echo '<td>' . $projet['niveau_etudes'] . '</td>'; 
                     echo '<td>' . $projet['email'] . '</td>';
-                    echo '<td>' . $projet['time'] . '</td>';
+                    echo '<td>' . $projet['time']. '</td>';
                     echo '<td>' . $projet['domaine'] . '</td>';
                     echo '<td>' . $projet['budget'] . '</td>';
                     echo '<td>' . $projet['description'] . '</td>';
                     echo '<td>';
-                    echo '<a href="supprimerProjet.php?id=' . $projet['id'] . '" class="ico del">Delete</a>';
-                    echo '<a href="modifierProjet.php?id=' . $projet['id'] . '" class="ico edit">Edit</a>';
+                    echo '<a href="supprimerProjet.php?id=' . $projet['id'] . '" class="btn-delete">Supprimer</a>';
+                    echo '<a href="modifierProjet.php?id=' . $projet['id'] . '" class="btn-edit">Modifier</a>';
                     echo '</td>';
                     echo '</tr>';
                 }
