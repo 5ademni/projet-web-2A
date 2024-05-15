@@ -589,12 +589,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <!-- General Form Elements -->
         <form method="POST">
           <div class="row mb-3">
-            <label for="inputText" class="col-sm-2 col-form-label">Id d'article</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" name="id_article">
-            </div>
-          </div>
-          <div class="row mb-3">
             <label for="inputText" class="col-sm-2 col-form-label">Id d'auteur</label>
             <div class="col-sm-10">
               <input type="text" class="form-control" name="id_auteur">
@@ -655,7 +649,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   <!-- custom js -->
   <script src="assets/js/WYSIWYG.js"></script>
-  <script src="assets/js/controle_saisie_back.js"></script>
+  <script src="js/controle_saisie_back.js"></script>
 
 </body>
 

@@ -39,6 +39,8 @@ class JobPostC
     }
   }
 
+
+  
   public function countJobPosts()
   {
     $sql = "SELECT COUNT(*) as total FROM jobpostings";
