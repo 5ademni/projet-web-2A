@@ -60,16 +60,48 @@ Bootstrap 5 HTML CSS Template
 
 <body id="top">
 
-    <iframe src="http://127.0.0.1:7890/" style="
-        border-radius: 10px;
-        width: 20vw; /* Adjust this to change the width */
-        height: calc(60vh - 70px); /* Adjust this to change the height */
-        padding-top: 10px;
-        position: fixed; /* Make the iframe stick to the corner */
-        bottom: 0; /* Position it at the bottom of the page */
-        right: 0; /* Position it at the right of the page */
-        z-index: 9999; /* Make it appear above everything else */
-    "></iframe>
+<head>
+    <style>
+        #chatbot {
+            border-radius: 10px;
+            width: 25vw;
+            height: calc(80vh - 70px);
+            padding-top: 10px;
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            z-index: 9999;
+            display: none; /* Le chatbot est caché par défaut */
+        }
+        #chatbotButton {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            z-index: 10000; /* Le bouton est au-dessus du chatbot */
+            background-color: blue; /* Bouton de couleur bleue */
+            color: white; /* Texte de couleur blanche */
+            border-radius: 50%; /* Forme circulaire */
+            padding: 10px 20px; /* Espacement intérieur pour rendre le bouton plus grand */
+            border: none; /* Pas de bordure */
+            cursor: pointer; /* Change le curseur en main lorsque vous survolez le bouton */
+        }
+    </style>
+</head>
+<body>
+    <button id="chatbotButton" onclick="toggleChatbot()">Chat</button>
+    <iframe id="chatbot" src="http://127.0.0.1:7890/"></iframe>
+
+    <script>
+        function toggleChatbot() {
+            var chatbot = document.getElementById('chatbot');
+            if (chatbot.style.display === "none") {
+                chatbot.style.display = "block";
+            } else {
+                chatbot.style.display = "none";
+            }
+        }
+    </script>
+</body>
 
     <nav class="navbar navbar-expand-lg">
         <div class="container">
