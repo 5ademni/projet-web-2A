@@ -73,7 +73,7 @@ Bootstrap 5 HTML CSS Template
 
     <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="index.html">
+            <a class="navbar-brand d-flex align-items-center" href="index.php">
                 <img src="images/logo.png" class="img-fluid logo-image">
 
                 <div class="d-flex flex-column">
@@ -87,14 +87,6 @@ Bootstrap 5 HTML CSS Template
 
             <div class="collapse navbar-collapse" id="navbarNav" style="margin-top: 5px;">
                 <ul class="navbar-nav align-items-center ms-lg-5">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="index.html">Page d'accueil</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="about.html">About 5ademni</a>
-                    </li>
-
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
 
@@ -105,6 +97,18 @@ Bootstrap 5 HTML CSS Template
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        projet et postuler
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li>
+                            <a class="dropdown-item" href="ajouterProjet.php">new project</a>
+                              <a class="dropdown-item" href="ajouterPostulation.php">postuler</a>
+                              <a class="dropdown-item" href="accueil.php">Parcourir par Domaine</a>
+                        </li>
+
+                    </ul>
+                    <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="eventButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">Événements</a>
                     
                         <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="eventButton">
@@ -112,6 +116,9 @@ Bootstrap 5 HTML CSS Template
                             <li><a class="dropdown-item" href="trouver_evenement.php">Trouver un événement</a></li>
                         </ul>
                     </li>
+                    <li class="nav-item">
+            <a class="nav-link" href="blog.php">blogs</a>
+          </li>
 
                     <li class="nav-item">
                         <a class="nav-link" href="contact.html">Contact</a>
@@ -155,50 +162,7 @@ Bootstrap 5 HTML CSS Template
                                 <a href="#categories-section" class="custom-btn custom-border-btn btn">Browse Categories</a>
                         </div>
                     </div>
-
-                    <div class="col-lg-6 col-12">
-                        <form class="custom-form hero-form" action="#" method="get" role="form">
-                            <h3 class="text-white mb-3">Recherchez votre travail de rêve</h3>
-
-                            <div class="row">
-                                <div class="col-lg-6 col-md-6 col-12">
-                                    <div class="input-group">
-                                        <span class="input-group-text" id="basic-addon1"><i class="bi-person custom-icon"></i></span>
-
-                                        <input type="text" name="job-title" id="job-title" class="form-control" placeholder="Titre d'emploi" required>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-6 col-md-6 col-12">
-                                    <div class="input-group">
-                                        <span class="input-group-text" id="basic-addon2"><i class="bi-geo-alt custom-icon"></i></span>
-
-                                        <input type="text" name="job-location" id="job-location" class="form-control" placeholder="Emplacement" required>
-                                    </div>
-                                </div>
-
-                                <div class="col-lg-12 col-12">
-                                    <button type="submit" class="form-control">
-                                        Trouver un travail
-                                    </button>
-                                </div>
-
-                                <div class="col-12">
-                                    <div class="d-flex flex-wrap align-items-center mt-4 mt-lg-0">
-                                        <span class="text-white mb-lg-0 mb-md-0 me-2">Mots-clés populaires:</span>
-
-                                        <div>
-                                            <a href="job-listings.html" class="badge">Web design</a>
-
-                                            <a href="job-listings.html" class="badge">Marketing</a>
-
-                                            <a href="job-listings.html" class="badge">Service client</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+     
 
                 </div>
             </div>
