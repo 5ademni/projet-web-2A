@@ -153,6 +153,7 @@ if(isset($_FILES['audio']) && !empty($_FILES['audio']['tmp_name'])) {
     </style>
 </head>
 <body>
+    
     <img src="../../front/images/moon.png" id="icon">
     <div class="chat-container">
         <section id="messages" class="message-container"></section>
