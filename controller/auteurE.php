@@ -56,7 +56,7 @@ public function existeAuteur($id)
     $db = config::getConnexion();
     try {
         $req = $db->prepare($sql);
-        $req->bindValue(':id', $id);
+        $req->bindValue(':id', $id['id']);
         $req->execute();
         if ($req->rowCount() == 0) {
             return false;

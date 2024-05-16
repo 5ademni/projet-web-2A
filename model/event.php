@@ -2,7 +2,6 @@
 class Evenement
 {
     private $id_evenement;
-    private $id_auteur;
     private $titre;
     private $contenu;
     private $dateEvenement;
@@ -12,11 +11,12 @@ class Evenement
     private $nbPlaces;
     private $image;
     private $id_categorie;
+    private $id_domaine;
+    private $id_admin;
     
-    public function __construct($id_evenement, $id_auteur, $titre, $contenu, $dateEvenement, $lieu, $prix, $nbPlaces, $image, $heureEvenement, $id_categorie)
+    public function __construct($id_evenement, $titre, $contenu, $dateEvenement, $lieu, $prix, $nbPlaces, $image, $heureEvenement, $id_categorie, $id_domaine , $id_admin)
     {
         $this->id_evenement = $id_evenement;
-        $this->id_auteur = $id_auteur;
         $this->titre = $titre;
         $this->contenu = $contenu;
         $this->dateEvenement = $dateEvenement;
@@ -26,6 +26,8 @@ class Evenement
         $this->image = $image;
         $this->heureEvenement = $heureEvenement;
         $this->id_categorie = $id_categorie;
+        $this->id_domaine = $id_domaine;
+        $this->id_admin = $id_admin;
     }
 
     public function getId_evenement()
@@ -118,6 +120,22 @@ class Evenement
     public function setIdCategorie($id_categorie)
     {
         $this->id_categorie = $id_categorie;
+    }
+    public function getIdDomaine()
+    {
+        return $this->id_domaine;
+    }
+    public function setIdDomaine($id_domaine)
+    {
+        $this->id_domaine = $id_domaine;
+    }
+    public function getIdAdmin()
+    {
+        return $this->id_admin;
+    }
+    public function setIdAdmin($id_admin)
+    {
+        $this->id_admin = $id_admin;
     }
 }
 ?>

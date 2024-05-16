@@ -1,9 +1,11 @@
 <?php
+ ob_start();
+ session_start();
 include_once '../../Model/admin.php';
 include_once '../../Controller/adminC.php';
 
 
-session_start();
+
 $adminC = new adminC();
 
 if (
@@ -15,6 +17,8 @@ if (
     !empty($_POST['mdp'])
   ) {
     $email = $_POST['email'];
+    $_SESSION['id'] = $adminC->search_id_withemail($email);
+
 
     // Vérifier si l'adresse e-mail se termine par "@5ademni.tn"
     if (strpos($email, '@5ademni.tn') !== false) {
@@ -42,7 +46,7 @@ if (
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Untitled</title>
+  <title>5ademni login</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
   <link rel="stylesheet" href="assets/css/style.css">

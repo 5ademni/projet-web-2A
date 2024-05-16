@@ -15,6 +15,37 @@ class CategorieEvenementC
         die('Erreur: ' . $e->getMessage());
     }
 }
+public function getcategorie($id_categorie)
+{
+    $sql = "SELECT * FROM categorie_evenement WHERE id_categorie = :id_categorie";
+    $db = config::getConnexion();
+    try {
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':id_categorie', $id_categorie);
+        $stmt->execute();
+        return $stmt->fetch();
+    } catch (Exception $e) {
+        die('Erreur: ' . $e->getMessage());
+    }
+}
+public function categorieExists($nom_categorie)
+{
+    $sql = "SELECT * FROM categorie_evenement WHERE nom_categorie = :nom_categorie";
+    $db = config::getConnexion();
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':nom_categorie', $nom_categorie);
+    try {
+        $stmt->execute();
+        $count = $stmt->rowCount();
+        if ($count > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (Exception $e) {
+        die('Erreur: ' . $e->getMessage());
+    }
+}
 
 
 
@@ -58,7 +89,7 @@ class CategorieEvenementC
             die('Erreur: ' . $e->getMessage());
         }
     }
-    public function updateCategorie($categorie, $id)
+    public function updateCategorie($id, CategorieEvenement $categorie)
     {
         $sql = "UPDATE categorie_evenement SET nom_categorie = :nom_categorie WHERE id_categorie = :id";
         $db = config::getConnexion();
@@ -72,17 +103,22 @@ class CategorieEvenementC
             die('Erreur: ' . $e->getMessage());
         }
     }
+    
     public function searchCategorie($nom_categorie)
-    {
-        $sql = "SELECT * FROM categorie_evenement WHERE nom_categorie LIKE '%$nom_categorie%'";
-        $db = config::getConnexion();
-        try {
-            $liste = $db->query($sql);
-            return $liste;
-        } catch (Exception $e) {
-            die('Erreur: ' . $e->getMessage());
-        }
+{
+    $sql = "SELECT * FROM categorie_evenement WHERE nom_categorie = :nom_categorie";
+    $db = config::getConnexion();
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':nom_categorie', $nom_categorie);
+    try {
+        $stmt->execute();
+        $liste = $stmt->fetchAll();
+        return $liste;
+    } catch (Exception $e) {
+        die('Erreur: ' . $e->getMessage());
     }
+}
+
     public function searchCategorieById($id_categorie)
     {
         $sql = "SELECT * FROM categorie_evenement WHERE id_categorie = $id_categorie";
@@ -105,5 +141,30 @@ class CategorieEvenementC
             die('Erreur: ' . $e->getMessage());
         }
     }
+    public function getLastId()
+{
+    $sql = "SELECT id_categorie FROM categorie_evenement ORDER BY id_categorie DESC LIMIT 1";
+    $db = config::getConnexion();
+    try {
+        $stmt = $db->query($sql);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['id_categorie'];
+    } catch (Exception $e) {
+        die('Erreur: ' . $e->getMessage());
+    }
 }
+public function getCategorieByName($nom_categorie)
+{
+    $sql = "SELECT * FROM categorie_evenement WHERE nom_categorie = :nom_categorie";
+    $db = config::getConnexion();
+    try {
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':nom_categorie', $nom_categorie);
+        $stmt->execute();
+        return $stmt->fetch();
+    } catch (Exception $e) {
+        die('Erreur: ' . $e->getMessage());
+    }
+
+}}
 ?>

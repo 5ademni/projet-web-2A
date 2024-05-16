@@ -32,11 +32,10 @@ class EvenementC
         // Mettre à jour l'ID de l'événement
         $evenement->setIdEvenement($id_evenement);
     
-        $sql = "INSERT INTO evenement (id_evenement,id_auteur, titre, contenu, dateEvenement, lieu, prix, nbPlaces, image,heureEvenement,id_categorie) VALUES (:id_evenement,:id_auteur, :titre, :contenu, :dateEvenement, :lieu, :prix, :nbPlaces, :image,:heureEvenement,:id_categorie)";
+        $sql = "INSERT INTO evenement (id_evenement, titre, contenu, dateEvenement, lieu, prix, nbPlaces, image, heureEvenement, id_categorie, id_domaine, id_admin) VALUES (:id_evenement, :titre, :contenu, :dateEvenement, :lieu, :prix, :nbPlaces, :image,:heureEvenement,:id_categorie,:id_domaine , :id_admin)";
         try {
             $stmt = $db->prepare($sql);
             $stmt->bindValue(':id_evenement', $evenement->getId_evenement());
-            $stmt->bindValue(':id_auteur', $evenement->getId_auteur());
             $stmt->bindValue(':titre', $evenement->getTitre());
             $stmt->bindValue(':contenu', $evenement->getContenu());
             $stmt->bindValue(':dateEvenement', $evenement->getDateEvenement());
@@ -46,6 +45,8 @@ class EvenementC
             $stmt->bindValue(':image', $evenement->getImage());
             $stmt->bindValue(':heureEvenement', $evenement->getHeureEvenement());
             $stmt->bindValue(':id_categorie', $evenement->getIdCategorie());
+            $stmt->bindValue(':id_domaine', $evenement->getIdDomaine());
+            $stmt->bindValue(':id_admin', $evenement->getIdAdmin());
 
             $stmt->execute();
         } catch (Exception $e) {
@@ -97,12 +98,11 @@ class EvenementC
     
     public function updateEvenement($id, Evenement $evenement)
     {
-        $sql = "UPDATE evenement SET id_auteur = :id_auteur, titre = :titre, contenu = :contenu, dateEvenement = :dateEvenement, lieu = :lieu, prix = :prix, nbPlaces = :nbPlaces, image = :image , heureEvenement = :heureEvenement , id_categorie = :id_categorie WHERE id_evenement = :id";
+        $sql = "UPDATE evenement SET titre = :titre, contenu = :contenu, dateEvenement = :dateEvenement, lieu = :lieu, prix = :prix, nbPlaces = :nbPlaces, image = :image , heureEvenement = :heureEvenement , id_categorie = :id_categorie, id_domaine = :id_domaine, id_admin = :id_admin WHERE id_evenement = :id";
         $db = config::getConnexion();
         try {
             $stmt = $db->prepare($sql);
             $stmt->bindValue(':id', $id);
-            $stmt->bindValue(':id_auteur', $evenement->getId_auteur());
             $stmt->bindValue(':titre', $evenement->getTitre());
             $stmt->bindValue(':contenu', $evenement->getContenu());
             $stmt->bindValue(':dateEvenement', $evenement->getDateEvenement());
@@ -112,6 +112,8 @@ class EvenementC
             $stmt->bindValue(':image', $evenement->getImage());
             $stmt->bindValue(':heureEvenement', $evenement->getHeureEvenement());
             $stmt->bindValue(':id_categorie', $evenement->getIdCategorie());
+            $stmt->bindValue(':id_domaine', $evenement->getIdDomaine());
+            $stmt->bindValue(':id_admin', $evenement->getIdAdmin());
             $stmt->execute();
         } catch (Exception $e) {
             die('Erreur: ' . $e->getMessage());
@@ -145,13 +147,13 @@ public function getEvenement($id)
         }
     }
 
-public function existeid_auteur($id_auteur)
+public function existeid_auteur($id_admin)
 {
-    $sql = "SELECT * FROM evenement WHERE id_auteur = :id_auteur";
+    $sql = "SELECT * FROM evenement WHERE id_admin = :id_admin";
     $db = config::getConnexion();
     try {
         $stmt = $db->prepare($sql);
-        $stmt->bindValue(':id_auteur', $id_auteur);
+        $stmt->bindValue(':id_admin', $id_admin);
         $stmt->execute();
         return $stmt->fetch();
     } catch (Exception $e) {
@@ -166,6 +168,19 @@ public function getEventsByCategory($id_categorie)
     try {
         $stmt = $db->prepare($sql);
         $stmt->bindValue(':id_categorie', $id_categorie);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    } catch (Exception $e) {
+        die('Erreur: ' . $e->getMessage());
+    }
+}
+public function getEventsByDomaine($id_domaine)
+{
+    $sql = "SELECT * FROM evenement WHERE id_domaine = :id_domaine";
+    $db = config::getConnexion();
+    try {
+        $stmt = $db->prepare($sql);
+        $stmt->bindValue(':id_domaine', $id_domaine);
         $stmt->execute();
         return $stmt->fetchAll();
     } catch (Exception $e) {
@@ -220,5 +235,50 @@ public function trierEventsParDateDecroissante()
         die('Erreur: ' . $e->getMessage());
     }
 }
+public function getOrganisateur($event_id) {
+    $db = config::getConnexion();
+    $sql = "SELECT admin.* FROM admin JOIN evenement ON admin.id = evenement.id_admin WHERE evenement.id_evenement = :id_evenement";
+    $stmt = $db->prepare($sql);
+    $stmt->execute([':id_evenement' => $event_id]);
+    $organisateur = $stmt->fetch();
+    return $organisateur;
+}
+public function deleteEvenementsByDomaine($id_domaine)
+{
+    $sql = "DELETE FROM evenement WHERE id_domaine = :id_domaine";
+    $db = config::getConnexion();
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':id_domaine', $id_domaine);
+    try {
+        $stmt->execute();
+    } catch (Exception $e) {
+        die('Erreur: ' . $e->getMessage());
+    }
+}
+public function deleteEvenementsByCategorie($id_categorie)
+{
+    $sql = "DELETE FROM evenement WHERE id_categorie = :id_categorie";
+    $db = config::getConnexion();
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':id_categorie', $id_categorie);
+    try {
+        $stmt->execute();
+    } catch (Exception $e) {
+        die('Erreur: ' . $e->getMessage());
+    }
+}
+    public function deleteProduitsByCategorie($id_categorie)
+{
+    $sql = "DELETE FROM evenement WHERE id_categorie = :id_categorie";
+    $db = config::getConnexion();
+    $stmt = $db->prepare($sql);
+    $stmt->bindParam(':id_categorie', $id_categorie);
+    try {
+        $stmt->execute();
+    } catch (Exception $e) {
+        die('Erreur: ' . $e->getMessage());
+}
+}
+
 }
 ?>

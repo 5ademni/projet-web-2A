@@ -3,14 +3,14 @@ class inscriptionE
 {
     private $id_inscription;
     private $id_evenement;
-    private $id_auteur;
+    private $id_admin;
     private $date_inscription;
 
-    public function __construct($id_inscription, $id_evenement, $id_auteur, $date_inscription)
+    public function __construct($id_inscription, $id_evenement, $id_admin, $date_inscription)
     {
         $this->id_inscription = $id_inscription;
         $this->id_evenement = $id_evenement;
-        $this->id_auteur = $id_auteur;
+        $this->id_admin = $id_admin;
         $this->date_inscription = $date_inscription;
     }
     public function getIdInscription()
@@ -23,9 +23,9 @@ class inscriptionE
         return $this->id_evenement;
     }
 
-    public function getIdAuteur()
+    public function getIdadmin()
     {
-        return $this->id_auteur;
+        return $this->id_admin;
     }
 
     public function getDate()
@@ -43,9 +43,9 @@ class inscriptionE
         $this->id_evenement = $id_evenement;
     }
 
-    public function setIdAuteur($id_auteur)
+    public function setIdadmin($id_admin)
     {
-        $this->id_auteur = $id_auteur;
+        $this->id_admin = $id_admin;
     }
 
     public function setDate($date)

@@ -176,8 +176,39 @@ class adminC
         }
     }
 
+    function search_id_withemail($email)
+{
+    $sql = "SELECT id FROM admin WHERE email= :email";
+    $db = config::getConnexion();
+    try {
+        $req = $db->prepare($sql);
+        $req->execute([':email' => $email]);
+        $result = $req->fetch();
+        $id = $result['id']; // Accédez à l'élément 'id' du tableau
+        return $id;
+    } catch (Exception $e) {
+        echo 'Erreur: ' . $e->getMessage();
+    }
+}
+public function existeAuteur($id)
+{
+    $sql = "SELECT * FROM admin WHERE id = :id";
+    $db = config::getConnexion();
+    try {
+        $req = $db->prepare($sql);
+        $req->bindValue(':id', $id);
+        $req->execute();
+        if ($req->rowCount() == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    } catch (Exception $e) {
+        die('Erreur: ' . $e->getMessage());
+    }
+}
 
-
+    
 
 
 

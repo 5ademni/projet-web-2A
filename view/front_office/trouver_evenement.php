@@ -1,46 +1,130 @@
 <?php
+ob_start();
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+header('Content-Type: text/html; charset=utf-8');
 session_start();
 var_dump($_SESSION['id']);
 include_once '../../controller/event2.php';
 include_once '../../controller/Categorie_Evenement2.php';
 include_once '../../controller/inscriptionEvenement.php';
-// Inclure le fichier correct
+include_once '../../controller/domaineEV2.php';
+include_once '../../controller/adminC.php';
+require 'phpmailer/src/Exception.php';
+require 'phpmailer/src/PHPMailer.php';
+require 'phpmailer/src/SMTP.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
 $Eventc = new EvenementC();
-$CategorieEvenementC = new CategorieEvenementC(); // Utiliser la classe correcte
+$CategorieEvenementC = new CategorieEvenementC();
+$domaineEV = new DomaineEVC();
+
+function sendEmail($to, $subject, $body, $altBody) {
+    $mail = new PHPMailer(true);
+    $mail->SMTPDebug = 2;
+    $mail->isSMTP();
+    $mail->Host = 'smtp.gmail.com';
+    $mail->SMTPAuth = true;
+    $mail->Username = 'mohamedmalek.hammami8@gmail.com';
+    $mail->Password = 'vmrp zyva odds efpu';
+    $mail->SMTPSecure = 'tls';
+    $mail->Port = 587;
+
+    $mail->setFrom('5ademni@esprit.tn', '5ademni Team');
+    $mail->addAddress($to, 'Joe User');
+    $mail->isHTML(true);
+    $mail->CharSet = 'UTF-8';
+    $mail->Subject = $subject;
+    $mail->AddEmbeddedImage('images/logos/5admni.png', 'logo_id');
+    $mail->Body = '<img src="cid:logo_id"><br>' . $body;
+    $mail->AltBody = $altBody;
+
+    $mail->send();
+}
 
 if (isset($_GET['categorie']) && $_GET['categorie'] != '') {
-    $categorie_id = $_GET['categorie'];
-    $events = $Eventc->getEventsByCategory($categorie_id);
+    $selected_value = $_GET['categorie'];
+    if (strpos($selected_value, 'cat_') === 0) {
+        $categorie_id = str_replace('cat_', '', $selected_value);
+        $events = $Eventc->getEventsByCategory($categorie_id);
+    } else if (strpos($selected_value, 'dom_') === 0) {
+        $domaine_id = str_replace('dom_', '', $selected_value);
+        $events = $Eventc->getEventsByDomaine($domaine_id);
+    }
 } else {
     $events = $Eventc->getEvents();
 }
+
 $inscription = new inscriptionEC();
 
 if (isset($_POST['inscription']) && isset($_POST['event_id'])) {
     $event_id = $_POST['event_id'];
-    // Récupérez les détails de l'événement spécifique
     $db = config::getConnexion();
     $event = $Eventc->getEvenement($event_id);
     if (isset($event['nbPlaces']) && $event['nbPlaces'] > 0) {
-        // Vérifiez si l'id_auteur existe dans la table auteur
-        $sql = "SELECT * FROM auteur WHERE id_auteur = :id_auteur";
+        $sql = "SELECT * FROM admin WHERE id = :id";
         $stmt = $db->prepare($sql);
-        $stmt->execute([':id_auteur' => $_SESSION['id']]);
+        $stmt->execute([':id' => $_SESSION['id']]);
         $auteur = $stmt->fetch();
-
         if ($auteur) {
-            // L'id_auteur existe, vous pouvez procéder à l'inscription
             if (!$inscription->estInscrit($event['id_evenement'], $_SESSION['id'])) {
                 $inscription->addInscription($event['id_evenement'], $_SESSION['id']);
-                header('Location: trouver_evenement.php');
-                exit();
+                $subject = "Inscription à l'événement";
+                $body = "Vous êtes inscrit à l'événement " . $event['titre'] . "<br>" .
+                        'Votre ID : ' . $_SESSION['id'] . "<br>" .
+                        'ID de l\'événement : ' . $event['id_evenement'] . "<br>" .
+                        'Titre de l\'événement : ' . $event['titre'];
+                $altBody = "Vous êtes inscrit à l'événement " . $event['titre'];
+                $email = $auteur['email'];
+
+                echo "Avant remplacement: " . $email;
+                if (substr($email, -11) === "@5ademni.tn") {
+                    $email = str_replace("@5ademni.tn", "@gmail.com", $email);
+                }
+                echo "Après remplacement: " . $email;
+                $auteur['email'] = $email;
+                sendEmail($auteur['email'], $subject, $body, $altBody);
+                ;
+        
+                $organisateur = $Eventc->getOrganisateur($event_id);
+                $subject = "Nouvelle inscription à votre événement";
+                $body = "Un nouvel utilisateur s'est inscrit à votre événement " . $event['titre'] . "<br>" .
+                        'ID de l\'utilisateur : ' . $_SESSION['id'] . "<br>" .
+                        'ID de l\'événement : ' . $event['id_evenement'] . "<br>" .
+                        'Titre de l\'événement : ' . $event['titre'];
+                $altBody = "Un nouvel utilisateur s'est inscrit à votre événement " . $event['titre'];
+                $email = $auteur['email'];
+
+                if (substr($email, -11) === "@5ademni.tn") {
+                    $email = str_replace("@5ademni.tn", "@gmail.com", $email);
+                }
+
+            $auteur['email'] = $email;
+            var_dump($organisateur['email']);
+                sendEmail($auteur['email'], $subject, $body, $altBody);
             }
-        } else {
-            // L'id_auteur n'existe pas, affichez un message d'erreur
-            echo "<script>alert('Erreur : cet utilisateur n\'existe pas.');</script>";
+        $event = $Eventc->getEvenement($event_id);
+        if ($event['nbPlaces'] == 0) {
+            $organisateur = $Eventc->getOrganisateur($event_id);
+            $subject = $subject = $subject = "Félicitations, votre événement est maintenant complet !";            ;
+            $body = "Votre événement " . $event['titre'] . " est complet.";
+            $altBody = "Votre événement " . $event['titre'] . " est complet.";
+            $email = $auteur['email'];
+
+            if (substr($email, -11) === "@5ademni.tn") {
+                $email = str_replace("@5ademni.tn", "@gmail.com", $email);
+            }
+
+$auteur['email'] = $email;
+            sendEmail($auteur['email'], $subject, $body, $altBody);
         }
-    }
-}
+        
+    header('Location: trouver_evenement.php');
+    exit;}
+}}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["tri"])) {
     $tri = $_POST["tri"];
@@ -56,7 +140,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["tri"])) {
 }
 
 $categories = $CategorieEvenementC->listCategories();
+$domaines = $domaineEV->listDomaines();
+ob_end_flush();
+
 ?>
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -107,7 +200,7 @@ $categories = $CategorieEvenementC->listCategories();
                     
                         <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="eventButton">
                             <li><a class="dropdown-item" href="ajouter_evenement.php">Ajouter un événement</a></li>
-                            <li><a class="dropdown-item" href="trouver_id_auteur.php">Trouver un événement</a></li>
+                            <li><a class="dropdown-item" href="trouver_evenement.php">Trouver un événement</a></li>
                         </ul>
                     </li>
                     
@@ -172,15 +265,27 @@ input[type="submit"] {
 
 <form action="trouver_evenement.php" method="get">
   <select name="categorie">
-    <option value="">Sélectionnez une catégorie</option>
-    <?php
-    foreach ($categories as $categorie) {
-        echo "<option value=\"" . $categorie['id_categorie'] . "\">" . $categorie['nom_categorie'] . "</option>";
-    }
-    ?>
+    <option value="">Catégorie/Domaine</option>
+    <optgroup label="Catégories">
+      <?php
+      foreach ($categories as $categorie) {
+          echo "<option value=\"cat_" . $categorie['id_categorie'] . "\">" . $categorie['nom_categorie'] . "</option>";
+      }
+      ?>
+    </optgroup>
+    <optgroup label="Domaines">
+      <?php
+      foreach ($domaines as $domaine) {
+          echo "<option value=\"dom_" . $domaine['id_domaine'] . "\">" . $domaine['nom_domaine'] . "</option>";
+      }
+      ?>
+    </optgroup>
   </select>
   <input type="submit" value="Rechercher">
 </form>
+
+
+
 <form action="trouver_evenement.php" method="post">
   <select name="tri">
     <option value="">Trier par</option>
@@ -216,7 +321,7 @@ input[type="submit"] {
             <i class="fa fa-table"></i>
           </div>
           <p><?= date('l jS F Y', strtotime($event['dateEvenement'])) ?> <br/> <?= date('H:i', strtotime($event['heureEvenement'])) ?></p>
-          <img class="event-image" src="<?= $event['image'] ?>" alt="Image de l'événement" style="width:100px;height:100px;border-radius:50%;" />
+          <img class="event-image" src="<?= $event['image'] ?>" alt="Image de l'événement" style="width:100px; height:100px; border-radius:50%;" />
         </div>
         <div class="fix"></div>
         <div class="loc">
@@ -234,8 +339,8 @@ input[type="submit"] {
         </div>
         <div class="fix"></div>
         <?php 
-        var_dump($event['id_auteur']);
-        if ($event['id_auteur'] == $_SESSION['id']) : ?>
+        var_dump($event['id_admin']);
+        if ($event['id_admin'] == $_SESSION['id']) : ?>
         <a href="Modifier_evenement.php?id=<?php echo $event['id_evenement'] ?>"class="modify" style="background-color: blue; color: white;">Modifier</a>
         <a href="supprimer_evenement.php?id=<?php echo $event['id_evenement'] ?>" class="delete" style="background-color: red; color: white; margin-left: 10px;">Supprimer</a>
         <?php endif; ?>
@@ -243,9 +348,6 @@ input[type="submit"] {
     <input type="hidden" name="event_id" value="<?php echo $event['id_evenement']; ?>">
     <?php
     $isRegistered = $inscription->estInscrit($event['id_evenement'], $_SESSION['id']);
-    var_dump($isRegistered);
-    var_dump($event['id_evenement']);
-    var_dump($_SESSION['id']);
     if ($event['nbPlaces'] > 0 && !$isRegistered) : ?>
         <button class="tickets" type="submit" name="inscription"><?= $event['prix'] ?> TND </button>
     <?php elseif ($isRegistered) : ?>

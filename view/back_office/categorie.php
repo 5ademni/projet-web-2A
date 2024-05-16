@@ -1,16 +1,23 @@
 <?php
-include "../../controller/event2.php";
-include "../../controller/Categorie_Evenement.php";
-$evenementC = new EvenementC();
-$categorieC = new CategorieC();
-
+include "../../controller/Categorie_Evenement2.php";
+include_once '../../controller/event2.php';
+$categorieC = new CategorieEvenementC();
 
 if (isset($_GET['delete'])) {
-  $evenementC->deleteEvenement($_GET['delete']);
+  $id_categorie = $_GET['delete'];
+  
+  // Supprimer d'abord les lignes référencées dans d'autres tables
+  // Par exemple, si vous avez une table `produit` qui fait référence à `id_categorie`
+  $produitC = new EvenementC();
+  $produitC->deleteProduitsByCategorie($id_categorie);
+  
+  // Ensuite, supprimer la ligne dans la table `categorie`
+  $categorieC->deleteCategorie($id_categorie);
 }
 
-$evenementC = $evenementC->listEvenements();
+$listeCategories = $categorieC->listCategories();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -305,10 +312,15 @@ $evenementC = $evenementC->listEvenements();
             </a>
         </li>
         <li>
-            <a href="id_auteur.php">
+            <a href="categorie.php">
                 <i class="bi bi-circle"></i><span>Les catégories</span>
             </a>
         </li>
+        <li>
+            <a href="domaine.php">
+                <i class="bi bi-circle"></i><span>Les domaines</span>
+            </a>
+        </li> 
     </ul>
 </li>
 
@@ -542,66 +554,45 @@ $evenementC = $evenementC->listEvenements();
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Page d'événements</h1>
+      <h1>Page des catégories</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-          <li class="breadcrumb-item active">Evenements</li>
+          <li class="breadcrumb-item active">Catégories</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
-
-
-
 
     <div class="card">
       <div class="card-body">
         
         <div class="d-flex justify-content-between align-items-center">
-          <h5 class="card-title">Liste des evenements</h5>
-          <a href="ajouter-evenement.php" class="btn btn-primary">
+          <h5 class="card-title">Liste des catégories</h5>
+          <a href="ajouter-categorie.php" class="btn btn-primary">
             <i class="bi bi-plus-lg"></i>
           </a>
         </div>
   
-        <table class="table table-striped">
+        <table class="table table-striped datatable ">
         <thead>
   <tr>
-    <th scope="col">Id d'evenement</th>
-    <th scope="col">Id d'auteur</th>
-    <th scope="col">Titre</th>
-    <th scope="col">Contenu</th>
-    <th scope="col">Date d'evenement</th>
-    <th scope="col">Lieu</th>
-    <th scope="col">Prix</th>
-    <th scope="col">Nombre de places</th>
-    <th scope="col">Image</th>
-    <th scope="col">heureEvenement</th>
-
+    <th scope="col">Id de catégorie</th>
+    <th scope="col">Nom</th>
   </tr>
 </thead>
 <tbody>
   <?php
-  $list = $evenementC;
-  foreach ($list as $evenement) {
+  $list = $listeCategories;
+  foreach ($list as $categorie) {
   ?>
     <tr>
-      <th scope="row"><?php echo $evenement['id_evenement']; ?></th>
-      <td><?php echo $evenement['id_auteur']; ?></td>
-      <td><?php echo $evenement['titre']; ?></td>
-      <td><?php echo $evenement['contenu']; ?></td>
-      <td><?php echo $evenement['dateEvenement']; ?></td>
-        <td><?php echo $evenement['lieu']; ?></td>
-        <td><?php echo $evenement['prix']; ?></td>
-        <td><?php echo $evenement['nbPlaces']; ?></td>
-        <td><img src="<?php echo $evenement['image']; ?>" alt="Image de l'événement" style="width:100px;height:100px;border-radius:50%;"></td>
-        <td><?php echo $evenement['heureEvenement']; ?></td>
+      <th scope="row"><?php echo $categorie['id_categorie']; ?></th>
+      <td><?php echo $categorie['nom_categorie']; ?></td>
 
       <td>
-      <a href="Modifier-evenement.php?id=<?php echo $evenement['id_evenement']; ?>" class="btn btn-success">Modifier</a>
-<a href="?delete=<?php echo $evenement['id_evenement']; ?>" class="btn btn-danger">Supprimer</a>
-
-        
+      <a href="Modifier-categorie.php?id=<?php echo $categorie['id_categorie']; ?>" class="btn btn-success">Modifier</a>
+      <a href="categorie.php?delete=<?php echo $categorie['id_categorie']; ?>" class="btn btn-danger">Supprimer</a>
+  </td>
     </tr>
   <?php
   }
@@ -611,6 +602,7 @@ $evenementC = $evenementC->listEvenements();
 
       </div>
     </div>
+
 
 
 

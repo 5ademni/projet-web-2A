@@ -1,13 +1,16 @@
 <?php
+session_start();
 include_once '../../controller/event2.php';
 include_once '../../model/event.php';
 include_once '../../controller/Categorie_Evenement2.php';
 include_once '../../controller/auteurE.php';
+include_once '../../controller/domaineEV2.php';
+include_once '../../controller/adminC.php';
 
 
 // Créer une instance du contrôleur
 $controller = new EvenementC();
-$controller2 = new auteurEC();
+$controller2 = new adminC();
 
 
 // Initialiser les messages d'erreur
@@ -19,16 +22,24 @@ $id_evenement = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Gérer l'upload de l'image
     $target_dir = "../../upload/";
-    $target_file = $target_dir . basename($_FILES["image"]["name"]);
-    move_uploaded_file($_FILES["image"]["tmp_name"], $target_file);
+    $default_image = $target_dir . "event-imagef.png"; // Chemin vers votre image par défaut
+
+    // Vérifiez si une image a été téléchargée
+    if (!empty($_FILES["image"]["name"])) {
+        $target_file = $target_dir . basename($_FILES["image"]["name"]);
+        move_uploaded_file($_FILES["image"]["tmp_name"], $target_file);
+    } else {
+        // Si aucune image n'a été téléchargée, utilisez l'image par défaut
+        $target_file = $default_image;
+    }
 
     // Créer une instance de la classe Evenement
 
     // Valider les entrées
-    if (empty($_POST['id_auteur']) || !is_numeric($_POST['id_auteur'])) {
+    if (empty($_SESSION['id']) || !is_numeric($_SESSION['id'])) {
         $id_auteur_err = "Veuillez entrer un ID d'auteur valide.";
     }
-    if(($controller2->existeAuteur($_POST['id_auteur']))==false){
+    if(($controller2->existeAuteur($_SESSION['id']))==false){
       $id_auteur_err = "Cet auteur n'existe pas.";
      }
     if (empty($_POST['titre'])) {
@@ -78,7 +89,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Créer une instance de la classe Evenement
         $evenement = new Evenement(
           $id_evenement,
-          $_POST['id_auteur'],
           $_POST['titre'],
           $_POST['contenu'],
           $_POST['dateEvenement'],
@@ -87,7 +97,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           $_POST['nbPlaces'],
           $target_file,
           $_POST['heureEvenement'],
-          $_POST['id_categorie']
+          $_POST['id_categorie'],
+          $_SESSION['id']
       );
         // Appeler la méthode addEvenement
         try {
@@ -380,6 +391,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <span>Dashboard</span>
         </a>
       </li>
+      <li class="nav-item">
+    <a class="nav-link collapsed" data-bs-target="#evenement-nav" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-briefcase"></i><span>Les evenements</span><i class="bi bi-chevron-down ms-auto"></i>
+    </a>
+    <ul id="evenement-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <li>
+            <a href="evenement.php">
+                <i class="bi bi-eye"></i><span>Afficher les evenements</span>
+            </a>
+        </li>
+        <li>
+            <a href="categorie.php">
+                <i class="bi bi-circle"></i><span>Les catégories</span>
+            </a>
+        </li>
+        <li>
+            <a href="domaine.php">
+                <i class="bi bi-circle"></i><span>Les domaines</span>
+            </a>
+    </ul>
+</li>
       <!-- End Dashboard Nav -->
 
       <!-- Start Users Nav -->
@@ -678,10 +710,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <!-- Formulaire pour ajouter un événement -->
                         <form method="POST" enctype="multipart/form-data">
                         <div class="form-group">
-                            <label for="id_auteur">ID de l'auteur</label>
-                            <input type="text" class="form-control" id="id_auteur" name="id_auteur" placeholder="Entrez l'ID de l'auteur">
-                            <span class="error"><?php echo $id_auteur_err;?></span>
-                        </div>
+                         <label for="id_admin">ID de l'auteur</label>
+                        <input type="text" class="form-control" id="id_admin" name="id_admin" value="<?php echo $_SESSION['id']; ?> "readonly>
+                         </div>
                         <div class="form-group">
                             <label for="id_categorie">Catégorie</label>
                             <select class="form-control select-css" id="id_categorie" name="id_categorie">
@@ -697,7 +728,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                           ?>
                           </select>   
                            </div>
-                        <div class="form-group
+                           <div class="form-group">
+                            <label for="id_domaine">Domaine</label>
+                            <select class="form-control select-css" id="id_domaine" name="id_domaine">
+                            <?php
+                            ini_set('display_errors', 1);
+                            ini_set('display_startup_errors', 1);
+                            error_reporting(E_ALL);
+                            $domaineController = new DomaineEVC();
+                          $domaines = $domaineController->listDomaines();
+                          foreach ($domaines as $domaine) {
+                          echo "<option value=\"" . $domaine['id_domaine'] . "\">" . $domaine['nom_domaine']. "</option>";
+                           }
+                          ?>
+                          </select>   
+                           </div>
+                          
+                        <div class="form-group">
                             <label for="titre">Titre</label>
                             <input type="text" class="form-control" id="titre" name="titre" placeholder="Entrez le titre">
                             <span class="error"><?php echo $titre_err;?></span>

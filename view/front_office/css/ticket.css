@@ -140,9 +140,10 @@ body {
   width: 100px; /* Définissez la largeur à 100px */
   height: 100px; /* Définissez la hauteur à 100px */
   display: block; /* Centre l'image */
-  margin-left: 20px; /* Déplace l'image un peu vers la gauche */
+  margin-right: 20px; /* Déplace l'image un peu vers la droite */
   object-fit: scale-down; /* Redimensionne l'image pour s'adapter au conteneur */
   border-radius: 50%; /* Rend l'image circulaire */
+  float: right; /* Ajoutez cette ligne pour déplacer l'image à droite */
 }
 .site-footer {
   margin-top: 50px !important; /* Ajoutez l'espace que vous voulez ici */
@@ -181,6 +182,3 @@ body {
   right: 20px;
   bottom: 20px;
 }
-
-
-

@@ -2,6 +2,7 @@
 include_once '../../controller/event2.php';
 include_once '../../model/event.php';
 include_once '../../controller/Categorie_Evenement2.php';
+include_once '../../controller/DomaineEV2.php';
 
 
 // Créer une instance du contrôleur
@@ -12,13 +13,20 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
     $event_id = $_GET['id'];
     $evenement = $controller->getEvenement($event_id);
 } elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $target_dir = "../../sql/";
-    $target_file = $target_dir . basename($_FILES["image"]["name"]);
-    move_uploaded_file($_FILES["image"]["tmp_name"], $target_file);
+    $target_dir = "../../upload/";
+    $default_image = $target_dir . "event-imagef.png"; // Chemin vers votre image par défaut
+
+    // Vérifiez si une image a été téléchargée
+    if (!empty($_FILES["image"]["name"])) {
+        $target_file = $target_dir . basename($_FILES["image"]["name"]);
+        move_uploaded_file($_FILES["image"]["tmp_name"], $target_file);
+    } else {
+        // Si aucune image n'a été téléchargée, utilisez l'image par défaut
+        $target_file = $default_image;
+    }
     // Créer une instance de la classe Evenement
     $evenement = new Evenement(
         $_POST['id_evenement'],
-        $_POST['id_auteur'],
         $_POST['titre'],
         $_POST['contenu'],
         $_POST['dateEvenement'],
@@ -28,6 +36,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
         $target_file,
         $_POST['heureEvenement'],
         $_POST['id_categorie'],
+        $_POST['id_domaine'],
+        $_POST['id_admin']
     );
 
     // Appeler la méthode updateEvenement
@@ -126,14 +136,14 @@ try {
       <div class="row">
         <div class="col-lg-12 col-12">
           <!-- Formulaire pour modifier un événement -->
-          <form method="POST" enctype="multipart/form-data">
+          <form method="POST" enctype="multipart/form-data" id="eventf">
             <div class="form-group">
               <label for="id_evenement">ID de l'événement</label>
               <input type="text" class="form-control" id="id_evenement" name="id_evenement" value="<?php echo $evenement['id_evenement']; ?> "readonly> 
             </div>
             <div class="form-group">
-              <label for="id_auteur">ID de l'auteur</label>
-              <input type="text" class="form-control" id="id_auteur" name="id_auteur" value="<?php echo $evenement['id_auteur']; ?> "readonly>
+              <label for="id_admin">ID de l'auteur</label>
+              <input type="text" class="form-control" id="id_admin" name="id_admin" value="<?php echo $evenement['id_admin']; ?> "readonly>
             <!-- ... -->
             <div class="form-group">
             <label for="id_categorie">Catégorie</label>
@@ -147,6 +157,17 @@ try {
             </select>
             </div>  
             <div class="form-group">
+            <label for="id_domaine">Domaine</label>
+            <select class="form-control select-css " id="id_domaine" name="id_domaine">
+            <?php
+            $domaineController = new DomaineEVC();
+            $domaines = $domaineController->listDomaines();
+            foreach ($domaines as $domaine) {
+            echo "<option value=\"" . $domaine['id_domaine'] . "\">" . $domaine['nom_domaine']. "</option>"; }  
+            ?>
+            </select>
+            </div>
+            <div class="form-group">
               <label for="titre">Titre de l'événement</label>
               <input type="text" class="form-control" id="titre" name="titre" value="<?php echo $evenement['titre']; ?>">
             </div>
@@ -159,6 +180,17 @@ try {
   <label for="dateEvenement">Date de l'Evenement</label>
   <input type="date" class="form-control" id="dateEvenement" name="dateEvenement" value="<?php echo $evenement['dateEvenement']; ?>">
 </div>
+
+<script>
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var yyyy = today.getFullYear();
+
+  today = yyyy + '-' + mm + '-' + dd;
+  document.getElementById("dateEvenement").setAttribute("min", today);
+</script>
+
 <div class="form-group">
   <label for="heureEvenement">Heure de l'Evenement</label>
   <input type="time" class="form-control" id="heureEvenement" name="heureEvenement" value="<?php echo $evenement['heureEvenement']; ?>">
@@ -326,6 +358,7 @@ try {
     </footer>
 
     <!-- JAVASCRIPT FILES -->
+    <script src="js/controlesaisiemodif.js"></script>
     
 </body>
 </html>

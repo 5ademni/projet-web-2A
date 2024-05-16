@@ -104,6 +104,14 @@ Bootstrap 5 HTML CSS Template
                             <li><a class="dropdown-item" href="job-details.html">Détails du poste</a></li>
                         </ul>
                     </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="eventButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">Événements</a>
+                    
+                        <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="eventButton">
+                            <li><a class="dropdown-item" href="ajouter_evenement.php">Ajouter un événement</a></li>
+                            <li><a class="dropdown-item" href="trouver_evenement.php">Trouver un événement</a></li>
+                        </ul>
+                    </li>
 
                     <li class="nav-item">
                         <a class="nav-link" href="contact.html">Contact</a>

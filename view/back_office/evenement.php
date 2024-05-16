@@ -1,13 +1,42 @@
 <?php
-include "../../controller/event2.php";
+include_once '../../controller/event2.php';
+include_once '../../controller/Categorie_Evenement2.php';
+include_once '../../controller/inscriptionEvenement.php';
 $evenementC = new EvenementC();
+$CategorieEvenementC = new CategorieEvenementC(); 
+
 
 if (isset($_GET['delete'])) {
   $evenementC->deleteEvenement($_GET['delete']);
 }
 
-$evenementC = $evenementC->listEvenements();
+// Vérifier si une option de tri a été envoyée
+if (isset($_GET["tri"])) {
+    $tri = $_GET["tri"];
+    if ($tri == "prix_croissant") {
+        $evenement = $evenementC->trierEventsParPrixCroissant();
+    } else if ($tri == "prix_decroissant") {
+        $evenement = $evenementC->trierEventsParPrixDecroissant();
+    } else if ($tri == "date_croissant") {
+        $evenement = $evenementC->trierEventsParDateCroissante();
+    } else if ($tri == "date_decroissant") {
+        $evenement = $evenementC->trierEventsParDateDecroissante();
+    }
+} else {
+    $evenementC = $evenementC->listEvenements();
+}
+
+// Vérifier si une recherche a été envoyée
+if (isset($_GET["search"])) {
+    $search = $_GET["search"];
+    $evenements = $evenementC->searchEvents($search);
+}
+
+// Afficher les événements
+$categories = $CategorieEvenementC->listCategories();
+
 ?>
+
 
 
 
@@ -304,10 +333,14 @@ $evenementC = $evenementC->listEvenements();
             </a>
         </li>
         <li>
-            <a href="id_auteur.php">
+            <a href="categorie.php">
                 <i class="bi bi-circle"></i><span>Les catégories</span>
             </a>
         </li>
+        <li>
+            <a href="domaine.php">
+                <i class="bi bi-circle"></i><span>Les domaines</span>
+            </a>
     </ul>
 </li>
 
@@ -537,6 +570,8 @@ $evenementC = $evenementC->listEvenements();
     </ul>
 
   </aside><!-- End Sidebar-->
+  <link href="https://fonts.googleapis.com/css?family=Cabin|Indie+Flower|Inknut+Antiqua|Lora|Ravi+Prakash" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"  />
 
   <main id="main" class="main">
 
@@ -563,7 +598,7 @@ $evenementC = $evenementC->listEvenements();
           </a>
         </div>
   
-        <table class="table table-striped">
+        <table class="table table-striped datatable ">
         <thead>
   <tr>
     <th scope="col">Id d'evenement</th>
@@ -586,7 +621,7 @@ $evenementC = $evenementC->listEvenements();
   ?>
     <tr>
       <th scope="row"><?php echo $evenement['id_evenement']; ?></th>
-      <td><?php echo $evenement['id_auteur']; ?></td>
+      <td><?php echo $evenement['id_admin']; ?></td>
       <td><?php echo $evenement['titre']; ?></td>
       <td><?php echo $evenement['contenu']; ?></td>
       <td><?php echo $evenement['dateEvenement']; ?></td>
@@ -606,10 +641,10 @@ $evenementC = $evenementC->listEvenements();
   }
   ?>
 </tbody>
-        </table>
+</table>
 
-      </div>
-    </div>
+  </div>
+  </div>
 
 
 
@@ -646,6 +681,11 @@ $evenementC = $evenementC->listEvenements();
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+
+
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
 </body>
 
