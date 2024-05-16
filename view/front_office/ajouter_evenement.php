@@ -33,8 +33,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($_SESSION['id'] ) || !is_numeric($_SESSION['id'])) {
         $id_auteur_err = "Veuillez entrer un ID d'auteur valide.";
     }
-    if(($controller2->existeAuteur($_SESSION['id']))==false){
-        $id_auteur_err = "Cet auteur n'existe pas.";
+    function verifieEmail($email) {
+        $pattern = '/@5ademni\.tn$/';
+        if (preg_match($pattern, $email)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    if(($controller2->existeAuteur($_SESSION['id']))==false || !verifieEmail($controller2->getemail($_SESSION['id']))){
+        $id_auteur_err = "Cet auteur n'existe pas ou l'email n'a pas d'acces d'ajout'.";
     }
     if (empty($_POST['titre'])) {
         $titre_err = "Veuillez entrer un titre.";
@@ -278,6 +287,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <span class="error"><?php echo $heureEvenement_err;?></span>
                         </div>
                             <button type="submit" class="btn btn-primary">Ajouter un evenement</button>
+                            <span class="error"><?php echo $id_auteur_err;?></span>
                           </form>
                           
         </section>

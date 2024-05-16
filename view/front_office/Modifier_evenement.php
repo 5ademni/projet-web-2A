@@ -1,4 +1,5 @@
 <?php
+session_start();
 include_once '../../controller/event2.php';
 include_once '../../model/event.php';
 include_once '../../controller/Categorie_Evenement2.php';
@@ -44,7 +45,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
     
 try {
     $controller->updateEvenement($_POST['id_evenement'], $evenement);
-    echo "L'événement a été modifié avec succès.";
+    if (isset($_SESSION['message'])) {
+        echo $_SESSION['message'];
+        // supprimer le message après l'affichage
+        unset($_SESSION['message']);
+    }
 } catch (Exception $e) {
     echo 'Erreur: ' . $e->getMessage();
 }

@@ -1,22 +1,22 @@
 <?php
 include_once '../../Model/postulation.php';
 include_once '../../Controller/postulationC.php';
+$connect = null ;
 
 $postulationC = new postulationC($connect);
-
 
 // Fetch list of postulations
 $listeC = $postulationC->afficherPostulation();
 
 // Add a postulation
-if (isset($_POST["participer"], $_POST["nom_societe"], $_POST["disponibilte_horaire"], $_POST["details"])) {
+if (isset($_POST["participer"], $_POST["nom_societe"], $_POST["disponibilite_horaire"], $_POST["details"])) {
     $participer = $_POST["participer"];
     $nom_societe = $_POST["nom_societe"];
-    $disponibilte_horaire = $_POST["disponibilte_horaire"];
+    $disponibilite_horaire = $_POST["disponibilite_horaire"];
     $details = $_POST["details"];
 
-    if (!empty($participer) && !empty($nom_societe) && !empty($disponibilte_horaire) && !empty($details)) {
-        $postulation = new postulation($participer, $nom_societe, $disponibilte_horaire, $details);
+    if (!empty($participer) && !empty($nom_societe) && !empty($disponibilite_horaire) && !empty($details)) {
+        $postulation = new postulation($participer, $nom_societe, $disponibilite_horaire, $details);
         $postulationC->ajouterPostulation($postulation);
         header('Location: affichagePostulation.php');
         exit;
@@ -156,7 +156,7 @@ if (isset($_POST["tri"]) && !empty($_POST["tri"])) {
         <div class="content-wrapper">
             <!-- Page Header -->
             <div class="page-header">
-                <h1 class="m-0 font-weight-bold text-primary">Affichage Postulation</h1>
+                <h1 class="m-5 font-weight-bold text-primary">Affichage Postulation</h1>
             </div>
 
             <!-- Search Form -->
@@ -168,7 +168,10 @@ if (isset($_POST["tri"]) && !empty($_POST["tri"])) {
                     <input type="text" class="form-control mr-2" name="rech" id="rech">
                     <select name="selon" class="form-control mr-2">
                         <option value="participer">Participation</option>
-                        <option value="disponibilte_horaire">Disponibilite_Horaire</option>
+                        <option value="nom_societe">Nom de la société</option>
+                        <option value="disponibilite_horaire">Disponibilité Horaire</option>
+                        <option value="details">Détails</option>
+                        <option value="status">Status</option>
                     </select>
                     <input type="submit" class="button" value="Search" name="search">
                 </form>
@@ -185,7 +188,7 @@ if (isset($_POST["tri"]) && !empty($_POST["tri"])) {
                             <th>Nom Societe</th>
                             <th>Disponibilite Horaire</th>
                             <th>Details</th>
-                            <th>Status</th> <!-- Nouvelle colonne pour le menu déroulant -->
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -224,8 +227,10 @@ if (isset($_POST["tri"]) && !empty($_POST["tri"])) {
                     <label for="tri" class="mr-2">Sort by</label>
                     <select name="tri" class="form-control mr-2">
                         <option value="participer">Participation</option>
-                        <option value="nom_societe">Disponibilite_Horaire</option>
-                        <option value="disponibilite_horaire">Disponibilite_Horaire</option>
+                        <option value="nom_societe">Nom de la société</option>
+                        <option value="disponibilite_horaire">Disponibilité Horaire</option>
+                        <option value="details">Détails</option>
+                        <option value="status">Status</option>
                     </select>
                     <input type="submit" value="Trier" class="button">
                 </form>

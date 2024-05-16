@@ -115,6 +115,9 @@ class EvenementC
             $stmt->bindValue(':id_domaine', $evenement->getIdDomaine());
             $stmt->bindValue(':id_admin', $evenement->getIdAdmin());
             $stmt->execute();
+            $_SESSION['message'] = "L'événement a été modifié avec succès.";
+            header('Location: trouver_evenement.php');
+            exit();
         } catch (Exception $e) {
             die('Erreur: ' . $e->getMessage());
         }

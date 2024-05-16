@@ -222,7 +222,21 @@ public function getnom($id)
         echo 'Erreur: ' . $e->getMessage();
     }
 }
-    
+public function getemail($id)
+{
+    $sql = "SELECT email FROM admin WHERE id = :id";
+    $db = config::getConnexion();
+    try {
+        $req = $db->prepare($sql);
+        $req->bindValue(':id', $id);
+        $req->execute();
+        $result = $req->fetch();
+        $email = $result['email'];
+        return $email;
+    } catch (Exception $e) {
+        echo 'Erreur: ' . $e->getMessage();
+    }
+}
 
 
 

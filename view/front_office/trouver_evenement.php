@@ -5,7 +5,6 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 header('Content-Type: text/html; charset=utf-8');
 session_start();
-var_dump($_SESSION['id']);
 include_once '../../controller/event2.php';
 include_once '../../controller/Categorie_Evenement2.php';
 include_once '../../controller/inscriptionEvenement.php';
@@ -192,9 +191,7 @@ ob_end_flush();
                         <a class="nav-link" href="index.php">Homepage</a>
                     </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link active" href="about.html">About Gotto</a>
-                    </li>
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="eventButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">Événements</a>
                     
@@ -203,23 +200,38 @@ ob_end_flush();
                             <li><a class="dropdown-item" href="trouver_evenement.php">Trouver un événement</a></li>
                         </ul>
                     </li>
-                    
-                    
+                    <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        projet et postuler
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li>
+                            <a class="dropdown-item" href="ajouterProjet.php">new project</a>
+                              <a class="dropdown-item" href="ajouterPostulation.php">postuler</a>
+                              <a class="dropdown-item" href="accueil.php">Parcourir par Domaine</a>
+                        </li>
+
+                    </ul>
+                    <li class="nav-item">
+            <a class="nav-link" href="blog.php">blogs</a>
+          </li>
 
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarLightDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
 
                         <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="navbarLightDropdownMenuLink">
-                            <li><a class="dropdown-item" href="job-listings.html">Job Listings</a></li>
+                        <li><a class="dropdown-item" href="job-listings.html">Listes d'emplois</a></li>
 
-                            <li><a class="dropdown-item" href="job-details.html">Job Details</a></li>
+                        <li><a class="dropdown-item" href="job-details.html">Détails du poste</a></li>
                         </ul>
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="contact.html">Contact</a>
+                        <a class="nav-link" href="profile.php">Contact</a>
                     </li>
                     </nav>
+                    
+                    
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg">
         <!-- Votre code de navigation ici -->

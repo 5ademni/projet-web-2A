@@ -151,7 +151,7 @@ Bootstrap 5 HTML CSS Template
                         </ul>
                     </li>
                     <li class="nav-item">
-            <a class="nav-link" href="blog.php">blogs</a>
+                    <a class="nav-link" href="blog.php">blogs</a>
           </li>
 
                     <li class="nav-item">
