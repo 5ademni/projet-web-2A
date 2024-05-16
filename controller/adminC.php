@@ -207,7 +207,21 @@ public function existeAuteur($id)
         die('Erreur: ' . $e->getMessage());
     }
 }
-
+public function getnom($id)
+{
+    $sql = "SELECT nom FROM admin WHERE id = :id";
+    $db = config::getConnexion();
+    try {
+        $req = $db->prepare($sql);
+        $req->bindValue(':id', $id);
+        $req->execute();
+        $result = $req->fetch();
+        $nom = $result['nom'];
+        return $nom;
+    } catch (Exception $e) {
+        echo 'Erreur: ' . $e->getMessage();
+    }
+}
     
 
 

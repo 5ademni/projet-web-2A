@@ -3,12 +3,14 @@
 // include 'config.php';
 //class "sidebar-brand-text mx-3"
 include "../../auth/config.php";
+include_once "../../controller/adminC.php";
 
 // On prolonge la session
 session_start();
-$adminName = isset($_SESSION['adminName']) ? $_SESSION['adminName'] : "user";
+$admin1 = new adminC();
+$adminName = $admin1->getnom($_SESSION['id']);
 // On teste si la variable de session existe et contient une valeur
-if (empty($_SESSION['e'])) {
+if (empty($_SESSION['id'])) {
 
     // Si inexistante ou nulle, on redirige vers le formulaire de login
     header('Location: login.php');
@@ -153,13 +155,10 @@ Bootstrap 5 HTML CSS Template
           </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" href="contact.html">Contact</a>
+                        <a class="nav-link" href="profile.php">check profile</a>
                     </li>
 
-                    <li class="nav-item ms-lg-auto">
-                        <!-- <a class="nav-link" href="#">Registre</a> -->
-                        <a href="login.php" class="nav-link">register</a>
-                    </li>
+                    
 
 
                     <li class="nav-item">
@@ -191,7 +190,7 @@ Bootstrap 5 HTML CSS Template
                                 <h6 class="text-white"> Emplois sur mesure, opportunités illimitées.</h6>
                                 <br>
 
-                                <a href="#categories-section" class="custom-btn custom-border-btn btn">Browse Categories</a>
+                                <a href="index1.html" class="custom-btn custom-border-btn btn">voice</a>
                         </div>
                     </div>
      

@@ -152,7 +152,7 @@ Bootstrap 5 HTML CSS Template
 
     <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="index.html">
+            <a class="navbar-brand d-flex align-items-center" href="index.php">
                 <img src="images/logo.png" class="img-fluid logo-image">
 
                 <div class="d-flex flex-column">
@@ -207,7 +207,7 @@ Bootstrap 5 HTML CSS Template
 
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb justify-content-center">
-                                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                <li class="breadcrumb-item"><a href="index.php">Home</a></li>
 
                                 <li class="breadcrumb-item active" aria-current="page">Job listings</li>
                             </ol>

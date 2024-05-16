@@ -1,9 +1,9 @@
 <?php
 session_start();
 
-require_once '../../../config.php';
+require_once '../../../auth/config.php';
 
-require_once '../../../Controller/adminC.php';
+require_once '../../../controller/adminC.php';
 
 
 // Define variables to store form input and error messages
@@ -145,7 +145,7 @@ function test_input($data)
         <div class="form-default">
             <div class="login-form">
                 <div class="logo-login">
-                    <a href="index.html"><img src="assets/img/logo/loader.png" alt=""></a>
+                    <a href="index.php"><img src="assets/img/logo/loader.png" alt=""></a>
                 </div>
                 <h2>Réinitialiser le mot de passe</h2>
                 <?php if ($error_message) : ?>

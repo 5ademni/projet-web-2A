@@ -23,7 +23,7 @@ cors = CORS(app)
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    return render_template("index.php")
 
 
 # ------------------ EXCEPTION HANDLERS ------------------

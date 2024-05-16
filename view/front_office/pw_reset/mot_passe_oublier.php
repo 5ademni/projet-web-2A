@@ -2,9 +2,9 @@
 session_start();
 
 
-require_once '../../../config.php'; //config file
+require_once '../../../auth/config.php'; //config file
 
-require_once '../../../Controller/adminC.php';
+require_once '../../../controller/adminC.php';
 
 // Include PHPMailer autoloader
 require '../../../vendor/autoload.php';
@@ -47,19 +47,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $mail->isSMTP();
                 $mail->Host = 'smtp.gmail.com';
                 $mail->SMTPAuth = true;
-                $mail->Username = 'safwenhaboubi@gmail.com'; // Your Gmail username
-                $mail->Password = 'lncmqagupavdgtcp'; // Your Gmail password
+                $mail->Username = 'mohamedmalek.hammami8@gmail.com'; // Your Gmail username
+                $mail->Password = 'vmrp zyva odds efpu'; // Your Gmail password
                 $mail->SMTPSecure = 'ssl';
                 $mail->Port =  465;
 
                 //Recipients
-                $mail->setFrom('safwenhaboubi@gmail.com', '5ademni'); // Replace with your name and email
+                $mail->setFrom('5ademni@esprit.tn', '5ademni'); // Replace with your name and email
                 $mail->addAddress($email); // Add a recipient
 
                 // Content
                 $mail->isHTML(true);
                 $mail->Subject = 'Reinitialisation du mot de passe';
-                $mail->Body = 'Cliquez sur le lien suivant pour réinitialiser votre mot de passe : <a href="http://localhost/crudWEB/Views/front_office/pw_reset/pwd_reset.php?email=' . urlencode($email) . '&token=' . urlencode($token) . '">Réinitialiser le mot de passe</a>';
+                $mail->Body = 'Cliquez sur le lien suivant pour réinitialiser votre mot de passe : <a href="http://localhost:8011/projet-web-2A/View/front_office/pw_reset/pwd_reset.php?email=' . urlencode($email) . '&token=' . urlencode($token) . '">Réinitialiser le mot de passe</a>';
 
 
                 $mail->send();
@@ -134,7 +134,7 @@ function test_input($data)
         <form class="form-default" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
             <div class="login-form">
                 <div class="logo-login">
-                    <a href="index.html"><img src="assets/img/logo/loader.png" alt=""></a>
+                    <a href="index.php"><img src="assets/img/logo/loader.png" alt=""></a>
                 </div>
                 <h2>forgot password</h2>
                 <?php if ($success_message) : ?>

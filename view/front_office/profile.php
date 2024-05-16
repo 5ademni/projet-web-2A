@@ -2,7 +2,7 @@
 session_start();
 include_once '../../Model/admin.php';
 include_once '../../Controller/adminC.php';
-include_once '../../connexion.php';
+include_once '../../auth/connexion.php';
 
 // Vérifie si les champs email et password sont soumis
 if (isset($_POST['email']) && isset($_POST['password'])) {
@@ -109,7 +109,7 @@ Bootstrap 5 HTML CSS Template
 
     <nav class="navbar navbar-expand-lg">
         <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="index.html">
+            <a class="navbar-brand d-flex align-items-center" href="index.php">
                 <img src="images/logo.png" class="img-fluid logo-image">
 
                 <div class="d-flex flex-column">
