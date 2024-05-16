@@ -8,9 +8,10 @@ class projet{
     private ?int $time = null;
     private ?string $domaine = null;
     private ?int $budget = null;
-    private ?string $description = null;   
+    private ?string $description = null;  
+    private ?int $AdminID = null; 
   
-    function __construct(string $nom_projet,string $nom_realisateur,string $niveau_etudes,string $email,int $time,string $domaine,int $budget,string $description)
+    function __construct(string $nom_projet,string $nom_realisateur,string $niveau_etudes,string $email,int $time,string $domaine,int $budget,string $description,int $AdminID)
     {
         
         $this->nom_projet=$nom_projet;
@@ -21,8 +22,10 @@ class projet{
         $this->domaine=$domaine;
         $this->budget=$budget;
         $this->description=$description;
+        $this->AdminID=$AdminID;
       
     }
+    
     function getId(): int{
         return $this->id;
     }
@@ -79,6 +82,11 @@ class projet{
     function setDescription(string $description): void{
         $this->description=$description;
     }
-   
+    function setAdminID(string $AdminID): void{
+        $this->AdminID=$AdminID;
+    }   
+    function getAdminID(): string{
+        return $this->AdminID;
+    }
 }
 ?>

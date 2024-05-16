@@ -1,10 +1,12 @@
 <?php
 session_start(); // Démarrez la session
-
+var_dump($_SESSION['id']);
 include_once '../../Model/projet.php';
 include_once '../../Controller/projetC.php';
+include_once '../../Controller/adminC.php';
 
 $projetC = new projetC();
+$admin = new adminC();
 
 if (
     isset($_POST["nom_projet"]) &&
@@ -14,8 +16,9 @@ if (
     isset($_POST["time"]) &&
     isset($_POST["domaine"]) &&
     isset($_POST["budget"]) &&
-    isset($_POST["description"])
-) {
+    isset($_POST["description"]) &&
+        isset($_SESSION['id']))
+ {
     if (
         !empty($_POST["nom_projet"]) &&
         !empty($_POST["nom_realisateur"]) &&
@@ -24,18 +27,20 @@ if (
         !empty($_POST["time"]) &&
         !empty($_POST["domaine"]) &&
         !empty($_POST["budget"]) &&
-        !empty($_POST["description"])
+        !empty($_POST["description"]) &&
+            !empty($_SESSION['id'])
     ) {
         $nom_projet = $_POST['nom_projet'];
-        $nom_realisateur = $_POST['nom_realisateur'];
+        $nom_realisateur = $admin->getnomrealisateur($_SESSION['id']);
         $niveau_etudes = $_POST['niveau_etudes'];
-        $email = $_POST['email'];
+        $email = $admin->getemailrealisateur($_SESSION['id']);
         $time = $_POST['time'];
         $domaine = $_POST['domaine'];
         $budget = $_POST['budget'];
         $description = $_POST['description'];
+        $id = $_SESSION['id'];
 
-        $projet = new projet($nom_projet, $nom_realisateur, $niveau_etudes, $email, $time, $domaine, $budget, $description);
+        $projet = new projet($nom_projet, $nom_realisateur, $niveau_etudes, $email, $time, $domaine, $budget, $description, $id);
         $projetC->ajouterProjet($projet);
 
         // Définir le message de succès
@@ -202,13 +207,13 @@ if (isset($_SESSION['success_message'])) {
                                 <input id="nom_projet" class="form-control" type="text" name="nom_projet" placeholder="Nom du projet">
                             </div>
                             <div class="form-group">
-                                <input id="nom_realisateur" class="form-control" type="text" name="nom_realisateur" placeholder="Nom du realisateur">
+                                <input id="nom_realisateur" class="form-control" type="text" name="nom_realisateur" value="<?php echo $nom_realisateur = $admin->getnomrealisateur($_SESSION['id']); ?> "readonly>
                             </div>
                             <div class="form-group">
                                 <input id="niveau_etudes" class="form-control" type="text" name="niveau_etudes" placeholder="Niveau d etudes">
                             </div>
                             <div class="form-group">
-                                <input id="email" class="form-control" type="text" name="email" placeholder="Email">
+                                <input id="email" class="form-control" type="text" name="email" value="<?php echo $email_re = $admin->getemailrealisateur($_SESSION['id']); ?> "readonly>
                             </div>
                             <div class="form-group">
                                 <input id="time" class="form-control" type="number" name="time" placeholder="Temps">
@@ -664,10 +669,7 @@ if (isset($_SESSION['success_message'])) {
         }
 
         // Contrôle de saisie pour email
-        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-            appendErrorMessage("L'adresse email n'est pas valide.");
-            return false;
-        }
+       
 
         // Contrôle de saisie pour time (Temps)
         if (isNaN(time) || time < 1 || time > 12) {

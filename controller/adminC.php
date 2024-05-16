@@ -237,7 +237,36 @@ public function getemail($id)
         echo 'Erreur: ' . $e->getMessage();
     }
 }
-
+public function getnomrealisateur($id)
+{
+    $sql = "SELECT nom FROM admin WHERE id = :id";
+    $db = config::getConnexion();
+    try {
+        $req = $db->prepare($sql);
+        $req->bindValue(':id', $id);
+        $req->execute();
+        $result = $req->fetch();
+        $nom = $result['nom'];
+        return $nom;
+    } catch (Exception $e) {
+        echo 'Erreur: ' . $e->getMessage();
+    }
+}
+public function getemailrealisateur($id)
+{
+    $sql = "SELECT email FROM admin WHERE id = :id";
+    $db = config::getConnexion();
+    try {
+        $req = $db->prepare($sql);
+        $req->bindValue(':id', $id);
+        $req->execute();
+        $result = $req->fetch();
+        $email = $result['email'];
+        return $email;
+    } catch (Exception $e) {
+        echo 'Erreur: ' . $e->getMessage();
+    }
+}
 
 
 

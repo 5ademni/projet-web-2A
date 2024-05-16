@@ -138,8 +138,8 @@ class projetC
 
     public function ajouterProjet($projet)
     {
-        $sql = "INSERT INTO projet(nom_projet,nom_realisateur,niveau_etudes,email,time,domaine,budget,description) 
-            VALUES (:nom_projet,:nom_realisateur,:niveau_etudes,:email,:time,:domaine,:budget,:description)";
+        $sql = "INSERT INTO projet(nom_projet,nom_realisateur,niveau_etudes,email,time,domaine,budget,description,AdminID) 
+            VALUES (:nom_projet,:nom_realisateur,:niveau_etudes,:email,:time,:domaine,:budget,:description,:AdminID)";
         $db = config::getConnexion();
         try {
             // Vérifie si le projet existe déjà
@@ -161,7 +161,8 @@ class projetC
                 'time' => $projet->getTime(),
                 'domaine' => $projet->getDomaine(),
                 'budget' => $projet->getBudget(),
-                'description' => $projet->getDescription()
+                'description' => $projet->getDescription(),
+                'AdminID' => $projet->getAdminID()
             ]);
             return "Le projet '$nom_projet' a été ajouté avec succès.";
         } catch (Exception $e) {
