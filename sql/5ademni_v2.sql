@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: May 13, 2024 at 03:00 PM
+-- Generation Time: May 16, 2024 at 04:01 PM
 -- Server version: 8.2.0
 -- PHP Version: 8.2.13
 
@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `articlesblog` (
   `datePublication` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id_article`),
   KEY `ID_Auteur` (`id_auteur`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `articlesblog`
@@ -86,7 +86,12 @@ INSERT INTO `articlesblog` (`id_article`, `id_auteur`, `titre`, `contenu`, `date
 (3, 3, 'moncof blog', 'bnj bnj', '2024-03-31 16:18:54'),
 (14, 1, 'escalope', 'health style', '2024-03-29 01:35:44'),
 (15, 2, 'escalope', 'health style', '2024-03-29 01:35:44'),
-(16, 1, 'aaaaa', 'aaaaaaa', '2024-04-29 21:29:04');
+(16, 1, 'aaaaa', 'aaaaaaa', '2024-04-29 21:29:04'),
+(17, 1, 'aaaa', 'gh', '2024-05-15 11:37:13'),
+(18, 1, 'aaaa', 'gh', '2024-05-15 12:19:02'),
+(19, 1, 'aaaa', 'gh', '2024-05-15 12:19:10'),
+(20, 1, 'aaaa', 'gh', '2024-05-15 12:19:39'),
+(21, 1, 'aaaa', 'gh', '2024-05-15 12:23:03');
 
 -- --------------------------------------------------------
 
@@ -383,6 +388,91 @@ INSERT INTO `levels` (`LevelID`, `LevelName`) VALUES
 (1, 'intership'),
 (2, 'junior'),
 (3, 'senior');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `message`
+--
+
+DROP TABLE IF EXISTS `message`;
+CREATE TABLE IF NOT EXISTS `message` (
+  `id` int NOT NULL,
+  `pseudo` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `message` varchar(1000) COLLATE utf8mb4_general_ci NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `message`
+--
+
+INSERT INTO `message` (`id`, `pseudo`, `message`, `timestamp`) VALUES
+(0, 'dora', 'je suis intéressée par vos projets', '2024-05-15 11:28:51'),
+(0, 'safwen', 'moi aussi', '2024-05-15 11:47:16'),
+(0, 'safwen', 'moi aussi', '2024-05-15 11:47:22'),
+(0, 'dora', '????', '2024-05-16 12:18:32'),
+(0, 'dora', '????', '2024-05-16 12:20:38'),
+(0, 'dora', '????', '2024-05-16 12:59:59'),
+(0, 'LIMA', 'SALAm', '2024-05-16 15:35:03'),
+(0, 'aaaa', 'aaaa', '2024-05-16 15:35:17'),
+(0, 'aaa', 'aaa❤️', '2024-05-16 15:35:30'),
+(0, 'aaa', 'aaa????', '2024-05-16 15:35:35'),
+(0, 'aaaa', '????????????????️????️????', '2024-05-16 15:35:47'),
+(0, 'aaa', ':)', '2024-05-16 15:36:02');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `postulation`
+--
+
+DROP TABLE IF EXISTS `postulation`;
+CREATE TABLE IF NOT EXISTS `postulation` (
+  `participer` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `nom_societe` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `disponibilite_horaire` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `details` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `id_post` int NOT NULL AUTO_INCREMENT,
+  `id_p` int NOT NULL,
+  `status` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`id_post`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `postulation`
+--
+
+INSERT INTO `postulation` (`participer`, `nom_societe`, `disponibilite_horaire`, `details`, `id_post`, `id_p`, `status`) VALUES
+('oui', 'esprit', 'matin', 'hh', 2, 2, 'accepté'),
+('non', 'esprit', 'soir', 'je suis excellent', 3, 2, 'en_cours');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `projet`
+--
+
+DROP TABLE IF EXISTS `projet`;
+CREATE TABLE IF NOT EXISTS `projet` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nom_projet` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `nom_realisateur` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `niveau_etudes` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `time` int NOT NULL,
+  `domaine` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `budget` int NOT NULL,
+  `description` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `projet`
+--
+
+INSERT INTO `projet` (`id`, `nom_projet`, `nom_realisateur`, `niveau_etudes`, `email`, `time`, `domaine`, `budget`, `description`) VALUES
+(4, 'aaaaa', 'mounir', 'sadsa B', 'everpadd4@gmail.com', 10, 'AI', 5000, 'MOMOMO');
 
 --
 -- Constraints for dumped tables
