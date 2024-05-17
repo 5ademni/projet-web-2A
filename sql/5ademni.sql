@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3306
--- Generation Time: May 13, 2024 at 03:00 PM
--- Server version: 8.2.0
--- PHP Version: 8.2.13
+-- Hôte : 127.0.0.1
+-- Généré le : jeu. 16 mai 2024 à 16:57
+-- Version du serveur : 10.4.32-MariaDB
+-- Version de PHP : 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,29 +18,27 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `5ademni`
+-- Base de données : `5ademni`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `admin`
+-- Structure de la table `admin`
 --
 
-DROP TABLE IF EXISTS `admin`;
-CREATE TABLE IF NOT EXISTS `admin` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `nom` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
-  `email` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
-  `adresse` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
-  `numtel` int NOT NULL,
-  `mdp` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
-  `token` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `admin` (
+  `id` int(11) NOT NULL,
+  `nom` varchar(30) NOT NULL,
+  `email` varchar(30) NOT NULL,
+  `adresse` varchar(30) NOT NULL,
+  `numtel` int(11) NOT NULL,
+  `mdp` varchar(30) NOT NULL,
+  `token` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `admin`
+-- Déchargement des données de la table `admin`
 --
 
 INSERT INTO `admin` (`id`, `nom`, `email`, `adresse`, `numtel`, `mdp`, `token`) VALUES
@@ -64,22 +62,19 @@ INSERT INTO `admin` (`id`, `nom`, `email`, `adresse`, `numtel`, `mdp`, `token`) 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `articlesblog`
+-- Structure de la table `articlesblog`
 --
 
-DROP TABLE IF EXISTS `articlesblog`;
-CREATE TABLE IF NOT EXISTS `articlesblog` (
-  `id_article` int NOT NULL AUTO_INCREMENT,
-  `id_auteur` int DEFAULT NULL,
-  `titre` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `contenu` text COLLATE utf8mb4_general_ci NOT NULL,
-  `datePublication` datetime DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id_article`),
-  KEY `ID_Auteur` (`id_auteur`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `articlesblog` (
+  `id_article` int(11) NOT NULL,
+  `id_auteur` int(11) DEFAULT NULL,
+  `titre` varchar(255) NOT NULL,
+  `contenu` text NOT NULL,
+  `datePublication` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `articlesblog`
+-- Déchargement des données de la table `articlesblog`
 --
 
 INSERT INTO `articlesblog` (`id_article`, `id_auteur`, `titre`, `contenu`, `datePublication`) VALUES
@@ -91,17 +86,15 @@ INSERT INTO `articlesblog` (`id_article`, `id_auteur`, `titre`, `contenu`, `date
 -- --------------------------------------------------------
 
 --
--- Table structure for table `auteur`
+-- Structure de la table `auteur`
 --
 
-DROP TABLE IF EXISTS `auteur`;
-CREATE TABLE IF NOT EXISTS `auteur` (
-  `id_auteur` int NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`id_auteur`)
-) ENGINE=InnoDB AUTO_INCREMENT=1112 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `auteur` (
+  `id_auteur` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `auteur`
+-- Déchargement des données de la table `auteur`
 --
 
 INSERT INTO `auteur` (`id_auteur`) VALUES
@@ -113,19 +106,17 @@ INSERT INTO `auteur` (`id_auteur`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `auteurs`
+-- Structure de la table `auteurs`
 --
 
-DROP TABLE IF EXISTS `auteurs`;
-CREATE TABLE IF NOT EXISTS `auteurs` (
-  `id_auteur` int NOT NULL AUTO_INCREMENT,
-  `nom` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  PRIMARY KEY (`id_auteur`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `auteurs` (
+  `id_auteur` int(11) NOT NULL,
+  `nom` varchar(255) NOT NULL,
+  `email` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `auteurs`
+-- Déchargement des données de la table `auteurs`
 --
 
 INSERT INTO `auteurs` (`id_auteur`, `nom`, `email`) VALUES
@@ -136,19 +127,17 @@ INSERT INTO `auteurs` (`id_auteur`, `nom`, `email`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `categorie_evenement`
+-- Structure de la table `categorie_evenement`
 --
 
-DROP TABLE IF EXISTS `categorie_evenement`;
-CREATE TABLE IF NOT EXISTS `categorie_evenement` (
-  `id_categorie` int NOT NULL,
-  `nom_categorie` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `domaine` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  PRIMARY KEY (`id_categorie`)
+CREATE TABLE `categorie_evenement` (
+  `id_categorie` int(11) NOT NULL,
+  `nom_categorie` varchar(255) DEFAULT NULL,
+  `domaine` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `categorie_evenement`
+-- Déchargement des données de la table `categorie_evenement`
 --
 
 INSERT INTO `categorie_evenement` (`id_categorie`, `nom_categorie`, `domaine`) VALUES
@@ -159,49 +148,30 @@ INSERT INTO `categorie_evenement` (`id_categorie`, `nom_categorie`, `domaine`) V
 -- --------------------------------------------------------
 
 --
--- Table structure for table `certeficat`
+-- Structure de la table `commentaires`
 --
 
-DROP TABLE IF EXISTS `certeficat`;
-CREATE TABLE IF NOT EXISTS `certeficat` (
-  `id` int NOT NULL,
-  `domaine` text COLLATE utf8mb4_general_ci NOT NULL,
-  `date_c` date NOT NULL,
-  PRIMARY KEY (`id`)
+CREATE TABLE `commentaires` (
+  `id_commentaire` int(11) NOT NULL,
+  `id_article` int(11) DEFAULT NULL,
+  `nom` varchar(255) DEFAULT NULL,
+  `commentaire` text NOT NULL,
+  `dateCommentaire` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `commentaires`
+-- Structure de la table `employmenttypes`
 --
 
-DROP TABLE IF EXISTS `commentaires`;
-CREATE TABLE IF NOT EXISTS `commentaires` (
-  `id_commentaire` int NOT NULL AUTO_INCREMENT,
-  `id_article` int DEFAULT NULL,
-  `nom` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `commentaire` text COLLATE utf8mb4_general_ci NOT NULL,
-  `dateCommentaire` datetime DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id_commentaire`),
-  KEY `ID_Article` (`id_article`)
-) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `employmenttypes`
---
-
-DROP TABLE IF EXISTS `employmenttypes`;
-CREATE TABLE IF NOT EXISTS `employmenttypes` (
-  `EmploymentTypeID` int NOT NULL,
-  `EmploymentTypeName` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  PRIMARY KEY (`EmploymentTypeID`)
+CREATE TABLE `employmenttypes` (
+  `EmploymentTypeID` int(11) NOT NULL,
+  `EmploymentTypeName` varchar(25) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `employmenttypes`
+-- Déchargement des données de la table `employmenttypes`
 --
 
 INSERT INTO `employmenttypes` (`EmploymentTypeID`, `EmploymentTypeName`) VALUES
@@ -214,29 +184,25 @@ INSERT INTO `employmenttypes` (`EmploymentTypeID`, `EmploymentTypeName`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `evenement`
+-- Structure de la table `evenement`
 --
 
-DROP TABLE IF EXISTS `evenement`;
-CREATE TABLE IF NOT EXISTS `evenement` (
-  `id_evenement` int NOT NULL,
-  `id_auteur` int DEFAULT NULL,
-  `titre` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `contenu` text COLLATE utf8mb4_general_ci,
+CREATE TABLE `evenement` (
+  `id_evenement` int(11) NOT NULL,
+  `id_auteur` int(11) DEFAULT NULL,
+  `titre` varchar(255) DEFAULT NULL,
+  `contenu` text DEFAULT NULL,
   `dateEvenement` date DEFAULT NULL,
-  `lieu` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `lieu` varchar(255) DEFAULT NULL,
   `prix` decimal(10,2) DEFAULT NULL,
-  `nbPlaces` int DEFAULT NULL,
-  `image` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `nbPlaces` int(11) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
   `heureEvenement` time DEFAULT NULL,
-  `id_categorie` int DEFAULT NULL,
-  PRIMARY KEY (`id_evenement`),
-  KEY `id_categorie` (`id_categorie`),
-  KEY `id_auteur` (`id_auteur`)
+  `id_categorie` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `evenement`
+-- Déchargement des données de la table `evenement`
 --
 
 INSERT INTO `evenement` (`id_evenement`, `id_auteur`, `titre`, `contenu`, `dateEvenement`, `lieu`, `prix`, `nbPlaces`, `image`, `heureEvenement`, `id_categorie`) VALUES
@@ -249,44 +215,17 @@ INSERT INTO `evenement` (`id_evenement`, `id_auteur`, `titre`, `contenu`, `dateE
 -- --------------------------------------------------------
 
 --
--- Table structure for table `experiance`
+-- Structure de la table `fields`
 --
 
-DROP TABLE IF EXISTS `experiance`;
-CREATE TABLE IF NOT EXISTS `experiance` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `diplome` text COLLATE utf8mb4_general_ci NOT NULL,
-  `certeficat` text COLLATE utf8mb4_general_ci NOT NULL,
-  `competence` text COLLATE utf8mb4_general_ci NOT NULL,
-  `experiance_pro` text COLLATE utf8mb4_general_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `experiance`
---
-
-INSERT INTO `experiance` (`id`, `diplome`, `certeficat`, `competence`, `experiance_pro`) VALUES
-(2, 'francais', 'anglais', 'jhfg', 'jgfujyg'),
-(5, 'francais', 'anglais', 'jhfg', 'soft skils'),
-(6, 'francais', 'anglais', 'jhfg', 'soft skils');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `fields`
---
-
-DROP TABLE IF EXISTS `fields`;
-CREATE TABLE IF NOT EXISTS `fields` (
-  `FieldID` int NOT NULL,
-  `FieldName` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `Description` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  PRIMARY KEY (`FieldID`)
+CREATE TABLE `fields` (
+  `FieldID` int(11) NOT NULL,
+  `FieldName` varchar(20) NOT NULL,
+  `Description` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `fields`
+-- Déchargement des données de la table `fields`
 --
 
 INSERT INTO `fields` (`FieldID`, `FieldName`, `Description`) VALUES
@@ -304,22 +243,44 @@ INSERT INTO `fields` (`FieldID`, `FieldName`, `Description`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `inscriptionevenement`
+-- Structure de la table `formation`
 --
 
-DROP TABLE IF EXISTS `inscriptionevenement`;
-CREATE TABLE IF NOT EXISTS `inscriptionevenement` (
-  `id_inscription` int NOT NULL AUTO_INCREMENT,
-  `id_evenement` int DEFAULT NULL,
-  `id_auteur` int DEFAULT NULL,
-  `date_inscription` date DEFAULT NULL,
-  PRIMARY KEY (`id_inscription`),
-  KEY `id_evenement` (`id_evenement`),
-  KEY `id_auteur` (`id_auteur`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `formation` (
+  `id_formation` int(11) NOT NULL,
+  `titre_formation` varchar(255) DEFAULT NULL,
+  `duretotale_formation` int(11) DEFAULT NULL,
+  `description_formation` varchar(255) DEFAULT NULL,
+  `prix_formation` float DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL,
+  `ids` int(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `inscriptionevenement`
+-- Déchargement des données de la table `formation`
+--
+
+INSERT INTO `formation` (`id_formation`, `titre_formation`, `duretotale_formation`, `description_formation`, `prix_formation`, `image`, `ids`) VALUES
+(27, 'wa', 12, 'zd', 10, '663ceb776bf0f1715268471.png', 5),
+(28, 'dz', 12, 'zd', 10, '66461ae5ec6701715870437.jpg', 5),
+(29, 'dz', 12, 'zd', 10, '66461aeb4129a1715870443.jpg', 5),
+(51, 'dzada', 5, 'zdazda', 10, '66460f52c14b21715867474.jpg', 4);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `inscriptionevenement`
+--
+
+CREATE TABLE `inscriptionevenement` (
+  `id_inscription` int(11) NOT NULL,
+  `id_evenement` int(11) DEFAULT NULL,
+  `id_auteur` int(11) DEFAULT NULL,
+  `date_inscription` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `inscriptionevenement`
 --
 
 INSERT INTO `inscriptionevenement` (`id_inscription`, `id_evenement`, `id_auteur`, `date_inscription`) VALUES
@@ -333,30 +294,25 @@ INSERT INTO `inscriptionevenement` (`id_inscription`, `id_evenement`, `id_auteur
 -- --------------------------------------------------------
 
 --
--- Table structure for table `jobpostings`
+-- Structure de la table `jobpostings`
 --
 
-DROP TABLE IF EXISTS `jobpostings`;
-CREATE TABLE IF NOT EXISTS `jobpostings` (
-  `JobID` int NOT NULL AUTO_INCREMENT,
-  `Title` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `Company` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `Location` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `PostingDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `Salary` int DEFAULT NULL,
-  `Status` tinyint(1) NOT NULL DEFAULT '1',
-  `FieldID` int DEFAULT NULL,
-  `LevelID` int DEFAULT NULL,
-  `EmploymentTypeID` int DEFAULT NULL,
-  `JobDescription` varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  PRIMARY KEY (`JobID`),
-  KEY `FieldID` (`FieldID`),
-  KEY `EmploymentTypeID` (`EmploymentTypeID`),
-  KEY `LevelID` (`LevelID`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `jobpostings` (
+  `JobID` int(11) NOT NULL,
+  `Title` varchar(30) NOT NULL,
+  `Company` varchar(25) NOT NULL,
+  `Location` varchar(30) NOT NULL,
+  `PostingDate` datetime NOT NULL DEFAULT current_timestamp(),
+  `Salary` int(11) DEFAULT NULL,
+  `Status` tinyint(1) NOT NULL DEFAULT 1,
+  `FieldID` int(11) DEFAULT NULL,
+  `LevelID` int(11) DEFAULT NULL,
+  `EmploymentTypeID` int(11) DEFAULT NULL,
+  `JobDescription` varchar(1000) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `jobpostings`
+-- Déchargement des données de la table `jobpostings`
 --
 
 INSERT INTO `jobpostings` (`JobID`, `Title`, `Company`, `Location`, `PostingDate`, `Salary`, `Status`, `FieldID`, `LevelID`, `EmploymentTypeID`, `JobDescription`) VALUES
@@ -365,18 +321,16 @@ INSERT INTO `jobpostings` (`JobID`, `Title`, `Company`, `Location`, `PostingDate
 -- --------------------------------------------------------
 
 --
--- Table structure for table `levels`
+-- Structure de la table `levels`
 --
 
-DROP TABLE IF EXISTS `levels`;
-CREATE TABLE IF NOT EXISTS `levels` (
-  `LevelID` int NOT NULL,
-  `LevelName` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  PRIMARY KEY (`LevelID`)
+CREATE TABLE `levels` (
+  `LevelID` int(11) NOT NULL,
+  `LevelName` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `levels`
+-- Déchargement des données de la table `levels`
 --
 
 INSERT INTO `levels` (`LevelID`, `LevelName`) VALUES
@@ -384,44 +338,222 @@ INSERT INTO `levels` (`LevelID`, `LevelName`) VALUES
 (2, 'junior'),
 (3, 'senior');
 
+-- --------------------------------------------------------
+
 --
--- Constraints for dumped tables
+-- Structure de la table `specialite`
+--
+
+CREATE TABLE `specialite` (
+  `ids` int(5) NOT NULL,
+  `noms` varchar(20) NOT NULL,
+  `descrips` varchar(200) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Déchargement des données de la table `specialite`
+--
+
+INSERT INTO `specialite` (`ids`, `noms`, `descrips`) VALUES
+(4, 'wa', 'laaaaaaaaaaa'),
+(5, 'dd', 'd'),
+(6, 'dd,', 'dùm'),
+(9, 'a', 'a');
+
+--
+-- Index pour les tables déchargées
 --
 
 --
--- Constraints for table `articlesblog`
+-- Index pour la table `admin`
+--
+ALTER TABLE `admin`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Index pour la table `articlesblog`
+--
+ALTER TABLE `articlesblog`
+  ADD PRIMARY KEY (`id_article`),
+  ADD KEY `ID_Auteur` (`id_auteur`);
+
+--
+-- Index pour la table `auteur`
+--
+ALTER TABLE `auteur`
+  ADD PRIMARY KEY (`id_auteur`);
+
+--
+-- Index pour la table `auteurs`
+--
+ALTER TABLE `auteurs`
+  ADD PRIMARY KEY (`id_auteur`);
+
+--
+-- Index pour la table `categorie_evenement`
+--
+ALTER TABLE `categorie_evenement`
+  ADD PRIMARY KEY (`id_categorie`);
+
+--
+-- Index pour la table `commentaires`
+--
+ALTER TABLE `commentaires`
+  ADD PRIMARY KEY (`id_commentaire`),
+  ADD KEY `ID_Article` (`id_article`);
+
+--
+-- Index pour la table `employmenttypes`
+--
+ALTER TABLE `employmenttypes`
+  ADD PRIMARY KEY (`EmploymentTypeID`);
+
+--
+-- Index pour la table `evenement`
+--
+ALTER TABLE `evenement`
+  ADD PRIMARY KEY (`id_evenement`),
+  ADD KEY `id_categorie` (`id_categorie`),
+  ADD KEY `id_auteur` (`id_auteur`);
+
+--
+-- Index pour la table `fields`
+--
+ALTER TABLE `fields`
+  ADD PRIMARY KEY (`FieldID`);
+
+--
+-- Index pour la table `formation`
+--
+ALTER TABLE `formation`
+  ADD PRIMARY KEY (`id_formation`),
+  ADD KEY `fk_formation_specialite` (`ids`);
+
+--
+-- Index pour la table `inscriptionevenement`
+--
+ALTER TABLE `inscriptionevenement`
+  ADD PRIMARY KEY (`id_inscription`),
+  ADD KEY `id_evenement` (`id_evenement`),
+  ADD KEY `id_auteur` (`id_auteur`);
+
+--
+-- Index pour la table `jobpostings`
+--
+ALTER TABLE `jobpostings`
+  ADD PRIMARY KEY (`JobID`),
+  ADD KEY `FieldID` (`FieldID`),
+  ADD KEY `EmploymentTypeID` (`EmploymentTypeID`),
+  ADD KEY `LevelID` (`LevelID`);
+
+--
+-- Index pour la table `levels`
+--
+ALTER TABLE `levels`
+  ADD PRIMARY KEY (`LevelID`);
+
+--
+-- Index pour la table `specialite`
+--
+ALTER TABLE `specialite`
+  ADD PRIMARY KEY (`ids`);
+
+--
+-- AUTO_INCREMENT pour les tables déchargées
+--
+
+--
+-- AUTO_INCREMENT pour la table `admin`
+--
+ALTER TABLE `admin`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+
+--
+-- AUTO_INCREMENT pour la table `articlesblog`
+--
+ALTER TABLE `articlesblog`
+  MODIFY `id_article` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT pour la table `auteur`
+--
+ALTER TABLE `auteur`
+  MODIFY `id_auteur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1112;
+
+--
+-- AUTO_INCREMENT pour la table `auteurs`
+--
+ALTER TABLE `auteurs`
+  MODIFY `id_auteur` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT pour la table `commentaires`
+--
+ALTER TABLE `commentaires`
+  MODIFY `id_commentaire` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+
+--
+-- AUTO_INCREMENT pour la table `formation`
+--
+ALTER TABLE `formation`
+  MODIFY `id_formation` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+
+--
+-- AUTO_INCREMENT pour la table `inscriptionevenement`
+--
+ALTER TABLE `inscriptionevenement`
+  MODIFY `id_inscription` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+
+--
+-- AUTO_INCREMENT pour la table `jobpostings`
+--
+ALTER TABLE `jobpostings`
+  MODIFY `JobID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- AUTO_INCREMENT pour la table `specialite`
+--
+ALTER TABLE `specialite`
+  MODIFY `ids` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- Contraintes pour les tables déchargées
+--
+
+--
+-- Contraintes pour la table `articlesblog`
 --
 ALTER TABLE `articlesblog`
   ADD CONSTRAINT `articlesblog_ibfk_1` FOREIGN KEY (`id_auteur`) REFERENCES `auteurs` (`id_auteur`);
 
 --
--- Constraints for table `certeficat`
---
-ALTER TABLE `certeficat`
-  ADD CONSTRAINT `certeficat_ibfk_1` FOREIGN KEY (`id`) REFERENCES `experiance` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `commentaires`
+-- Contraintes pour la table `commentaires`
 --
 ALTER TABLE `commentaires`
   ADD CONSTRAINT `commentaires_ibfk_1` FOREIGN KEY (`id_article`) REFERENCES `articlesblog` (`id_article`);
 
 --
--- Constraints for table `evenement`
+-- Contraintes pour la table `evenement`
 --
 ALTER TABLE `evenement`
   ADD CONSTRAINT `evenement_ibfk_1` FOREIGN KEY (`id_categorie`) REFERENCES `categorie_evenement` (`id_categorie`),
   ADD CONSTRAINT `evenement_ibfk_2` FOREIGN KEY (`id_auteur`) REFERENCES `auteur` (`id_auteur`);
 
 --
--- Constraints for table `inscriptionevenement`
+-- Contraintes pour la table `formation`
+--
+ALTER TABLE `formation`
+  ADD CONSTRAINT `fk_formation_specialite` FOREIGN KEY (`ids`) REFERENCES `specialite` (`ids`);
+
+--
+-- Contraintes pour la table `inscriptionevenement`
 --
 ALTER TABLE `inscriptionevenement`
   ADD CONSTRAINT `inscriptionevenement_ibfk_1` FOREIGN KEY (`id_evenement`) REFERENCES `evenement` (`id_evenement`),
   ADD CONSTRAINT `inscriptionevenement_ibfk_2` FOREIGN KEY (`id_auteur`) REFERENCES `auteur` (`id_auteur`);
 
 --
--- Constraints for table `jobpostings`
+-- Contraintes pour la table `jobpostings`
 --
 ALTER TABLE `jobpostings`
   ADD CONSTRAINT `jobpostings_ibfk_1` FOREIGN KEY (`FieldID`) REFERENCES `fields` (`FieldID`) ON DELETE CASCADE ON UPDATE CASCADE,
