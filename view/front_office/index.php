@@ -150,6 +150,13 @@ Bootstrap 5 HTML CSS Template
                             <li><a class="dropdown-item" href="trouver_evenement.php">Trouver un événement</a></li>
                         </ul>
                     </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="formationButton" role="button" data-bs-toggle="dropdown" aria-expanded="false">FORMATION</a>
+                    
+                        <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="formationButton">
+                            <li><a class="dropdown-item" href="formation-listings.php">Ajouter formation</a></li>
+                        </ul>
+                    </li>
                     <li class="nav-item">
                     <a class="nav-link" href="blog.php">blogs</a>
           </li>

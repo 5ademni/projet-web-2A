@@ -358,6 +358,23 @@
           </li>
         </ul>
       </li>
+      <li class="nav-item">
+    <a class="nav-link collapsed" data-bs-target="#formations-nav" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-briefcase"></i><span>Les Experience</span><i class="bi bi-chevron-down ms-auto"></i>
+    </a>
+    <ul id="formations-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <li>
+            <a href="Listformation.php">
+                <i class="bi bi-eye"></i><span>Afficher les Formations</span>
+            </a>
+        </li>
+        <li>
+            <a href="Listspecialite.php">
+                <i class="bi bi-circle"></i><span>Afficher les Specialites</span>
+            </a>
+        </li>
+    </ul>
+</li>
       <!-- End categories Nav -->
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
