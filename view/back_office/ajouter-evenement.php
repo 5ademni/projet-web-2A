@@ -98,6 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           $target_file,
           $_POST['heureEvenement'],
           $_POST['id_categorie'],
+          $_POST['id_domaine'],
           $_SESSION['id']
       );
         // Appeler la méthode addEvenement

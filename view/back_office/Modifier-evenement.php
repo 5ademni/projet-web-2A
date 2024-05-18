@@ -1,4 +1,5 @@
 <?php
+session_start();
 include_once '../../controller/event2.php';
 include_once '../../model/event.php';
 include_once '../../controller/Categorie_Evenement2.php';
@@ -37,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['id'])) {
         $_POST['heureEvenement'],
         $_POST['id_categorie'],
         $_POST['id_domaine'],
-        $_SESSION['id']
+        $_POST['id_admin']
 
     );
 

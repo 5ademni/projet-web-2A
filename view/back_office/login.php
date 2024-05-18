@@ -14,6 +14,7 @@ if (
     !empty($_POST['mdp'])
   ) {
     $email = $_POST['email'];
+    $_SESSION['id'] = $adminC->search_id_withemail($email);
 
     // Vérifier si l'adresse e-mail se termine par "@esprit.tn"
     if (strpos($email, '@5ademni.tn') !== false) {
@@ -22,13 +23,21 @@ if (
         $adminC->setConn($_POST['email'], $_POST['mdp']);
         $_SESSION['e'] = $_POST["email"];
 
-        header('Location: ../back_office/affichageAdmin.php');
+        header('Location: ../back_office/index.php');
       }
-    } else {
+    } else if (strpos($email, '@5ademni.tn') == false) {
+      $listeA = $adminC->searchLogin($_POST['email'], $_POST['mdp']);
+      foreach ($listeA as $ad) {
+        $adminC->setConn($_POST['email'], $_POST['mdp']);
+        $_SESSION['e'] = $_POST["email"];
 
-      header('Location: ../front_office/index.php');
+        header('Location: ../front_office/index.php');
+      }
     }
   } else {
+   
+    header('Location: ../front_office/login.php');
+
   }
 }
 

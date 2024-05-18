@@ -65,9 +65,9 @@ class ArticlesBlogC
             $stmt->execute();
 
             // After successfully inserting the article, send an SMS using Twilio
-            $account_sid = 'AC6280eb8f0ca52bd2141f89acbf4d9dc4'; // Your Twilio Account SID
-            $auth_token = 'e08341d95a9c6138bcdad4cfb83be6a6'; // Your Twilio Auth Token
-            $twilio_number = "+15085765764"; // Your Twilio phone number
+            $account_sid = 'AC91a50383419acdf7cadecda20c603b66'; // Your Twilio Account SID
+            $auth_token = '51f178203f6abd5c135e863bd6bd0ec1'; // Your Twilio Auth Token
+            $twilio_number = "+18787288349"; // Your Twilio phone number
 
             $client = new Client($account_sid, $auth_token);
 
